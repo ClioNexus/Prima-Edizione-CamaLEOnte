@@ -29,7 +29,6 @@
         /* LAYERS (Architettura Sicura) */
         .layer-pdf { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
         .layer-interactive { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
-        /* I link devono essere cliccabili */
         .layer-interactive * { pointer-events: auto; }
 
         .pdf-canvas { width: 100%; height: 100%; display: block; }
@@ -79,7 +78,6 @@
             border-radius: 30px; border: none; cursor: pointer; font-size: 16px; transition: 0.2s;
         }
         .tutorial-btn:hover { transform: scale(1.05); background: #34d399; }
-        
         .tutorial-arrow { position: absolute; font-size: 30px; color: #10b981; animation: bounce 2s infinite; }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
 
@@ -114,7 +112,7 @@
             let isMobile = window.innerWidth < 768;
             let isSingleMode = isMobile; 
             const totalPages = 24; 
-            const pageRatio = 0.7058; // Rapporto Pagina A4
+            const pageRatio = 0.7058; 
 
             const map = [
                 { t: 20, l: 5,  w: 40, h: 8, p: 4 },  { t: 30, l: 5,  w: 40, h: 12, p: 5 }, 
@@ -125,7 +123,6 @@
                 { t: 70, l: 50, w: 40, h: 10, p: 21 },{ t: 82, l: 50, w: 40, h: 8, p: 22 }
             ];
 
-            // RENDER PDF SICURO (Nel layer-pdf)
             async function renderPage(pageNum, container) {
                 try {
                     const url = pageNum + '.pdf';
@@ -138,10 +135,8 @@
                     canvas.className = 'pdf-canvas';
                     canvas.height = viewport.height;
                     canvas.width = viewport.width;
-                    
                     container.innerHTML = ''; 
                     container.appendChild(canvas);
-                    
                     await page.render({ canvasContext: context, viewport: viewport }).promise;
                 } catch (e) { console.error(e); }
             }
@@ -151,26 +146,25 @@
                 const wrapper = $('#zoom-wrapper');
                 const modeBtn = $('#mode-btn');
 
-                // --- GESTIONE TUTORIAL ---
                 if (!localStorage.getItem('camaLeonteTutorialV1')) {
                     $('#tutorial-overlay').addClass('active');
                 }
-
                 $('#close-tutorial').click(function() {
                     $('#tutorial-overlay').removeClass('active');
                     localStorage.setItem('camaLeonteTutorialV1', 'true');
                 });
 
-                // CREAZIONE PAGINE CON LAYERS
                 for (let i = 1; i <= totalPages; i++) {
-                    const pg = $('<div class="page"></div>');
+                    const pg = $('<div class="page" id="p' + i + '"></div>');
                     const pdfLayer = $('<div class="layer-pdf"></div>');
                     const interactiveLayer = $('<div class="layer-interactive"></div>');
-                    
                     pg.append(pdfLayer).append(interactiveLayer);
 
-                    if (i === 23) {
-                        pdfLayer.append(`<video class="magazine-video" playsinline webkit-playsinline><source src="23.mp4" type="video/mp4"></video>`);
+                    // --- QUI C'È IL FIX FONDAMENTALE (22 e 23) ---
+                    if (i === 22 || i === 23) {
+                        const videoSrc = i + ".mp4"; 
+                        // Muted inserito qui per sicurezza
+                        pdfLayer.append(`<video class="magazine-video" playsinline webkit-playsinline loop muted><source src="${videoSrc}" type="video/mp4"></video>`);
                     } else {
                         renderPage(i, pdfLayer[0]);
                     }
@@ -186,7 +180,29 @@
                     fb.append(pg);
                 }
 
-                // MOTORE DI LAYOUT MATEMATICO
+                // GESTORE VIDEO AGGIORNATO
+                function checkAndPlayVideos(view) {
+                    $('video').each(function() { this.pause(); });
+                    view.forEach(pageNum => {
+                        if (pageNum === 0) return;
+                        const vid = $('#p' + pageNum).find('video')[0];
+                        if (vid) {
+                            vid.currentTime = 0; 
+                            var playPromise = vid.play();
+                            if (playPromise !== undefined) {
+                                playPromise.catch(error => {
+                                    vid.muted = true; 
+                                    vid.play(); 
+                                });
+                            }
+                        }
+                    });
+                }
+
+                fb.bind("turned", function(event, page, view) {
+                    checkAndPlayVideos(view);
+                });
+
                 function updateLayout() {
                     modeBtn.text(isSingleMode ? '📄' : '📖');
                     const availW = $(window).width() * 0.95; 
@@ -194,7 +210,6 @@
                     let targetW, targetH;
 
                     if (isSingleMode) {
-                        // Calcolo Singola Pagina
                         if (availW / availH > pageRatio) {
                             targetH = availH; targetW = targetH * pageRatio;
                         } else {
@@ -203,7 +218,6 @@
                         fb.turn('display', 'single');
                         fb.turn('size', targetW, targetH);
                     } else {
-                        // Calcolo Doppia Pagina
                         const doubleRatio = pageRatio * 2; 
                         if (availW / availH > doubleRatio) {
                             targetH = availH; targetW = targetH * doubleRatio;
@@ -213,35 +227,27 @@
                         fb.turn('display', 'double');
                         fb.turn('size', targetW, targetH);
                     }
-                    // Applica dimensioni al contenitore per centrare
                     fb.css({ width: targetW, height: targetH });
+                    
+                    const currentView = fb.turn('view');
+                    checkAndPlayVideos(currentView);
                 }
 
-                // AVVIO TURN.JS
                 fb.turn({
-                    width: 1000, height: 600, // Valori dummy, vengono sovrascritti subito
+                    width: 1000, height: 600,
                     elevation: 50, duration: 1000, gradients: true, autoCenter: true,
                     display: isSingleMode ? 'single' : 'double'
                 });
 
-                // EVENTI
                 $(window).resize(function() {
                     clearTimeout(window.resizedFinished);
                     window.resizedFinished = setTimeout(updateLayout, 100);
                 });
 
-                $('#mode-btn').click(function() {
-                    isSingleMode = !isSingleMode;
-                    updateLayout();
-                });
-
+                $('#mode-btn').click(function() { isSingleMode = !isSingleMode; updateLayout(); });
                 $('#home-btn').click(function() { fb.turn('page', 3); });
+                $(document).on('click', '.index-link', function() { fb.turn('page', $(this).attr('data-target')); });
 
-                $(document).on('click', '.index-link', function() {
-                    fb.turn('page', $(this).attr('data-target'));
-                });
-
-                // START
                 updateLayout();
                 setTimeout(() => fb.addClass('visible'), 500);
             });
