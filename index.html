@@ -7,80 +7,78 @@
     
     <link rel="icon" type="image/png" href="favicon.png">
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX'); 
-    </script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-
     <script src="jquery.min.js"></script>
     <script src="turn.min.js"></script>
 
     <style>
-        /* PROTEZIONI E RESET */
-        * { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-touch-callout: none; }
+        /* BASE & RESET */
+        * { -webkit-user-select: none; -moz-user-select: none; user-select: none; -webkit-touch-callout: none; }
         body { background-color: #121212; margin: 0; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; font-family: 'Montserrat', sans-serif; }
-        img { pointer-events: none; -webkit-user-drag: none; display: block; }
-
-        #zoom-wrapper { width: 960px; height: 680px; transition: transform 0.2s ease; }
         
-        #flipbook { width: 960px; height: 680px; opacity: 0; transition: opacity 1.2s; visibility: visible; }
+        #zoom-wrapper { width: 960px; height: 680px; transition: transform 0.2s ease; transform-origin: center center; }
+        #flipbook { width: 960px; height: 680px; opacity: 0; transition: opacity 1s; }
         #flipbook.visible { opacity: 1; }
 
-        .page { background-color: white; position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.8); overflow: hidden; }
+        .page { background-color: white; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.5); overflow: hidden; }
         
-        .pdf-canvas { width: 100%; height: 100%; display: block; pointer-events: none; }
+        /* LAYERS (STRATI) PER EVITARE CONFLITTI */
+        .layer-pdf { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        .layer-interactive { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
+        /* I link devono avere pointer-events auto per essere cliccabili */
+        .layer-interactive * { pointer-events: auto; }
 
+        .pdf-canvas { width: 100%; height: 100%; display: block; }
+
+        /* VIDEO */
         .magazine-video { 
             width: 100%; height: 100%; object-fit: cover; 
-            position: absolute; top: 0; left: 0; z-index: 10;
-            background: #000; pointer-events: none;
+            position: absolute; top: 0; left: 0; z-index: 5; background: #000; 
         }
 
-        /* --- STILE BOTTONI --- */
+        /* --- STILE BOTTONI AZIONE (Home & Mode) --- */
         .action-btn {
-            position: absolute; top: 20px; z-index: 100;
-            width: 45px; height: 45px; border-radius: 50%;
-            background: rgba(255,255,255,0.15); color: white;
+            position: fixed; top: 20px; z-index: 9999; /* Z-index altissimo per stare sopra a tutto */
+            width: 50px; height: 50px; border-radius: 50%;
+            background: rgba(30,30,30,0.8); color: white;
             display: flex; justify-content: center; align-items: center;
-            cursor: pointer; font-size: 20px; backdrop-filter: blur(5px);
-            transition: 0.3s; box-shadow: 0 0 15px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer; font-size: 24px; border: 2px solid rgba(255,255,255,0.1);
+            transition: all 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        .action-btn:hover { background: rgba(255,255,255,0.95); color: #121212; transform: scale(1.1); }
+        .action-btn:hover { background: #10b981; transform: scale(1.1); color: white; }
+        .action-btn:active { transform: scale(0.95); }
         
-        /* Posizioni specifiche */
-        #home-btn { right: 20px; } /* Bottone Home a destra */
-        #mode-btn { left: 20px; }  /* Bottone Cambio Vista a sinistra */
+        #mode-btn { left: 20px; }
+        #home-btn { right: 20px; }
 
-        /* Link Indice */
+        /* --- LINK INDICE LUMINOSI --- */
+        @keyframes aiPulse {
+            0% { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); }
+            50% { background: rgba(52, 211, 153, 0.3); box-shadow: 0 0 15px rgba(52, 211, 153, 0.5); border: 1px solid rgba(110, 231, 183, 0.8); }
+            100% { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); }
+        }
+
         .index-link { 
-            position: absolute; cursor: pointer; z-index: 1000; border-radius: 8px;
-            /* Animazione rimossa per pulizia visiva, riattivabile se vuoi */
-            background: rgba(16, 185, 129, 0.1); 
+            position: absolute; cursor: pointer; border-radius: 8px;
+            animation: aiPulse 3s infinite ease-in-out; 
         }
         .index-link:hover {
-            background: rgba(209, 250, 229, 0.4); border: 1px solid rgba(52, 211, 153, 1);
-            box-shadow: 0 0 30px rgba(52, 211, 153, 0.8); transform: scale(1.04);
+            animation: none; 
+            background: rgba(209, 250, 229, 0.5); 
+            border: 2px solid #10b981;
+            box-shadow: 0 0 25px #10b981; 
+            transform: scale(1.02);
         }
-
-        .page::after { content: ""; position: absolute; top: 0; width: 50px; height: 100%; z-index: 5; pointer-events: none; }
-        .page:nth-child(even)::after { right: 0; background: linear-gradient(to left, rgba(0,0,0,0.15), transparent); }
-        .page:nth-child(odd)::after { left: 0; background: linear-gradient(to right, rgba(0,0,0,0.15), transparent); }
     </style>
 </head>
-<body onkeydown="return (event.keyCode != 123 && !event.ctrlKey && !event.shiftKey)">
+<body>
 
-    <div id="mode-btn" class="action-btn" title="Cambia Modalità Lettura">📖</div>
-    
+    <div id="mode-btn" class="action-btn" title="Cambia Vista">📖</div>
     <div id="home-btn" class="action-btn" title="Torna all'Indice">🏠</div>
 
     <div id="zoom-wrapper">
@@ -89,15 +87,14 @@
 
     <script>
         (function() {
-            // Stato iniziale
-            let isSingleMode = window.innerWidth < 768; // Auto-detect iniziale
+            // Rilevamento iniziale
+            let isMobile = window.innerWidth < 768;
+            let isSingleMode = isMobile; // Su mobile parte singolo, su desktop doppio
+            
             const totalPages = 24; 
-
-            // Dimensioni base Desktop
             const baseW = 960;
             const baseH = 680;
-            
-            // Mappa Link
+
             const map = [
                 { t: 20, l: 5,  w: 40, h: 8, p: 4 },  { t: 30, l: 5,  w: 40, h: 12, p: 5 }, 
                 { t: 45, l: 5,  w: 40, h: 8, p: 6 },  { t: 58, l: 5,  w: 40, h: 8, p: 8 },  
@@ -107,6 +104,7 @@
                 { t: 70, l: 50, w: 40, h: 10, p: 21 },{ t: 82, l: 50, w: 40, h: 8, p: 22 }
             ];
 
+            // RENDER PDF SICURO (Non cancella più i link)
             async function renderPage(pageNum, container) {
                 try {
                     const url = pageNum + '.pdf';
@@ -114,8 +112,8 @@
                     const pdf = await loadingTask.promise;
                     const page = await pdf.getPage(1);
                     
-                    // Renderizziamo sempre ad alta qualità (3.0) per supportare lo zoom
-                    const viewport = page.getViewport({ scale: 3.0 }); 
+                    // Scala alta per nitidezza
+                    const viewport = page.getViewport({ scale: 2.5 }); 
                     
                     const canvas = document.createElement('canvas');
                     const context = canvas.getContext('2d');
@@ -123,13 +121,12 @@
                     canvas.height = viewport.height;
                     canvas.width = viewport.width;
                     
-                    container.innerHTML = ''; // Pulisce
+                    // Pulisce SOLO il container del PDF, non tutta la pagina!
+                    container.innerHTML = ''; 
                     container.appendChild(canvas);
                     
                     await page.render({ canvasContext: context, viewport: viewport }).promise;
-                } catch (error) {
-                    console.error('PDF Error ' + pageNum);
-                }
+                } catch (e) { console.error(e); }
             }
 
             $(document).ready(function() {
@@ -137,113 +134,102 @@
                 const wrapper = $('#zoom-wrapper');
                 const modeBtn = $('#mode-btn');
 
-                // Aggiorna icona bottone
-                function updateIcon() {
-                    modeBtn.text(isSingleMode ? '📄' : '📖'); // Icona Foglio vs Libro
-                }
-                updateIcon();
-
-                // COSTRUZIONE PAGINE
+                // 1. COSTRUZIONE PAGINE
                 for (let i = 1; i <= totalPages; i++) {
-                    const pg = $('<div class="page" id="page-' + i + '"></div>');
+                    const pg = $('<div class="page"></div>');
+                    
+                    // Creiamo DUE livelli separati
+                    const pdfLayer = $('<div class="layer-pdf"></div>');
+                    const interactiveLayer = $('<div class="layer-interactive"></div>');
 
+                    pg.append(pdfLayer);
+                    pg.append(interactiveLayer);
+
+                    // Contenuto: Video o PDF
                     if (i === 23) {
-                        const vid = $(`<video class="magazine-video" playsinline webkit-playsinline><source src="23.mp4" type="video/mp4"></video>`);
-                        pg.append(vid);
+                        pdfLayer.append(`<video class="magazine-video" playsinline webkit-playsinline><source src="23.mp4" type="video/mp4"></video>`);
                     } else {
-                        renderPage(i, pg[0]);
+                        // Carichiamo il PDF dentro il SUO layer specifico
+                        renderPage(i, pdfLayer[0]);
                     }
 
+                    // Pagina 3: Aggiunta Link nel livello interattivo (SOPRA il PDF)
                     if (i === 3) {
-                        map.forEach((l, index) => {
+                        map.forEach((l) => {
                             const link = $('<div class="index-link"></div>').css({
                                 top: l.t + '%', left: l.l + '%', width: l.w + '%', height: l.h + '%'
                             }).attr('data-target', l.p);
-                            pg.append(link);
+                            interactiveLayer.append(link);
                         });
                     }
+
                     fb.append(pg);
                 }
 
-                // EVENTI CLICK
-                $(document).on('click', '.index-link, #home-btn', function(e) {
-                    e.preventDefault();
-                    const target = $(this).attr('data-target') || 3; // Home va a pagina 3
-                    fb.turn('page', target);
-                });
+                // 2. FUNZIONI DI RESIZE E MODALITÀ
+                function updateLayout() {
+                    // Aggiorna icona
+                    modeBtn.text(isSingleMode ? '📄' : '📖'); 
 
-                // GESTIONE CAMBIO MODALITÀ (IL BOTTONE MAGICO)
-                modeBtn.click(function() {
-                    isSingleMode = !isSingleMode; // Inverte la modalità
-                    updateIcon();
-                    resize(); // Ricalcola tutto
-                    
-                    // Se passiamo a singola, forza la visualizzazione
-                    const displayMode = isSingleMode ? 'single' : 'double';
-                    fb.turn('display', displayMode);
-                });
+                    const winW = $(window).width();
+                    const winH = $(window).height();
 
-                // CONTROLLO VIDEO
-                fb.bind("turned", function(event, page, view) {
-                    const video = document.querySelector('video');
-                    if (video) {
-                        if (view.indexOf(23) !== -1) {
-                            video.currentTime = 0;
-                            var playPromise = video.play();
-                            if (playPromise !== undefined) playPromise.catch(() => { video.muted = true; video.play(); });
-                        } else {
-                            video.pause();
-                        }
-                    }
-                });
-
-                // INIZIALIZZAZIONE TURN.JS
-                fb.turn({ 
-                    width: isSingleMode ? window.innerWidth : baseW, 
-                    height: isSingleMode ? window.innerWidth * 1.41 : baseH, 
-                    display: isSingleMode ? 'single' : 'double',
-                    autoCenter: true, 
-                    duration: 1000, 
-                    acceleration: true,
-                    elevation: 50
-                });
-
-                // FUNZIONE RESIZE INTELLIGENTE
-                function resize() {
                     if (isSingleMode) {
-                        // MODALITÀ LETTURA (Mobile style)
-                        // Occupa tutta la larghezza, niente scaling CSS (così il pinch-to-zoom funziona)
-                        wrapper.css('transform', 'none');
-                        wrapper.css('width', '100%');
-                        
-                        // Ricalcola dimensioni pagina
-                        const w = window.innerWidth;
-                        const h = w * 1.41; // Rapporto A4
-                        fb.turn('size', w, h);
-                        
+                        // MODALITÀ LETTURA (Singola)
+                        wrapper.css({ width: '100%', height: 'auto', transform: 'none' });
+                        // Calcola dimensioni pagina singola
+                        const pageW = winW;
+                        const pageH = winW * 1.41; 
+                        fb.turn('display', 'single');
+                        fb.turn('size', pageW, pageH);
                     } else {
-                        // MODALITÀ RIVISTA (Desktop style)
-                        // Usa scaling CSS per mantenere tutto nel viewport senza scroll
-                        const winW = $(window).width();
-                        const winH = $(window).height();
+                        // MODALITÀ RIVISTA (Doppia)
+                        // Calcola zoom per far stare tutto nello schermo
+                        let scale = Math.min(winW / baseW, winH / baseH) * 0.95;
+                        wrapper.css({ width: baseW, height: baseH, transform: `scale(${scale})` });
                         
-                        // Calcola quanto dobbiamo rimpicciolire per farci stare la doppia pagina
-                        const scale = Math.min(winW / baseW, winH / baseH) * 0.95;
-                        
-                        wrapper.css('width', baseW + 'px'); // Fissa larghezza wrapper
-                        wrapper.css('transform', `scale(${scale})`);
-                        
-                        // TurnJS rimane alle dimensioni base
+                        fb.turn('display', 'double');
                         fb.turn('size', baseW, baseH);
                     }
                 }
 
-                $(window).resize(resize); 
-                // Piccolo ritardo per assicurarsi che il layout sia pronto
-                setTimeout(resize, 100);
-                setTimeout(() => fb.addClass('visible'), 500);
+                // 3. INIZIALIZZAZIONE TURN.JS
+                fb.turn({
+                    width: baseW, height: baseH,
+                    elevation: 50,
+                    duration: 1000,
+                    gradients: true,
+                    autoCenter: true,
+                    display: isSingleMode ? 'single' : 'double'
+                });
 
-                setInterval(function() { (function() { return false; }).constructor("debugger")(); }, 200);
+                // 4. GESTIONE CLICK
+                // Click sui link indice
+                $(document).on('click', '.index-link', function() {
+                    fb.turn('page', $(this).attr('data-target'));
+                });
+
+                // Click Home
+                $('#home-btn').click(function() {
+                    fb.turn('page', 3); // Vai all'indice
+                });
+
+                // Click Cambio Modalità
+                modeBtn.click(function() {
+                    isSingleMode = !isSingleMode;
+                    updateLayout(); // Ricalcola tutto
+                });
+
+                // Resize Finestra
+                $(window).resize(function() {
+                    // Piccolo debounce per non sovraccaricare
+                    clearTimeout(window.resizedFinished);
+                    window.resizedFinished = setTimeout(updateLayout, 250);
+                });
+
+                // Avvio iniziale
+                updateLayout();
+                setTimeout(() => fb.addClass('visible'), 500);
             });
         })();
     </script>
