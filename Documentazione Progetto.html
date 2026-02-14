@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Documentazione Tecnica - Il CamaLEOnte</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 40px auto; padding: 20px; background: #f4f7f6; }
+        .container { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2980b9; margin-top: 30px; }
+        code { background: #eee; padding: 2px 5px; border-radius: 4px; font-family: monospace; }
+        .alert { background: #fff3cd; border-left: 5px solid #ffc107; padding: 15px; margin: 20px 0; }
+        .cmd { background: #2d3436; color: #dfe6e9; padding: 15px; border-radius: 5px; overflow-x: auto; display: block; white-space: pre; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Manuale d'Uso - Il CamaLEOnte</h1>
+        <p>Questa documentazione riassume le caratteristiche tecniche del progetto e le procedure per l'aggiornamento.</p>
+
+        <h2>1. Funzioni Implementate</h2>
+        <ul>
+            <li><strong>Sfoglio Turn.js:</strong> Simulazione realistica del passaggio di pagina.</li>
+            <li><strong>Indice Interattivo:</strong> Hotspot cliccabili a pagina 3 per navigazione rapida.</li>
+            <li><strong>Video Autoplay (Pag 23):</strong> Il video parte automaticamente al raggiungimento della pagina e si interrompe al cambio, senza barre di controllo browser.</li>
+            <li><strong>Google Analytics:</strong> Monitoraggio visualizzazioni tramite ID inserito nelle righe 13 e 19.</li>
+            <li><strong>Favicon:</strong> Icona personalizzata caricata tramite il file <code>favicon.png</code>.</li>
+        </ul>
+
+        <h2>2. Come Aggiornare il Sito</h2>
+        <p>Dopo ogni modifica ai file locali, esegui questi comandi nel terminale di VS Code:</p>
+        <code class="cmd">
+git add .
+git commit -m "Descrizione della modifica"
+git push origin main
+        </code>
+
+        <div class="alert">
+            <strong>ATTENZIONE:</strong> Dopo il push, il sito live potrebbe impiegare 2-3 minuti per aggiornarsi. Se non vedi le modifiche, premi <code>CTRL + F5</code> nel browser.
+        </div>
+
+        <h2>3. Struttura dei File</h2>
+        <ul>
+            <li><code>index.html</code>: Il motore principale del sito.</li>
+            <li><code>jquery.min.js</code> & <code>turn.min.js</code>: Librerie per l'animazione.</li>
+            <li><code>[1-24].png</code>: Le pagine della rivista.</li>
+            <li><code>23.mp4</code>: Il video della pagina 23.</li>
+            <li><code>favicon.png</code>: L'icona del browser.</li>
+        </ul>
+
+        <h2>4. Sicurezza</h2>
+        <p>Il sito è protetto da:</p>
+        <ul>
+            <li>Blocco del tasto destro.</li>
+            <li>Blocco dei tasti di ispezione (F12, Ctrl+Shift+I).</li>
+            <li>Script anti-debugger continuo.</li>
+        </ul>
+    </div>
+</body>
+</html>

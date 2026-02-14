@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap Dettagliata - Il CamaLEOnte</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f1f5f9; }
+        
+        /* Stile per i menu a tendina */
+        details summary {
+            list-style: none;
+            cursor: pointer;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details[open] summary {
+            background-color: rgba(59, 130, 246, 0.2);
+        }
+        .micro-step {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .micro-step::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #60a5fa;
+        }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-12 text-center">
+            <h1 class="text-4xl font-bold text-white mb-4">Roadmap dello Sviluppo</h1>
+            <p class="text-slate-400 italic">Cronologia interattiva dei processi e delle soluzioni tecniche adottate</p>
+        </header>
+
+        <div class="space-y-4">
+            
+            <!-- FASE 1 -->
+            <details class="group bg-slate-800/50 rounded-xl overflow-hidden border border-slate-700 shadow-xl" open>
+                <summary class="p-5 flex justify-between items-center hover:bg-slate-700/50 transition-colors">
+                    <div class="flex items-center">
+                        <span class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">1</span>
+                        <div>
+                            <h2 class="text-xl font-bold text-white">Sicurezza e Setup Ambiente</h2>
+                            <p class="text-sm text-slate-400">Bonifica Git e isolamento file</p>
+                        </div>
+                    </div>
+                    <span class="text-blue-400 group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <div class="p-6 border-t border-slate-700 bg-slate-900/50 space-y-4 text-slate-300">
+                    <div class="micro-step">
+                        <strong class="text-white">Analisi Terminale:</strong> Identificazione errori "Could not parse status output" legati a VS Code Tunnel.
+                    </div>
+                    <div class="micro-step">
+                        <strong class="text-white">Emergenza Privacy:</strong> Individuazione di un repository Git attivo sulla cartella radice <code>C:\Users\giuli</code> (rischio caricamento dati personali).
+                    </div>
+                    <div class="micro-step">
+                        <strong class="text-white">Isolamento Progetto:</strong> Creazione cartella dedicata e spostamento selettivo dei file (index, js, immagini, video).
+                    </div>
+                    <div class="micro-step">
+                        <strong class="text-white">Hard Reset Git:</strong> Esecuzione di <code>git init</code> per creare un database Git locale circoscritto solo al giornalino.
+                    </div>
+                </div>
+            </details>
+
+            <!-- FASE 2 -->
+            <details class="group bg-slate-800/50 rounded-xl overflow-hidden border border-slate-700 shadow-xl">
+                <summary class="p-5 flex justify-between items-center hover:bg-slate-700/50 transition-colors">
+                    <div class="flex items-center">
+                        <span class="bg-green-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">2</span>
+                        <div>
+                            <h2 class="text-xl font-bold text-white">Lancio su Cloud (GitHub)</h2>
+                            <p class="text-sm text-slate-400">Risoluzione conflitti e hosting</p>
+                        </div>
+                    </div>
+                    <span class="text-green-400 group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <div class="p-6 border-t border-slate-700 bg-slate-900/50 space-y-4 text-slate-300">
+                    <div class="micro-step">
+                        <strong class="text-white">Configurazione Remota:</strong> Collegamento all'URL HTTPS di GitHub tramite <code>git remote add origin</code>.
+                    </div>
+                    <div class="micro-step">
+                        <strong class="text-white">Gestione Conflitti:</strong> Risoluzione errore <code>[rejected] main -> main (fetch first)</code> causato dalla licenza MPL 2.0 creata su web ma non presente in locale.
+                    </div>
+                    <div class="micro-step">
+                        <strong class="text-white">Forzatura Push:</strong> Utilizzo di <code>git push -f origin main</code> per allineare forzatamente l'archivio locale a quello remoto.
+                    </div>
+                    <div class="micro-step">
+                        <strong class="text-white">Deployment Pages:</strong> Configurazione in Settings -> Pages per l'erogazione del sito statico dalla root del branch main.
+                    </div>
+                </div>
+            </details>
+
+            <!-- FASE 3 -->
+            <details class="group bg-slate-800/50 rounded-xl overflow-hidden border border-slate-700 shadow-xl">
+                <summary class="p-5 flex justify-between items-center hover:bg-slate-700/50 transition-colors">
+                    <div class="flex items-center">
+                        <span class="bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">3</span>
+                        <div>
+                            <h2 class="text-xl font-bold text-white">Multimedia & UX Optimization</h2>
+                            <p class="text-sm text-slate-400">Video autoplay e navigazione</p>
+                        </div>
+                    </div>
+                    <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <div class="p-6 border-t border-slate-700 bg-slate-900/50 space-y-4 text-slate-300">
+                    <div class="micro-step">
+                        <strong class="text-white">Refactoring Pagina 23:</strong> Sostituzione dell'effetto testo con il tag <code>&lt;video&gt;</code>.
+                    </div>
+                    <div class="micro-step">
+                        <strong class="text-white">Configurazione Player:</strong> Rimozione attributo <code>controls</code> e aggiunta di <code>playsinline</code> per compatibilità mobile.
+                    </div>
+                    <div class="micro-step">
+                        <strong class="text-white">Logica di Sfoglio:</strong> Implementazione del trigger <code>fb.bind("turned", ...)</code> per rilevare l'ingresso a pagina 23 e avviare il video.
+                    </div>
+                    <div class="micro-step">
+                        <strong class="text-white">Auto-reset:</strong> Programmazione della pausa e del riavvolgimento del video quando l'utente lascia la pagina, per evitare sovrapposizioni audio.
+                    </div>
+                    <div class="micro-step">
+                        <strong class="text-white">Home Button:</strong> Creazione di un pulsante fluttuante con effetto <code>backdrop-filter</code> per il ritorno rapido all'indice.
+                    </div>
+                </div>
+            </details>
+
+            <!-- FASE 4 -->
+            <details class="group bg-slate-800/50 rounded-xl overflow-hidden border border-slate-700 shadow-xl">
+                <summary class="p-5 flex justify-between items-center hover:bg-slate-700/50 transition-colors">
+                    <div class="flex items-center">
+                        <span class="bg-orange-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">4</span>
+                        <div>
+                            <h2 class="text-xl font-bold text-white">Analisi, Branding e Protezione</h2>
+                            <p class="text-sm text-slate-400">Statistiche e rifiniture finali</p>
+                        </div>
+                    </div>
+                    <span class="text-orange-400 group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <div class="p-6 border-t border-slate-700 bg-slate-900/50 space-y-4 text-slate-300">
+                    <div class="micro-step">
+                        <strong class="text-white">Setup GA4:</strong> Creazione account Google Analytics e stream web.
+                    </div>
+                    <div class="micro-step">
+                        <strong class="text-white">Validazione URL:</strong> Correzione errore URL in Analytics rimuovendo il prefisso ridondante <code>https://</code> durante la creazione dello stream.
+                    </div>
+                    <div class="micro-step">
+                        <strong class="text-white">Iniezione Tag:</strong> Inserimento dell'ID <code>G-XXXXXXXXXX</code> nelle righe 13 e 19 per abilitare il tracciamento in tempo reale.
+                    </div>
+                    <div class="micro-step">
+                        <strong class="text-white">Implementazione Favicon:</strong> Collegamento del file <code>favicon.png</code> nell'header per l'identità visiva della scheda browser.
+                    </div>
+                    <div class="micro-step">
+                        <strong class="text-white">Sistemi Anti-Copia:</strong> Rafforzamento dei blocchi <code>oncontextmenu</code> e script di protezione per impedire l'ispezione del codice.
+                    </div>
+                </div>
+            </details>
+
+        </div>
+
+        <footer class="mt-16 pt-8 border-t border-slate-700 text-center">
+            <p class="text-slate-500 text-sm">Documento tecnico di riepilogo - Stato del progetto: <span class="text-green-500 font-bold">OPERATIVO</span></p>
+            <div class="mt-4 flex justify-center gap-4">
+                <span class="text-xs bg-slate-800 px-2 py-1 rounded text-slate-400 border border-slate-700">HTML5</span>
+                <span class="text-xs bg-slate-800 px-2 py-1 rounded text-slate-400 border border-slate-700">Git/GitHub</span>
+                <span class="text-xs bg-slate-800 px-2 py-1 rounded text-slate-400 border border-slate-700">GA4</span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
