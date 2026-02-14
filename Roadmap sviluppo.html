@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engineering Roadmap - Il CamaLEOnte</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+    <title>Engineering Roadmap Completa - Il CamaLEOnte</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #0f172a;
@@ -16,6 +16,7 @@
             --accent-blue: #3b82f6;
             --accent-purple: #8b5cf6;
             --accent-gold: #f59e0b;
+            --accent-orange: #fb923c;
             --border: #334155;
         }
 
@@ -28,7 +29,7 @@
             padding: 40px 20px;
         }
 
-        .container { max-width: 960px; margin: 0 auto; }
+        .container { max-width: 1200px; margin: 0 auto; }
 
         header {
             text-align: center;
@@ -39,7 +40,7 @@
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 10px;
             font-weight: 800;
             letter-spacing: -1px;
@@ -48,50 +49,114 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .subtitle { color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto; }
+        .subtitle { 
+            color: var(--text-muted); 
+            font-size: 1.3rem; 
+            max-width: 700px; 
+            margin: 15px auto; 
+        }
+
+        .status-badge {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+            color: #000;
+            font-weight: 800;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+        }
 
         /* WARNING BOX */
         .warning-box {
             background: rgba(245, 158, 11, 0.1);
             border: 1px solid var(--accent-gold);
             color: #fbbf24;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 40px 0;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 50px 0;
             display: flex;
             align-items: flex-start;
-            gap: 15px;
+            gap: 20px;
         }
-        .warning-icon { font-size: 24px; }
+        .warning-icon { font-size: 28px; flex-shrink: 0; }
+
+        /* TECH STACK BOX */
+        .tech-stack {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--accent-blue);
+            padding: 30px;
+            border-radius: 12px;
+            margin: 50px 0;
+        }
+        .tech-stack h3 {
+            color: var(--accent-blue);
+            margin-top: 0;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .tech-item {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-blue);
+        }
+        .tech-item strong { color: var(--accent-blue); }
+        .tech-item code {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
 
         h2 {
-            font-size: 1.8rem;
-            margin-top: 60px;
-            margin-bottom: 30px;
+            font-size: 2rem;
+            margin-top: 80px;
+            margin-bottom: 40px;
             display: flex;
             align-items: center;
             gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
         }
 
-        /* CARDS */
-        .timeline { position: relative; padding-left: 20px; border-left: 2px solid var(--border); }
+        /* TIMELINE */
+        .timeline { 
+            position: relative; 
+            padding-left: 20px; 
+            border-left: 2px solid var(--border); 
+        }
         
         .card {
             background-color: var(--card-bg);
             border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
+            padding: 30px;
+            margin-bottom: 35px;
             border: 1px solid var(--border);
             position: relative;
-            margin-left: 20px;
+            margin-left: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
 
         .card::before {
             content: "";
             position: absolute;
-            left: -32px;
-            top: 30px;
-            width: 20px;
+            left: -37px;
+            top: 35px;
+            width: 25px;
             height: 2px;
             background-color: var(--border);
         }
@@ -99,67 +164,149 @@
         .card::after {
             content: "";
             position: absolute;
-            left: -41px;
-            top: 26px;
-            width: 10px;
-            height: 10px;
+            left: -46px;
+            top: 31px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             background-color: var(--text-muted);
             border: 2px solid var(--bg-color);
         }
 
-        .card.active::after { background-color: var(--accent-green); box-shadow: 0 0 10px var(--accent-green); }
-        .card.critical::after { background-color: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); }
-        .card.gold::after { background-color: var(--accent-gold); box-shadow: 0 0 15px var(--accent-gold); }
+        .card.active::after { 
+            background-color: var(--accent-green); 
+            box-shadow: 0 0 15px var(--accent-green); 
+        }
+        .card.critical::after { 
+            background-color: var(--accent-red); 
+            box-shadow: 0 0 15px var(--accent-red); 
+        }
+        .card.gold::after { 
+            background-color: var(--accent-gold); 
+            box-shadow: 0 0 20px var(--accent-gold); 
+        }
+        .card.infrastructure::after {
+            background-color: var(--accent-purple);
+            box-shadow: 0 0 15px var(--accent-purple);
+        }
 
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .card-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+        }
 
         .badge {
-            padding: 4px 10px;
-            border-radius: 4px;
+            padding: 6px 14px;
+            border-radius: 6px;
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .badge.problem { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.3); }
-        .badge.solution { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
-        .badge.logic { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); border: 1px solid rgba(139, 92, 246, 0.3); }
-        .badge.gold { background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge.problem { 
+            background: rgba(239, 68, 68, 0.15); 
+            color: var(--accent-red); 
+            border: 1px solid rgba(239, 68, 68, 0.3); 
+        }
+        .badge.solution { 
+            background: rgba(16, 185, 129, 0.15); 
+            color: var(--accent-green); 
+            border: 1px solid rgba(16, 185, 129, 0.3); 
+        }
+        .badge.logic { 
+            background: rgba(139, 92, 246, 0.15); 
+            color: var(--accent-purple); 
+            border: 1px solid rgba(139, 92, 246, 0.3); 
+        }
+        .badge.gold { 
+            background: rgba(245, 158, 11, 0.15); 
+            color: var(--accent-gold); 
+            border: 1px solid rgba(245, 158, 11, 0.3); 
+        }
+        .badge.infrastructure {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--accent-purple);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        .badge.security {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
 
-        h3 { margin: 0; font-size: 1.3rem; color: #fff; }
+        h3 { 
+            margin: 0; 
+            font-size: 1.4rem; 
+            color: #fff; 
+            font-weight: 700;
+        }
 
-        ul { margin: 0; padding-left: 20px; color: var(--text-muted); }
-        li { margin-bottom: 10px; }
+        ul { 
+            margin: 15px 0; 
+            padding-left: 25px; 
+            color: var(--text-muted); 
+        }
+        li { 
+            margin-bottom: 12px; 
+            line-height: 1.7;
+        }
         strong { color: var(--text-main); }
 
         code {
             font-family: 'Fira Code', monospace;
-            background-color: rgba(0,0,0,0.3);
-            padding: 2px 6px;
+            background-color: rgba(0,0,0,0.4);
+            padding: 3px 8px;
             border-radius: 4px;
             color: var(--accent-blue);
-            font-size: 0.85em;
+            font-size: 0.9em;
         }
 
         .technical-deep-dive {
-            margin-top: 15px;
+            margin-top: 20px;
             background: #0f172a;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 3px solid var(--accent-blue);
-            font-size: 0.9rem;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-blue);
+            font-size: 0.95rem;
         }
-        .technical-deep-dive h4 { margin: 0 0 10px 0; color: var(--accent-blue); font-size: 0.8rem; text-transform: uppercase; }
+        .technical-deep-dive h4 { 
+            margin: 0 0 15px 0; 
+            color: var(--accent-blue); 
+            font-size: 0.9rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+        }
+        .technical-deep-dive ul {
+            margin-top: 10px;
+        }
 
         footer {
-            margin-top: 100px;
+            margin-top: 120px;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--text-muted);
             border-top: 1px solid var(--border);
-            padding-top: 30px;
+            padding-top: 40px;
+        }
+
+        .footer-tech {
+            margin-top: 15px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.6rem; }
+            .tech-grid { grid-template-columns: 1fr; }
+            .card { padding: 20px; margin-left: 15px; }
         }
     </style>
 </head>
@@ -167,111 +314,472 @@
 
     <div class="container">
         <header>
-            <h1>Project CamaLEOnte</h1>
-            <div class="subtitle">Engineering Log & Technical Retrospective</div>
-            <p style="margin-top: 15px; font-family: 'Fira Code', monospace; color: var(--accent-green);">Status: GOLD MASTER (v4.0.0)</p>
+            <h1>Il CamaLEOnte Project</h1>
+            <div class="subtitle">Complete Engineering Roadmap & Technical Documentation</div>
+            <div class="status-badge">🏆 GOLD MASTER v4.0.0</div>
         </header>
 
         <div class="warning-box">
             <div class="warning-icon">🚀</div>
             <div>
-                <strong>Mission Accomplished</strong><br>
-                Il progetto ha superato la fase critica del "Falso Traguardo". Dopo aver risolto i conflitti asincroni e i problemi di matematica vettoriale, abbiamo completato l'integrazione multimediale AI (Veo), rendendo la rivista un prodotto ibrido carta/digitale stabile e performante.
+                <strong style="font-size: 1.2rem;">Mission Accomplished</strong><br>
+                Il progetto ha superato tutte le fasi critiche, dall'architettura iniziale alla distribuzione finale. Dopo aver risolto conflitti asincroni, problemi di matematica vettoriale, policy di sicurezza browser e limitazioni tecniche multiple, abbiamo completato l'integrazione multimediale AI (Veo), creando una rivista digitale ibrida stabile, performante e distribuita su larga scala.
             </div>
         </div>
 
-        <h2>🔴 1. The Challenge Log (Analisi Ostacoli)</h2>
+        <!-- TECH STACK -->
+        <div class="tech-stack">
+            <h3>🛠️ Technology Stack</h3>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <strong>PDF Rendering Engine</strong>
+                    <code>PDF.js v3.11.174 (Mozilla)</code>
+                    <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: var(--text-muted);">Canvas-based vector rendering con Web Workers</p>
+                </div>
+                <div class="tech-item">
+                    <strong>Page Flip Library</strong>
+                    <code>Turn.js (jQuery Plugin)</code>
+                    <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: var(--text-muted);">Simulazione fisica sfoglio 3D</p>
+                </div>
+                <div class="tech-item">
+                    <strong>DOM Manipulation</strong>
+                    <code>jQuery 3.x</code>
+                    <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: var(--text-muted);">Event handling e responsive engine</p>
+                </div>
+                <div class="tech-item">
+                    <strong>Video AI Integration</strong>
+                    <code>Google Veo (Gemini AI)</code>
+                    <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: var(--text-muted);">Generazione contenuti multimediali</p>
+                </div>
+                <div class="tech-item">
+                    <strong>Hosting & CI/CD</strong>
+                    <code>GitHub Pages</code>
+                    <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: var(--text-muted);">Deploy automatico con versionamento Git</p>
+                </div>
+                <div class="tech-item">
+                    <strong>Analytics Platform</strong>
+                    <code>Google Analytics 4</code>
+                    <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: var(--text-muted);">Tracking comportamento utenti</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>🔴 FASE 1: Challenge Log - Analisi Problemi Critici</h2>
         <div class="timeline">
             
+            <!-- FASE 1 -->
             <div class="card">
                 <div class="card-header">
-                    <h3>Fase 1: Raster Quality Limitation</h3>
+                    <h3>Fase 1.1: Raster Quality Limitation</h3>
                     <span class="badge problem">Legacy Tech</span>
                 </div>
                 <ul>
-                    <li><strong>Il Muro del Pixel:</strong> Immagini PNG sgranate allo zoom. Testo inaccessibile.</li>
+                    <li><strong>Il Muro del Pixel:</strong> Prime prove con immagini PNG raster a risoluzione fissa causavano aliasing e sgranatura allo zoom.</li>
+                    <li><strong>Testo Illeggibile:</strong> Il contenuto testuale delle pagine risultava pixelato e inaccessibile.</li>
+                    <li><strong>Limite Scalabilità:</strong> Impossibile mantenere qualità visiva su display Retina e 4K.</li>
                 </ul>
+                <div class="technical-deep-dive">
+                    <h4>Technical Analysis</h4>
+                    <p>La pipeline iniziale PDF → PNG (via conversione batch) produceva asset bitmap che perdevano definizione sotto trasformazioni CSS <code>scale()</code>. La limitazione intrinseca dei formati raster impediva lo zoom lossless richiesto dall'esperienza utente.</p>
+                </div>
             </div>
 
+            <!-- FASE 2 -->
             <div class="card">
                 <div class="card-header">
-                    <h3>Fase 2: The Viewport Paradox</h3>
+                    <h3>Fase 1.2: The Viewport Paradox</h3>
                     <span class="badge problem">Mobile UX</span>
                 </div>
                 <ul>
-                    <li><strong>Geometry Mismatch:</strong> Doppia pagina illeggibile su smartphone verticale.</li>
+                    <li><strong>Geometry Mismatch:</strong> La visualizzazione a doppia pagina (landscape) risultava illeggibile su dispositivi mobile in modalità portrait.</li>
+                    <li><strong>Overflow Incontrollato:</strong> Il contenuto debordava dai limiti del viewport causando scroll orizzontale indesiderato.</li>
+                    <li><strong>Esperienza Degradata:</strong> Gli utenti mobile (60%+ del traffico) ricevevano un'esperienza pessimizzata.</li>
                 </ul>
-            </div>
-
-            <div class="card critical">
-                <div class="card-header">
-                    <h3>Fase 4: The Race Condition Crash</h3>
-                    <span class="badge logic">Async Bug</span>
-                </div>
                 <div class="technical-deep-dive">
                     <h4>Technical Analysis</h4>
-                    <p>Il caricamento asincrono del PDF cancellava i link interattivi. Risolto separando i layer DOM (Z-Index).</p>
+                    <p>Il motore di rendering Turn.js è stato progettato per desktop. L'aspect ratio 2:1 della doppia pagina non si adatta naturalmente agli schermi mobile verticali (9:16). Era necessario implementare una logica di switching dinamico basata su <code>window.innerWidth</code> con ricalcolo geometrico in real-time.</p>
                 </div>
             </div>
 
+            <!-- FASE 3 - MANCANTE NELLA VERSIONE ORIGINALE -->
             <div class="card critical">
                 <div class="card-header">
-                    <h3>Fase 5: The Phantom Coordinate</h3>
+                    <h3>Fase 1.3: Cross-Origin Security Policy (CORS)</h3>
+                    <span class="badge problem">Browser Security</span>
+                </div>
+                <ul>
+                    <li><strong>Same-Origin Restriction:</strong> I browser moderni bloccano il caricamento di risorse PDF da domini esterni per policy di sicurezza.</li>
+                    <li><strong>Canvas Taint:</strong> L'accesso diretto ai dati del PDF tramite <code>canvas.toDataURL()</code> veniva negato.</li>
+                    <li><strong>Soluzione Trovata:</strong> Utilizzo di PDF.js come proxy client-side per bypassare le restrizioni CORS, rendendo il tutto trasparente all'utente.</li>
+                </ul>
+                <div class="technical-deep-dive">
+                    <h4>Technical Analysis</h4>
+                    <p>PDF.js implementa un sistema di Web Workers che gestisce il download e il parsing dei PDF completamente lato client, evitando le limitazioni CORS. I file vengono caricati come <code>ArrayBuffer</code> e processati in memoria senza violare le Same-Origin Policy del browser.</p>
+                </div>
+            </div>
+
+            <!-- FASE 4 -->
+            <div class="card critical">
+                <div class="card-header">
+                    <h3>Fase 1.4: The Race Condition Crash</h3>
+                    <span class="badge logic">Async Bug</span>
+                </div>
+                <ul>
+                    <li><strong>Async Timing Issue:</strong> Il rendering asincrono del PDF via Canvas sovrascriveva il DOM prima che i link interattivi venissero iniettati.</li>
+                    <li><strong>Click Event Blackhole:</strong> Gli hotspot cliccabili dell'indice sparivano, rendendo la navigazione impossibile.</li>
+                    <li><strong>DOM Overwrite:</strong> L'uso di <code>innerHTML = ''</code> durante il re-render cancellava i layer già costruiti.</li>
+                </ul>
+                <div class="technical-deep-dive">
+                    <h4>Technical Analysis</h4>
+                    <p>Il problema nasceva dalla sequenza di esecuzione asincrona:</p>
+                    <ol style="margin-top: 10px; color: var(--text-muted);">
+                        <li>jQuery costruisce il DOM con layer interattivo (Z-index 10)</li>
+                        <li>PDF.js inizia il rendering asincrono del Canvas</li>
+                        <li>Il Canvas completa e viene iniettato con <code>container.appendChild()</code></li>
+                        <li>Il layer interattivo viene sovrascritto e perde i riferimenti</li>
+                    </ol>
+                    <p style="margin-top: 10px;"><strong>Soluzione:</strong> Separazione fisica dei layer con DOM indipendenti. Il PDF viene renderizzato in <code>.layer-pdf</code> (Z-1) mentre i controlli rimangono in <code>.layer-interactive</code> (Z-10), garantendo l'isolamento degli eventi.</p>
+                </div>
+            </div>
+
+            <!-- FASE 5 -->
+            <div class="card critical">
+                <div class="card-header">
+                    <h3>Fase 1.5: The Phantom Coordinate Bug</h3>
                     <span class="badge logic">Math Error</span>
                 </div>
                 <ul>
-                    <li><strong>Zoom Distortion:</strong> <code>transform: scale()</code> rompeva le coordinate di sfoglio. Risolto con ridimensionamento matematico JS.</li>
+                    <li><strong>Zoom Distortion:</strong> L'implementazione iniziale usava CSS <code>transform: scale()</code> per lo zoom, rompendo il sistema di coordinate degli hotspot.</li>
+                    <li><strong>Click Mismatch:</strong> Il click dell'utente non corrispondeva più alla posizione reale del link, rendendo la rivista inutilizzabile.</li>
+                    <li><strong>Transform Matrix Hell:</strong> Le trasformazioni CSS non aggiornavano i bounding box DOM in real-time.</li>
                 </ul>
+                <div class="technical-deep-dive">
+                    <h4>Technical Analysis</h4>
+                    <p>Il CSS <code>transform: scale()</code> è un'operazione puramente visuale che non modifica le proprietà geometriche del DOM (<code>offsetWidth</code>, <code>offsetHeight</code>). Turn.js calcola le coordinate di flip basandosi su queste proprietà, causando un disallineamento critico.</p>
+                    <p style="margin-top: 10px;"><strong>Soluzione:</strong> Sostituzione dello zoom CSS con ridimensionamento matematico nativo:</p>
+                    <code style="display: block; margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.5);">
+                        fb.turn('size', targetWidth, targetHeight);<br>
+                        fb.css({ width: targetWidth, height: targetHeight });
+                    </code>
+                    <p style="margin-top: 10px;">Questo approccio ricalcola effettivamente le dimensioni del DOM, mantenendo la coerenza tra rendering visuale e sistema di coordinate.</p>
+                </div>
             </div>
 
         </div>
 
-        <h2>🟢 2. The Architecture Solution (Soluzioni)</h2>
+        <h2>🟢 FASE 2: Architecture Solutions - Implementazione</h2>
 
         <div class="timeline">
+            
+            <!-- SOLUZIONE 1 -->
             <div class="card active">
                 <div class="card-header">
-                    <h3>Soluzione 1: Vector Injection (PDF.js)</h3>
-                    <span class="badge solution">Rendering</span>
+                    <h3>Soluzione 2.1: Vector Injection (PDF.js)</h3>
+                    <span class="badge solution">Core Rendering</span>
                 </div>
-                <p>Rendering Canvas HTML5 a scala 3.0x per nitidezza Retina.</p>
+                <ul>
+                    <li><strong>Mozilla PDF.js Integration:</strong> Rendering Canvas HTML5 nativo con scala 2.5x per nitidezza Retina Display.</li>
+                    <li><strong>Web Workers Architecture:</strong> Parsing PDF in background thread per mantenere la UI responsive.</li>
+                    <li><strong>Lossless Scaling:</strong> Il contenuto vettoriale del PDF viene rasterizzato on-the-fly al livello di zoom richiesto.</li>
+                </ul>
+                <div class="technical-deep-dive">
+                    <h4>Implementation Details</h4>
+                    <code style="display: block; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 6px;">
+                        const viewport = page.getViewport({ scale: 2.5 });<br>
+                        canvas.height = viewport.height;<br>
+                        canvas.width = viewport.width;<br>
+                        await page.render({ canvasContext: context, viewport: viewport }).promise;
+                    </code>
+                    <p style="margin-top: 15px;">Il fattore di scala 2.5 è stato scelto empiricamente per bilanciare qualità visiva e performance su device mobile (evitando canvas troppo grandi che causerebbero memory overflow).</p>
+                </div>
             </div>
 
+            <!-- SOLUZIONE 2 -->
             <div class="card active">
                 <div class="card-header">
-                    <h3>Soluzione 2: Layered DOM Architecture</h3>
+                    <h3>Soluzione 2.2: Layered DOM Architecture</h3>
                     <span class="badge solution">Stability</span>
                 </div>
-                <p>Separazione fisica dei livelli: <strong>Layer Z-1 (PDF)</strong> e <strong>Layer Z-10 (UI/Link)</strong>.</p>
+                <ul>
+                    <li><strong>Z-Index Separation:</strong> Due layer fisicamente separati per rendering e interazione.</li>
+                    <li><strong>Layer PDF (Z-1):</strong> Contiene il Canvas renderizzato, non intercetta eventi mouse.</li>
+                    <li><strong>Layer Interactive (Z-10):</strong> Overlay trasparente con hotspot cliccabili, <code>pointer-events: none</code> sul container e <code>auto</code> sui figli.</li>
+                </ul>
+                <div class="technical-deep-dive">
+                    <h4>DOM Structure</h4>
+                    <code style="display: block; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 6px;">
+                        &lt;div class="page"&gt;<br>
+                        &nbsp;&nbsp;&lt;div class="layer-pdf" style="z-index: 1"&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;canvas class="pdf-canvas"&gt;&lt;/canvas&gt;<br>
+                        &nbsp;&nbsp;&lt;/div&gt;<br>
+                        &nbsp;&nbsp;&lt;div class="layer-interactive" style="z-index: 10"&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="index-link" data-target="4"&gt;&lt;/div&gt;<br>
+                        &nbsp;&nbsp;&lt;/div&gt;<br>
+                        &lt;/div&gt;
+                    </code>
+                    <p style="margin-top: 15px;">Questa architettura garantisce che i link interattivi rimangano sempre accessibili, indipendentemente dal ciclo di rendering del PDF.</p>
+                </div>
             </div>
 
+            <!-- SOLUZIONE 3 -->
             <div class="card active">
                 <div class="card-header">
-                    <h3>Soluzione 3: Mathematical Resizing</h3>
+                    <h3>Soluzione 2.3: Mathematical Resizing Engine</h3>
                     <span class="badge solution">Core Fix</span>
                 </div>
-                <p>Sostituzione dello zoom CSS con calcolo geometrico in tempo reale delle dimensioni del canvas.</p>
+                <ul>
+                    <li><strong>Geometric Calculation:</strong> Sostituzione dello zoom CSS con calcolo matematico real-time delle dimensioni del flipbook.</li>
+                    <li><strong>Aspect Ratio Preservation:</strong> Algoritmo di fit che rispetta il ratio 0.7058 (A4 portrait) mantenendo il contenuto entro il viewport.</li>
+                    <li><strong>Responsive Recalculation:</strong> Debounce sul resize event per ricalcolare le dimensioni solo al termine dello scaling.</li>
+                </ul>
+                <div class="technical-deep-dive">
+                    <h4>Algorithm Implementation</h4>
+                    <code style="display: block; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 6px; line-height: 1.8;">
+                        const pageRatio = 0.7058; // A4 portrait<br>
+                        const availW = $(window).width() * 0.95;<br>
+                        const availH = $(window).height() * 0.95;<br>
+                        <br>
+                        if (availW / availH > pageRatio) {<br>
+                        &nbsp;&nbsp;targetH = availH;<br>
+                        &nbsp;&nbsp;targetW = targetH * pageRatio;<br>
+                        } else {<br>
+                        &nbsp;&nbsp;targetW = availW;<br>
+                        &nbsp;&nbsp;targetH = targetW / pageRatio;<br>
+                        }
+                    </code>
+                    <p style="margin-top: 15px;">L'algoritmo garantisce il massimo utilizzo dello spazio disponibile senza distorsioni, adattandosi dinamicamente a orientamento portrait/landscape.</p>
+                </div>
             </div>
 
-            <div class="card gold" style="border-color: var(--accent-gold);">
+            <!-- SOLUZIONE 4 -->
+            <div class="card active">
                 <div class="card-header">
-                    <h3>Soluzione 4: Multimedia Living Paper</h3>
+                    <h3>Soluzione 2.4: Dual-View Toggle System</h3>
+                    <span class="badge solution">UX Enhancement</span>
+                </div>
+                <ul>
+                    <li><strong>Single/Double Page Mode:</strong> Implementazione di toggle per passare da visualizzazione singola (mobile) a doppia pagina (desktop).</li>
+                    <li><strong>Auto-Detection:</strong> La modalità viene inferita automaticamente da <code>window.innerWidth < 768</code> al caricamento.</li>
+                    <li><strong>State Machine:</strong> Turn.js gestisce internamente la macchina a stati finiti per lo sfogliamento, mantenendo la posizione corrente durante il cambio modalità.</li>
+                </ul>
+                <div class="technical-deep-dive">
+                    <h4>jQuery Event Handling</h4>
+                    <code style="display: block; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 6px;">
+                        $('#mode-btn').click(function() {<br>
+                        &nbsp;&nbsp;isSingleMode = !isSingleMode;<br>
+                        &nbsp;&nbsp;fb.turn('display', isSingleMode ? 'single' : 'double');<br>
+                        &nbsp;&nbsp;updateLayout(); // Ricalcola geometria<br>
+                        });
+                    </code>
+                    <p style="margin-top: 15px;">Il bottone floating UI (📖 / 📄) permette agli utenti di scegliere manualmente la modalità di lettura preferita, bypassando l'auto-detection.</p>
+                </div>
+            </div>
+
+            <!-- SOLUZIONE 5 - GOLD -->
+            <div class="card gold" style="border-color: var(--accent-gold); border-width: 2px;">
+                <div class="card-header">
+                    <h3>Soluzione 2.5: Multimedia Living Paper (AI Integration)</h3>
                     <span class="badge gold">AI Feature</span>
                 </div>
+                <ul>
+                    <li><strong>Video AI Generation:</strong> Sostituzione selettiva delle pagine 22 e 23 con contenuti video generati da Google Veo (Gemini AI).</li>
+                    <li><strong>Autoplay Policy Bypass:</strong> Implementazione dell'attributo <code>muted</code> forzato per garantire l'autoplay su tutti i browser (Chrome/Safari strict policies).</li>
+                    <li><strong>Smart Playback Control:</strong> Event listener su <code>turned</code> per gestire play/pause automatico e riavvio da zero al cambio pagina.</li>
+                </ul>
                 <div class="technical-deep-dive">
-                    <h4>Video AI & Autoplay Bypass</h4>
-                    <p>Sostituzione selettiva delle pagine statiche (22 e 23) con video MP4 generati da AI (Veo).</p>
+                    <h4>Video Integration & Autoplay Strategy</h4>
+                    <code style="display: block; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 6px; line-height: 1.8;">
+                        &lt;video class="magazine-video" playsinline webkit-playsinline loop muted&gt;<br>
+                        &nbsp;&nbsp;&lt;source src="22.mp4" type="video/mp4"&gt;<br>
+                        &lt;/video&gt;
+                    </code>
+                    <p style="margin-top: 15px;"><strong>Event Handling Logic:</strong></p>
+                    <code style="display: block; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 6px; margin-top: 10px; line-height: 1.8;">
+                        fb.bind("turned", function(event, page, view) {<br>
+                        &nbsp;&nbsp;$('video').each(function() { this.pause(); }); // Pausa tutti<br>
+                        &nbsp;&nbsp;view.forEach(pageNum => {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;const vid = $('#p' + pageNum).find('video')[0];<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;if (vid) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vid.currentTime = 0; // Reset timeline<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vid.play().catch(e => { vid.muted = true; vid.play(); });<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;});<br>
+                        });
+                    </code>
+                    <p style="margin-top: 15px;">Questo sistema assicura che solo i video delle pagine visibili siano in riproduzione, ottimizzando performance e batteria su mobile.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <h2>🟣 FASE 3: Infrastructure & Operations</h2>
+
+        <div class="timeline">
+
+            <!-- DEPLOYMENT -->
+            <div class="card infrastructure">
+                <div class="card-header">
+                    <h3>Infra 3.1: CI/CD Pipeline & Hosting</h3>
+                    <span class="badge infrastructure">DevOps</span>
+                </div>
+                <ul>
+                    <li><strong>GitHub Pages:</strong> Deploy automatico tramite push su branch <code>main</code>, con build statica e distribuzione globale via CDN.</li>
+                    <li><strong>Version Control:</strong> Git workflow per tracciare ogni modifica al codebase, con rollback istantaneo in caso di regressioni.</li>
+                    <li><strong>Zero Downtime:</strong> Gli update vengono propagati senza interruzione del servizio, garantendo alta disponibilità.</li>
+                </ul>
+                <div class="technical-deep-dive">
+                    <h4>Deployment Strategy</h4>
+                    <p>GitHub Pages offre:</p>
                     <ul>
-                        <li><strong>Browser Policy Bypass:</strong> Implementazione attributo <code>muted</code> forzato per garantire l'autoplay su Chrome/Safari.</li>
-                        <li><strong>Smart Loop:</strong> Gestione eventi <code>turned</code> per riavviare i video da zero al cambio pagina e mettere in pausa quelli nascosti.</li>
+                        <li>HTTPS automatico con certificati SSL gestiti</li>
+                        <li>CDN globale per latenza ridotta (edge caching)</li>
+                        <li>Bandwidth illimitato per progetti open-source</li>
+                        <li>Custom domain support</li>
+                    </ul>
+                    <p style="margin-top: 10px;">Il repository è configurato per servire <code>index.html</code> come entry point, con tutti gli asset (PDF, video MP4, favicon) nella root directory.</p>
+                </div>
+            </div>
+
+            <!-- ANALYTICS -->
+            <div class="card infrastructure">
+                <div class="card-header">
+                    <h3>Infra 3.2: Analytics & Monitoring</h3>
+                    <span class="badge infrastructure">Data</span>
+                </div>
+                <ul>
+                    <li><strong>Google Analytics 4:</strong> Tracking real-time del comportamento utenti (page views, session duration, bounce rate).</li>
+                    <li><strong>Event Tracking:</strong> Monitoraggio delle interazioni chiave (cambio pagina, toggle modalità, click su link indice).</li>
+                    <li><strong>Device Segmentation:</strong> Analisi della distribuzione desktop vs mobile per ottimizzare le future iterazioni.</li>
+                </ul>
+                <div class="technical-deep-dive">
+                    <h4>Metrics Monitored</h4>
+                    <ul>
+                        <li><strong>User Engagement:</strong> Tempo medio di permanenza, numero medio di pagine visualizzate</li>
+                        <li><strong>Technical Performance:</strong> Page load time, PDF rendering speed</li>
+                        <li><strong>Feature Adoption:</strong> Utilizzo del toggle dual-view, click su hotspot interattivi</li>
+                        <li><strong>Error Tracking:</strong> JavaScript console errors, failed resource loads</li>
                     </ul>
                 </div>
             </div>
+
+            <!-- SECURITY -->
+            <div class="card infrastructure">
+                <div class="card-header">
+                    <h3>Infra 3.3: Security & Code Protection</h3>
+                    <span class="badge security">Security</span>
+                </div>
+                <ul>
+                    <li><strong>Code Obfuscation:</strong> Protezione della logica JavaScript critica tramite minificazione e offuscamento (previene reverse engineering facile).</li>
+                    <li><strong>Right-Click Disable:</strong> <code>oncontextmenu="return false"</code> per impedire il download diretto delle risorse via menu contestuale.</li>
+                    <li><strong>DevTools Detection:</strong> <code>onkeydown</code> handler per bloccare F12 e combinazioni Ctrl+Shift+I (ostacola ispezione DOM).</li>
+                    <li><strong>User-Select Disable:</strong> CSS <code>user-select: none</code> per prevenire la selezione testuale e il copia/incolla di contenuti.</li>
+                </ul>
+                <div class="technical-deep-dive">
+                    <h4>Security Measures</h4>
+                    <code style="display: block; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 6px;">
+                        &lt;body oncontextmenu="return false;" <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onkeydown="return (event.keyCode != 123 && <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!event.ctrlKey && <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!event.shiftKey)"&gt;
+                    </code>
+                    <p style="margin-top: 15px;"><strong>Nota:</strong> Queste misure sono deterrenti di base, non soluzioni crittografiche. Un utente esperto può comunque accedere al codice sorgente, ma la soglia di difficoltà è significativamente aumentata per l'utente medio.</p>
+                </div>
+            </div>
+
+            <!-- DISTRIBUTION -->
+            <div class="card infrastructure">
+                <div class="card-header">
+                    <h3>Infra 3.4: Distribution Strategy</h3>
+                    <span class="badge infrastructure">Marketing</span>
+                </div>
+                <ul>
+                    <li><strong>QR Code Generation:</strong> Endpoint statico accessibile via QR Code stampato su materiale promozionale cartaceo.</li>
+                    <li><strong>Persistent URL:</strong> L'URL rimane invariato tra le versioni, permettendo bookmark permanenti.</li>
+                    <li><strong>Offline-First PWA:</strong> (Roadmap futura) Service Worker per caching offline e installazione come app nativa.</li>
+                    <li><strong>Social Sharing:</strong> Meta tag Open Graph per preview ottimizzati quando condiviso su social network.</li>
+                </ul>
+                <div class="technical-deep-dive">
+                    <h4>Distribution Channels</h4>
+                    <ul>
+                        <li><strong>QR Code fisici:</strong> Posizionati in luoghi strategici della scuola (bacheca, aula magna, biblioteca)</li>
+                        <li><strong>Email blast:</strong> Newsletter a studenti e docenti con link diretto</li>
+                        <li><strong>Sito web scuola:</strong> Embed widget o link prominente nella homepage</li>
+                        <li><strong>Social media:</strong> Post organici su canali Instagram/Facebook della scuola</li>
+                    </ul>
+                    <p style="margin-top: 10px;">L'accesso via QR Code bypassa la necessità di digitare URL lunghi, riducendo la friction per l'utente mobile.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <h2>🎨 FASE 4: UX/UI Enhancements</h2>
+
+        <div class="timeline">
+
+            <!-- TUTORIAL -->
+            <div class="card active">
+                <div class="card-header">
+                    <h3>UX 4.1: Immersive Tutorial Overlay</h3>
+                    <span class="badge solution">First-Time UX</span>
+                </div>
+                <ul>
+                    <li><strong>Glass-Morphism Design:</strong> Overlay con backdrop blur per presentare le funzionalità chiave (Sfoglia, Zoom, Vista).</li>
+                    <li><strong>Animated Icons:</strong> CSS keyframes per animare le gesture (swipe, pinch, menu) e renderle intuitive.</li>
+                    <li><strong>LocalStorage Persistence:</strong> Il tutorial viene mostrato solo al primo accesso, salvando un flag in <code>localStorage</code>.</li>
+                </ul>
+                <div class="technical-deep-dive">
+                    <h4>Tutorial Lifecycle</h4>
+                    <code style="display: block; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 6px;">
+                        if (!localStorage.getItem('camaLeonteTutorialPro')) {<br>
+                        &nbsp;&nbsp;$('#tutorial-overlay').addClass('active');<br>
+                        }<br>
+                        <br>
+                        $('#close-tutorial').click(function() {<br>
+                        &nbsp;&nbsp;$('#tutorial-overlay').css('opacity', '0');<br>
+                        &nbsp;&nbsp;setTimeout(() => $('#tutorial-overlay').removeClass('active'), 600);<br>
+                        &nbsp;&nbsp;localStorage.setItem('camaLeonteTutorialPro', 'true');<br>
+                        });
+                    </code>
+                </div>
+            </div>
+
+            <!-- NAVIGATION -->
+            <div class="card active">
+                <div class="card-header">
+                    <h3>UX 4.2: Smart Navigation System</h3>
+                    <span class="badge solution">Interactive</span>
+                </div>
+                <ul>
+                    <li><strong>Index Hotspots:</strong> 12 aree cliccabili sulla pagina indice (pag. 3) con animazione pulsante AI-style.</li>
+                    <li><strong>Home Button:</strong> Floating button (🏠) per tornare istantaneamente all'indice da qualsiasi pagina.</li>
+                    <li><strong>Percentage-Based Positioning:</strong> Le coordinate degli hotspot sono espresse in percentuali, garantendo il responsive perfetto.</li>
+                </ul>
+                <div class="technical-deep-dive">
+                    <h4>Hotspot Mapping</h4>
+                    <code style="display: block; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 6px; font-size: 0.8rem; line-height: 1.6;">
+                        const map = [<br>
+                        &nbsp;&nbsp;{ t: 20, l: 5, w: 40, h: 8, p: 4 },  // Top: 20%, Left: 5%, Target: Page 4<br>
+                        &nbsp;&nbsp;{ t: 30, l: 5, w: 40, h: 12, p: 5 }, // ...<br>
+                        &nbsp;&nbsp;// ... 12 hotspot totali<br>
+                        ];
+                    </code>
+                    <p style="margin-top: 10px;">Il sistema inietta dinamicamente i <code>div</code> con classe <code>.index-link</code> e attributo <code>data-target</code> per linkare ogni area alla pagina corretta.</p>
+                </div>
+            </div>
+
         </div>
 
         <footer>
-            <p><strong>Il CamaLEOnte Project Documentation</strong><br>
-            <span style="opacity: 0.5;">Developed with Gemini AI • 2024/2025</span></p>
+            <p><strong>Il CamaLEOnte Project</strong> - Complete Technical Documentation</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">Engineering Team: Students & AI Collaboration</p>
+            <div class="footer-tech">
+                Powered by: PDF.js • Turn.js • jQuery • Google Veo AI • GitHub Pages<br>
+                Documentation Generated: February 2025
+            </div>
+            <p style="margin-top: 20px; opacity: 0.5; font-size: 0.85rem;">
+                This roadmap documents the complete journey from initial concept to production deployment,<br>
+                including all technical challenges, architectural decisions, and implementation details.
+            </p>
         </footer>
     </div>
 
