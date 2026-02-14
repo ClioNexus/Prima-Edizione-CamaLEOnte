@@ -4,28 +4,28 @@
     <meta charset="UTF-8">
     <title>Documentazione Tecnica - Il CamaLEOnte</title>
     <style>
-        body { font-family: sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 40px auto; padding: 20px; background: #f4f7f6; }
-        .container { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
-        h2 { color: #2980b9; margin-top: 30px; }
-        code { background: #eee; padding: 2px 5px; border-radius: 4px; font-family: monospace; }
-        .alert { background: #fff3cd; border-left: 5px solid #ffc107; padding: 15px; margin: 20px 0; }
-        .cmd { background: #2d3436; color: #dfe6e9; padding: 15px; border-radius: 5px; overflow-x: auto; display: block; white-space: pre; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 40px auto; padding: 20px; background: #f4f7f6; }
+        .container { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { color: #1a365d; border-bottom: 3px solid #3498db; padding-bottom: 15px; text-align: center; }
+        h2 { color: #2c5282; margin-top: 35px; border-left: 5px solid #3498db; padding-left: 15px; background: #f8fafc; padding-top: 5px; padding-bottom: 5px; }
+        code { background: #edf2f7; padding: 3px 6px; border-radius: 4px; font-family: 'Consolas', monospace; color: #e53e3e; font-size: 0.95em; }
+        .alert { background: #fffaf0; border-left: 5px solid #ed8936; padding: 20px; margin: 25px 0; border-radius: 4px; }
+        .cmd { background: #1a202c; color: #e2e8f0; padding: 20px; border-radius: 8px; overflow-x: auto; display: block; white-space: pre; font-family: 'Consolas', monospace; margin: 15px 0; }
         
         /* Stili per le immagini di riferimento */
         .img-container {
             text-align: center;
-            margin: 20px 0;
-            background: #f8f9fa;
+            margin: 25px 0;
+            background: #ffffff;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 10px;
             border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         .img-container img {
             max-width: 100%;
             height: auto;
-            border-radius: 4px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 6px;
             display: block;
             margin: 0 auto 10px auto;
         }
@@ -34,58 +34,80 @@
             font-style: italic;
             color: #4a5568;
         }
+
+        .tech-box {
+            background: #ebf8ff;
+            border: 1px solid #bee3f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .tech-box strong { color: #2b6cb0; }
+        
+        ul li { margin-bottom: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Manuale d'Uso - Il CamaLEOnte</h1>
-        <p>Questa documentazione riassume le caratteristiche tecniche del progetto e le procedure per l'aggiornamento.</p>
+        <h1>📖 Manuale Operativo - Il CamaLEOnte</h1>
+        <p>Questa documentazione riassume le caratteristiche tecniche, le procedure di aggiornamento e gli standard di qualità per la rivista digitale.</p>
 
         <h2>1. Funzioni Implementate</h2>
         <ul>
-            <li><strong>Sfoglio Turn.js:</strong> Simulazione realistica del passaggio di pagina.</li>
-            <li><strong>Indice Interattivo:</strong> Hotspot cliccabili a pagina 3 per navigazione rapida.</li>
-            <li><strong>Video Autoplay (Pag 23):</strong> Il video parte automaticamente al raggiungimento della pagina e si interrompe al cambio.</li>
-            <li><strong>Google Analytics:</strong> Monitoraggio visualizzazioni attivo.</li>
+            <li><strong>Sfoglio Turn.js:</strong> Animazione fluida delle pagine per un'esperienza realistica.</li>
+            <li><strong>Indice Interattivo:</strong> Area cliccabile a pagina 3 per il salto diretto alle sezioni.</li>
+            <li><strong>Video Autoplay (Pag 23):</strong> Avvio automatico intelligente. Il video riparte da zero ogni volta che si entra nella pagina e si mette in pausa quando si esce.</li>
+            <li><strong>Google Analytics 4:</strong> Monitoraggio degli utenti attivi e del comportamento di lettura integrato.</li>
         </ul>
 
-        <h2>2. Monitoraggio e Performance</h2>
-        <p>In questa sezione vengono riportati i riferimenti visivi per il controllo dell'andamento della rivista.</p>
+        <h2>2. Ottimizzazione e Qualità Immagini</h2>
+        <p>Per garantire che la rivista sia nitida su ogni dispositivo, è fondamentale seguire questi parametri durante la conversione da PDF a PNG:</p>
+        
+        <div class="tech-box">
+            <ul>
+                <li><strong>Risoluzione (DPI):</strong> Impostare almeno <strong>300 DPI</strong>. Valori standard (72 o 150) rendono i testi sgranati.</li>
+                <li><strong>Larghezza minima:</strong> Almeno <strong>2000px</strong> per pagina.</li>
+                <li><strong>Effetto Retina:</strong> Caricando immagini a risoluzione doppia rispetto alla visualizzazione (960px), il browser le rimpicciolisce rendendo il testo estremamente nitido.</li>
+            </ul>
+        </div>
+
+        <div class="alert">
+            <strong>PROCEDURA DI CORREZIONE:</strong> Riconverti il PDF a 300 DPI, rinomina i file da <code>1.png</code> a <code>24.png</code>, sovrascrivili nella cartella locale e procedi con il comando <code>git push</code>.
+        </div>
+
+        <h2>3. Monitoraggio e Performance</h2>
+        <p>Riferimenti visivi per controllare l'andamento della rivista tramite i pannelli di controllo.</p>
         
         <div class="img-container">
-            <!-- Sostituisci src con il nome del tuo screenshot rinominato -->
             <img src="stats_analytics.png" alt="Dati Google Analytics">
-            <div class="image-caption">Esempio di monitoraggio degli utenti attivi nel pannello "In tempo reale".</div>
+            <div class="image-caption">Monitoraggio degli utenti attivi nel pannello "In tempo reale" di Analytics.</div>
         </div>
 
         <div class="img-container">
             <img src="traffico_sito.png" alt="Grafici di traffico">
-            <div class="image-caption">Analisi delle sorgenti di traffico e sessioni degli utenti.</div>
+            <div class="image-caption">Analisi delle sorgenti di traffico e della durata delle sessioni.</div>
         </div>
 
         <div class="img-container">
             <img src="github_deploy.png" alt="Stato Deployment GitHub">
-            <div class="image-caption">Verifica dello stato di pubblicazione online del repository.</div>
+            <div class="image-caption">Stato della pubblicazione online su GitHub Pages.</div>
         </div>
 
-        <h2>3. Come Aggiornare il Sito</h2>
-        <p>Ogni volta che aggiungi un'immagine (come quella delle statistiche) o modifichi il codice, devi caricare i file su GitHub:</p>
+        <h2>4. Come Aggiornare il Sito</h2>
+        <p>Esegui questi comandi nel terminale di VS Code ogni volta che modifichi il codice o aggiungi nuove immagini (es. dopo la conversione a 300 DPI):</p>
         <code class="cmd">
 git add .
-git commit -m "Aggiunti screenshot statistiche"
+git commit -m "Aggiornata risoluzione immagini e documentazione"
 git push origin main
         </code>
 
-        <div class="alert">
-            <strong>NOTA SULLE IMMAGINI:</strong> Assicurati che i file immagine siano nella stessa cartella di questo file HTML prima di fare il push.
-        </div>
-
-        <h2>4. Struttura dei File</h2>
+        <h2>5. Struttura dei File</h2>
         <ul>
-            <li><code>index.html</code>: Motore principale.</li>
-            <li><code>stats_analytics.png</code>: Screenshot delle statistiche.</li>
-            <li><code>[1-24].png</code>: Pagine del giornale.</li>
-            <li><code>favicon.png</code>: Icona del sito.</li>
+            <li><code>index.html</code>: Il file sorgente principale del progetto.</li>
+            <li><code>[1-24].png</code>: Le pagine PNG del giornalino (Ottimizzate a 300 DPI).</li>
+            <li><code>23.mp4</code>: Il file video per la pagina 23.</li>
+            <li><code>favicon.png</code>: L'icona visualizzata nella scheda del browser.</li>
+            <li><code>stats_analytics.png</code>: Screenshot di riferimento per la documentazione.</li>
         </ul>
     </div>
 </body>
