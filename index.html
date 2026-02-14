@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it" oncontextmenu="return false;">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
@@ -26,10 +26,12 @@
         #flipbook.visible { opacity: 1; }
         .page { background-color: white; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.5); overflow: hidden; }
         
-        /* LAYERS */
+        /* LAYERS (Architettura Sicura) */
         .layer-pdf { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
         .layer-interactive { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
+        /* I link devono essere cliccabili */
         .layer-interactive * { pointer-events: auto; }
+
         .pdf-canvas { width: 100%; height: 100%; display: block; }
         .magazine-video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 5; background: #000; }
 
@@ -55,10 +57,10 @@
         .index-link { position: absolute; cursor: pointer; border-radius: 8px; animation: aiPulse 3s infinite ease-in-out; }
         .index-link:hover { animation: none; background: rgba(209, 250, 229, 0.5); border: 2px solid #10b981; box-shadow: 0 0 25px #10b981; transform: scale(1.02); }
 
-        /* --- TUTORIAL OVERLAY (NUOVO) --- */
+        /* --- TUTORIAL OVERLAY --- */
         #tutorial-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: 10000; /* Sopra tutto */
+            background: rgba(0,0,0,0.85); z-index: 10000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             color: white; text-align: center; backdrop-filter: blur(5px);
             opacity: 0; pointer-events: none; transition: opacity 0.5s;
@@ -83,7 +85,8 @@
 
     </style>
 </head>
-<body>
+
+<body oncontextmenu="return false;" onkeydown="return (event.keyCode != 123 && !event.ctrlKey && !event.shiftKey)">
 
     <div id="mode-btn" class="action-btn" title="Cambia Vista">📖</div>
     <div id="home-btn" class="action-btn" title="Torna all'Indice">🏠</div>
@@ -111,7 +114,7 @@
             let isMobile = window.innerWidth < 768;
             let isSingleMode = isMobile; 
             const totalPages = 24; 
-            const pageRatio = 0.7058; 
+            const pageRatio = 0.7058; // Rapporto Pagina A4
 
             const map = [
                 { t: 20, l: 5,  w: 40, h: 8, p: 4 },  { t: 30, l: 5,  w: 40, h: 12, p: 5 }, 
@@ -122,6 +125,7 @@
                 { t: 70, l: 50, w: 40, h: 10, p: 21 },{ t: 82, l: 50, w: 40, h: 8, p: 22 }
             ];
 
+            // RENDER PDF SICURO (Nel layer-pdf)
             async function renderPage(pageNum, container) {
                 try {
                     const url = pageNum + '.pdf';
@@ -134,8 +138,10 @@
                     canvas.className = 'pdf-canvas';
                     canvas.height = viewport.height;
                     canvas.width = viewport.width;
+                    
                     container.innerHTML = ''; 
                     container.appendChild(canvas);
+                    
                     await page.render({ canvasContext: context, viewport: viewport }).promise;
                 } catch (e) { console.error(e); }
             }
@@ -146,22 +152,21 @@
                 const modeBtn = $('#mode-btn');
 
                 // --- GESTIONE TUTORIAL ---
-                // Controlla se l'utente l'ha già visto
                 if (!localStorage.getItem('camaLeonteTutorialV1')) {
                     $('#tutorial-overlay').addClass('active');
                 }
 
                 $('#close-tutorial').click(function() {
                     $('#tutorial-overlay').removeClass('active');
-                    // Salva nella memoria del browser che l'utente ha visto il tutorial
                     localStorage.setItem('camaLeonteTutorialV1', 'true');
                 });
 
-                // CREAZIONE PAGINE
+                // CREAZIONE PAGINE CON LAYERS
                 for (let i = 1; i <= totalPages; i++) {
                     const pg = $('<div class="page"></div>');
                     const pdfLayer = $('<div class="layer-pdf"></div>');
                     const interactiveLayer = $('<div class="layer-interactive"></div>');
+                    
                     pg.append(pdfLayer).append(interactiveLayer);
 
                     if (i === 23) {
@@ -181,6 +186,7 @@
                     fb.append(pg);
                 }
 
+                // MOTORE DI LAYOUT MATEMATICO
                 function updateLayout() {
                     modeBtn.text(isSingleMode ? '📄' : '📖');
                     const availW = $(window).width() * 0.95; 
@@ -188,6 +194,7 @@
                     let targetW, targetH;
 
                     if (isSingleMode) {
+                        // Calcolo Singola Pagina
                         if (availW / availH > pageRatio) {
                             targetH = availH; targetW = targetH * pageRatio;
                         } else {
@@ -196,6 +203,7 @@
                         fb.turn('display', 'single');
                         fb.turn('size', targetW, targetH);
                     } else {
+                        // Calcolo Doppia Pagina
                         const doubleRatio = pageRatio * 2; 
                         if (availW / availH > doubleRatio) {
                             targetH = availH; targetW = targetH * doubleRatio;
@@ -205,15 +213,18 @@
                         fb.turn('display', 'double');
                         fb.turn('size', targetW, targetH);
                     }
+                    // Applica dimensioni al contenitore per centrare
                     fb.css({ width: targetW, height: targetH });
                 }
 
+                // AVVIO TURN.JS
                 fb.turn({
-                    width: 1000, height: 600,
+                    width: 1000, height: 600, // Valori dummy, vengono sovrascritti subito
                     elevation: 50, duration: 1000, gradients: true, autoCenter: true,
                     display: isSingleMode ? 'single' : 'double'
                 });
 
+                // EVENTI
                 $(window).resize(function() {
                     clearTimeout(window.resizedFinished);
                     window.resizedFinished = setTimeout(updateLayout, 100);
@@ -230,6 +241,7 @@
                     fb.turn('page', $(this).attr('data-target'));
                 });
 
+                // START
                 updateLayout();
                 setTimeout(() => fb.addClass('visible'), 500);
             });
