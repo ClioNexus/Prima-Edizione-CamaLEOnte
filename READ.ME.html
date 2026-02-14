@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>README - Il CamaLEOnte Project</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 40px; background: #f4f4f4; }
+        .container { background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #b30000; border-bottom: 2px solid #b30000; padding-bottom: 10px; }
+        h2 { color: #2c3e50; margin-top: 30px; border-left: 5px solid #b30000; padding-left: 15px; }
+        code { background: #eee; padding: 2px 5px; border-radius: 4px; font-family: 'Courier New', Courier, monospace; }
+        pre { background: #2d2d2d; color: #ccc; padding: 15px; border-radius: 6px; overflow-x: auto; }
+        .badge { display: inline-block; background: #b30000; color: #fff; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px; }
+        .warning { background: #fff3cd; border-left: 5px solid #ffeeba; padding: 15px; margin: 20px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Documentazione "Il CamaLEOnte"</h1>
+    <p class="badge">Versione 1.0 - Febbraio 2026</p>
+    
+    <p>Questo documento riassume lo sviluppo, l'architettura tecnica e le procedure di manutenzione per la rivista digitale interattiva <strong>"Il CamaLEOnte"</strong>.</p>
+
+    <h2>1. Panoramica del Progetto</h2>
+    <p>La rivista è un'applicazione web basata su un motore di sfoglio realistico (Turn.js) che serve contenuti originati da Microsoft Word e convertiti in alta risoluzione.</p>
+    <ul>
+        <li><strong>Numero Pagine:</strong> 24.</li>
+        <li><strong>Articoli Inclusi:</strong> Prefazione "Dentro la Selva Oscura", Olimpiadi 2026, Cinema & Mafia, Esperienza TV, Intervista Casati.</li>
+    </ul>
+
+    <h2>2. Stack Tecnologico</h2>
+    <table>
+        <tr>
+            <th>Componente</th>
+            <th>Tecnologia/File</th>
+        </tr>
+        <tr>
+            <td>Linguaggi</td>
+            <td>HTML5, CSS3, JavaScript (ES6+)</td>
+        </tr>
+        <tr>
+            <td>Motore Sfoglio</td>
+            <td>Turn.js (versione 4.1.0)</td>
+        </tr>
+        <tr>
+            <td>Libreria Base</td>
+            <td>jQuery (versione 3.6.0)</td>
+        </tr>
+        <tr>
+            <td>Hosting</td>
+            <td>GitHub Pages</td>
+        </tr>
+    </table>
+
+    <h2>3. Caratteristiche Implementate</h2>
+    <h3>A. Interattività</h3>
+    <ul>
+        <li><strong>Indice Dinamico (Pagina 3):</strong> 12 Hotspot invisibili che reindirizzano alle rispettive sezioni della rivista.</li>
+        <li><strong>Chiusura "Chameleon" (Pagina 23):</strong> Un layer di testo pulsante con effetto arcobaleno che, se cliccato, riporta l'utente all'indice.</li>
+        <li><strong>Zoom Engine:</strong> Sistema di ridimensionamento fluido che mantiene la proporzione 960x680px su qualsiasi dispositivo.</li>
+    </ul>
+
+    <h3>B. Sicurezza & Anti-Copia</h3>
+    <div class="warning">
+        <strong>Nota:</strong> Le protezioni sono integrate nell'<code>index.html</code> per proteggere il copyright degli autori.
+    </div>
+    <ul>
+        <li><strong>Blocco Sorgente:</strong> Disabilitazione del tasto destro, F12, Ctrl+U e Ctrl+S.</li>
+        <li><strong>Debugger Trap:</strong> Un loop infinito che blocca l'ispezione degli elementi se la console sviluppatore viene aperta.</li>
+        <li><strong>Image Protection:</strong> Inibizione del trascinamento (drag & drop) delle immagini PNG.</li>
+    </ul>
+
+    <h2>4. Manutenzione e Aggiornamento</h2>
+    <h3>Pipeline di Lavoro</h3>
+    <ol>
+        <li>Creare o modificare l'articolo in <strong>Microsoft Word</strong>.</li>
+        <li>Esportare in <strong>PDF</strong>.</li>
+        <li>Convertire PDF in <strong>PNG</strong> a 300 DPI (Risoluzione consigliata: 1920x1360px) per garantire nitidezza.</li>
+        <li>Rinominare il file seguendo la numerazione (es. <code>5.png</code>) e caricarlo nella cartella principale.</li>
+    </ol>
+
+    <h3>Modifica dei Link (Hotspots)</h3>
+    <p>Per aggiungere un nuovo link, aggiornare l'array <code>map</code> nello script di <code>index.html</code>:</p>
+    <pre>
+{ 
+  t: 20, // Distanza dal top in %
+  l: 5,  // Distanza da left in %
+  w: 40, // Larghezza in %
+  h: 8,  // Altezza in %
+  p: 4   // Pagina di destinazione
+}</pre>
+
+    <h2>5. Risoluzione Problemi</h2>
+    <ul>
+        <li><strong>I link non funzionano:</strong> Verificare che la delegazione degli eventi (<code>$(document).on('click', ...)</code>) sia attiva nello script per evitare la perdita dei listener durante lo sfoglio.</li>
+        <li><strong>Immagini sgranate:</strong> Assicurarsi che i PNG siano stati generati a 300 DPI.</li>
+        <li><strong>Sfoglio lento:</strong> Verificare che i file PNG non superino i 2MB l'uno per ottimizzare il caricamento su GitHub Pages.</li>
+    </ul>
+
+    <hr>
+    <footer style="text-align: center; font-size: 0.9em; color: #777;">
+        Progetto sviluppato per la Redazione "Il CamaLEOnte" &copy; 2026
+    </footer>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="it" oncontextmenu="return false;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Il CamaLEOnte - Magazine Ufficiale</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    <script src="jquery.min.js"></script>
+    <script src="turn.min.js"></script>
+
+    <style>
+        /* PROTEZIONI E RESET */
+        * { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-touch-callout: none; }
+        body { background-color: #121212; margin: 0; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; font-family: 'Montserrat', sans-serif; }
+        img { pointer-events: none; -webkit-user-drag: none; display: block; }
+
+        #zoom-wrapper { width: 960px; height: 680px; transition: transform 0.1s linear; }
+        #flipbook { width: 960px; height: 680px; opacity: 0; transition: opacity 1.2s; visibility: visible; }
+        #flipbook.visible { opacity: 1; }
+
+        .page { background-color: white; position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.8); }
+        .page-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: 100% 100%; z-index: 1; }
+
+        /* Stile Video */
+        .magazine-video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; /* Riempie la pagina */
+            position: absolute; 
+            top: 0; left: 0; 
+            z-index: 10;
+            background: #000;
+        }
+
+        /* HOTSPOTS INDICE (Pagina 3) */
+        .index-link { position: absolute; cursor: pointer; z-index: 1000; background: rgba(255,255,255,0.01); }
+        
+        /* Tasto Home discreto sopra il video (opzionale, per tornare all'indice) */
+        .video-home-btn {
+            position: absolute; top: 10px; right: 10px; z-index: 20;
+            width: 30px; height: 30px; border-radius: 50%;
+            background: rgba(255,255,255,0.2); color: white;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; font-size: 14px;
+        }
+        .video-home-btn:hover { background: rgba(255,255,255,0.8); color: black; }
+
+        /* Rilegatura */
+        .page::after { content: ""; position: absolute; top: 0; width: 50px; height: 100%; z-index: 5; pointer-events: none; }
+        .page:nth-child(even)::after { right: 0; background: linear-gradient(to left, rgba(0,0,0,0.15), transparent); }
+        .page:nth-child(odd)::after { left: 0; background: linear-gradient(to right, rgba(0,0,0,0.15), transparent); }
+    </style>
+</head>
+<body onkeydown="return (event.keyCode != 123 && !event.ctrlKey && !event.shiftKey)">
+
+    <div id="zoom-wrapper">
+        <div id="flipbook"></div>
+    </div>
+
+    <script>
+        (function() {
+            const totalPages = 24; 
+            
+            // Mappatura Indice (Pagina 3)
+            const map = [
+                { t: 20, l: 5,  w: 40, h: 8, p: 4 },  { t: 30, l: 5,  w: 40, h: 12, p: 5 }, 
+                { t: 45, l: 5,  w: 40, h: 8, p: 6 },  { t: 58, l: 5,  w: 40, h: 8, p: 8 },  
+                { t: 70, l: 5,  w: 40, h: 8, p: 10 }, { t: 82, l: 5,  w: 40, h: 8, p: 11 }, 
+                { t: 20, l: 50, w: 40, h: 8, p: 12 }, { t: 30, l: 50, w: 40, h: 8, p: 13 }, 
+                { t: 45, l: 50, w: 40, h: 8, p: 16 }, { t: 58, l: 50, w: 40, h: 8, p: 19 }, 
+                { t: 70, l: 50, w: 40, h: 10, p: 21 },{ t: 82, l: 50, w: 40, h: 8, p: 22 }
+            ];
+
+            $(document).ready(function() {
+                const fb = $('#flipbook');
+
+                // 1. GENERAZIONE PAGINE
+                for (let i = 1; i <= totalPages; i++) {
+                    const pg = $('<div class="page"></div>');
+
+                    // --- LOGICA SPECIALE PER PAGINA 23 (VIDEO) ---
+                    if (i === 23) {
+                        const vid = $(`
+                            <video class="magazine-video" controls>
+                                <source src="23.mp4" type="video/mp4">
+                                Il tuo browser non supporta il video.
+                            </video>
+                            <div class="video-home-btn" data-target="3" title="Torna all'Indice">🏠</div>
+                        `);
+                        pg.append(vid);
+                    } 
+                    // --- TUTTE LE ALTRE PAGINE (IMMAGINI PNG) ---
+                    else {
+                        const bg = $(`<div class="page-bg" style="background-image: url('${i}.png')"></div>`);
+                        pg.append(bg);
+                    }
+
+                    // Pagina 3: Link Indice
+                    if (i === 3) {
+                        map.forEach(l => {
+                            const link = $('<div class="index-link"></div>').css({
+                                top: l.t + '%', left: l.l + '%', width: l.w + '%', height: l.h + '%'
+                            }).attr('data-target', l.p);
+                            pg.append(link);
+                        });
+                    }
+
+                    fb.append(pg);
+                }
+
+                // 2. EVENT DELEGATION
+                $(document).on('click', '.index-link, .video-home-btn', function(e) {
+                    e.preventDefault();
+                    const targetPage = $(this).attr('data-target');
+                    if (targetPage) {
+                        fb.turn('page', targetPage);
+                    }
+                });
+
+                // 3. INIT TURN.JS
+                fb.turn({ width: 960, height: 680, autoCenter: true, duration: 1000, acceleration: true });
+
+                // 4. ZOOM ENGINE
+                function resize() {
+                    const s = Math.min($(window).width() / 960, $(window).height() / 680) * 0.95;
+                    $('#zoom-wrapper').css('transform', `scale(${s})`);
+                }
+                $(window).resize(resize); resize();
+                setTimeout(() => fb.addClass('visible'), 300);
+
+                // 5. ANTI-DEBUG
+                setInterval(function() { (function() { return false; }).constructor("debugger")(); }, 200);
+            });
+        })();
+    </script>
+</body>
+</html>
