@@ -13,20 +13,25 @@
         .cmd { background: #2d3436; color: #dfe6e9; padding: 15px; border-radius: 5px; overflow-x: auto; display: block; white-space: pre; }
         
         /* Stili per le immagini di riferimento */
-        .image-placeholder {
-            background: #f8f9fa;
-            border: 2px dashed #cbd5e0;
-            border-radius: 8px;
-            padding: 40px;
+        .img-container {
             text-align: center;
             margin: 20px 0;
-            color: #718096;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: block;
+            margin: 0 auto 10px auto;
         }
         .image-caption {
             font-size: 0.9em;
             font-style: italic;
-            text-align: center;
-            margin-bottom: 30px;
             color: #4a5568;
         }
     </style>
@@ -40,56 +45,47 @@
         <ul>
             <li><strong>Sfoglio Turn.js:</strong> Simulazione realistica del passaggio di pagina.</li>
             <li><strong>Indice Interattivo:</strong> Hotspot cliccabili a pagina 3 per navigazione rapida.</li>
-            <li><strong>Video Autoplay (Pag 23):</strong> Il video parte automaticamente al raggiungimento della pagina e si interrompe al cambio, senza barre di controllo browser.</li>
-            <li><strong>Google Analytics:</strong> Monitoraggio visualizzazioni tramite ID inserito nelle righe 13 e 19.</li>
-            <li><strong>Favicon:</strong> Icona personalizzata caricata tramite il file <code>favicon.png</code>.</li>
+            <li><strong>Video Autoplay (Pag 23):</strong> Il video parte automaticamente al raggiungimento della pagina e si interrompe al cambio.</li>
+            <li><strong>Google Analytics:</strong> Monitoraggio visualizzazioni attivo.</li>
         </ul>
 
         <h2>2. Monitoraggio e Performance</h2>
-        <p>In questa sezione vengono riportati i riferimenti visivi per il controllo dell'andamento della rivista tramite la console di Google.</p>
+        <p>In questa sezione vengono riportati i riferimenti visivi per il controllo dell'andamento della rivista.</p>
         
-        <div class="image-placeholder">
-            [Immagine dell'interfaccia di Google Analytics 4 con i dati in tempo reale]
+        <div class="img-container">
+            <!-- Sostituisci src con il nome del tuo screenshot rinominato -->
+            <img src="stats_analytics.png" alt="Dati Google Analytics">
+            <div class="image-caption">Esempio di monitoraggio degli utenti attivi nel pannello "In tempo reale".</div>
         </div>
-        <div class="image-caption">Esempio di monitoraggio degli utenti attivi nel pannello "In tempo reale".</div>
 
-        <div class="image-placeholder">
-            [Immagine dei grafici di acquisizione del traffico e sessioni degli utenti]
+        <div class="img-container">
+            <img src="traffico_sito.png" alt="Grafici di traffico">
+            <div class="image-caption">Analisi delle sorgenti di traffico e sessioni degli utenti.</div>
         </div>
-        <div class="image-caption">Analisi delle sorgenti di traffico (da dove arrivano i lettori).</div>
 
-        <div class="image-placeholder">
-            [Immagine della console di GitHub Pages che conferma lo stato del deployment]
+        <div class="img-container">
+            <img src="github_deploy.png" alt="Stato Deployment GitHub">
+            <div class="image-caption">Verifica dello stato di pubblicazione online del repository.</div>
         </div>
-        <div class="image-caption">Verifica dello stato di pubblicazione online del repository.</div>
 
         <h2>3. Come Aggiornare il Sito</h2>
-        <p>Dopo ogni modifica ai file locali, esegui questi comandi nel terminale di VS Code:</p>
+        <p>Ogni volta che aggiungi un'immagine (come quella delle statistiche) o modifichi il codice, devi caricare i file su GitHub:</p>
         <code class="cmd">
 git add .
-git commit -m "Descrizione della modifica"
+git commit -m "Aggiunti screenshot statistiche"
 git push origin main
         </code>
 
         <div class="alert">
-            <strong>ATTENZIONE:</strong> Dopo il push, il sito live potrebbe impiegare 2-3 minuti per aggiornarsi. Se non vedi le modifiche, premi <code>CTRL + F5</code> nel browser.
+            <strong>NOTA SULLE IMMAGINI:</strong> Assicurati che i file immagine siano nella stessa cartella di questo file HTML prima di fare il push.
         </div>
 
         <h2>4. Struttura dei File</h2>
         <ul>
-            <li><code>index.html</code>: Il motore principale del sito.</li>
-            <li><code>jquery.min.js</code> & <code>turn.min.js</code>: Librerie per l'animazione.</li>
-            <li><code>[1-24].png</code>: Le pagine della rivista.</li>
-            <li><code>23.mp4</code>: Il video della pagina 23.</li>
-            <li><code>favicon.png</code>: L'icona del browser.</li>
-        </ul>
-
-        <h2>5. Sicurezza</h2>
-        <p>Il sito è protetto da:</p>
-        <ul>
-            <li>Blocco del tasto destro.</li>
-            <li>Blocco dei tasti di ispezione (F12, Ctrl+Shift+I).</li>
-            <li>Script anti-debugger continuo.</li>
+            <li><code>index.html</code>: Motore principale.</li>
+            <li><code>stats_analytics.png</code>: Screenshot delle statistiche.</li>
+            <li><code>[1-24].png</code>: Pagine del giornale.</li>
+            <li><code>favicon.png</code>: Icona del sito.</li>
         </ul>
     </div>
 </body>
