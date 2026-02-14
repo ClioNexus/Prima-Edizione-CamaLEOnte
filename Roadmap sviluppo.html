@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engineering Roadmap - Il CamaLEOnte</title>
+    <title>Integrated Engineering Roadmap - Project CamaLEOnte</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -28,7 +28,7 @@
             padding: 40px 20px;
         }
 
-        .container { max-width: 960px; margin: 0 auto; }
+        .container { max-width: 1100px; margin: 0 auto; }
 
         header {
             text-align: center;
@@ -48,9 +48,8 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .subtitle { color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto; }
+        .subtitle { color: var(--text-muted); font-size: 1.2rem; max-width: 800px; margin: 0 auto; }
 
-        /* WARNING BOX */
         .warning-box {
             background: rgba(245, 158, 11, 0.1);
             border: 1px solid var(--accent-orange);
@@ -62,7 +61,6 @@
             align-items: flex-start;
             gap: 15px;
         }
-        .warning-icon { font-size: 24px; }
 
         h2 {
             font-size: 1.8rem;
@@ -71,9 +69,10 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
         }
 
-        /* CARDS */
         .timeline { position: relative; padding-left: 20px; border-left: 2px solid var(--border); }
         
         .card {
@@ -96,22 +95,8 @@
             background-color: var(--border);
         }
 
-        .card::after {
-            content: "";
-            position: absolute;
-            left: -41px;
-            top: 26px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: var(--text-muted);
-            border: 2px solid var(--bg-color);
-        }
-
-        .card.active::after { background-color: var(--accent-green); box-shadow: 0 0 10px var(--accent-green); }
-        .card.critical::after { background-color: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); }
-
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .card.critical { border-left: 4px solid var(--accent-red); }
+        .card.active { border-left: 4px solid var(--accent-green); }
 
         .badge {
             padding: 4px 10px;
@@ -119,28 +104,10 @@
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .badge.problem { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.3); }
         .badge.solution { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
-        .badge.logic { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); border: 1px solid rgba(139, 92, 246, 0.3); }
-        .badge.ux { background: rgba(245, 158, 11, 0.15); color: var(--accent-orange); border: 1px solid rgba(245, 158, 11, 0.3); }
-
-        h3 { margin: 0; font-size: 1.3rem; color: #fff; }
-
-        ul { margin: 0; padding-left: 20px; color: var(--text-muted); }
-        li { margin-bottom: 10px; }
-        strong { color: var(--text-main); }
-
-        code {
-            font-family: 'Fira Code', monospace;
-            background-color: rgba(0,0,0,0.3);
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: var(--accent-blue);
-            font-size: 0.85em;
-        }
 
         .technical-deep-dive {
             margin-top: 15px;
@@ -150,15 +117,20 @@
             border-left: 3px solid var(--accent-blue);
             font-size: 0.9rem;
         }
-        .technical-deep-dive h4 { margin: 0 0 10px 0; color: var(--accent-blue); font-size: 0.8rem; text-transform: uppercase; }
+        
+        code {
+            font-family: 'Fira Code', monospace;
+            background-color: rgba(0,0,0,0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--accent-blue);
+        }
 
         footer {
             margin-top: 100px;
             text-align: center;
-            font-size: 0.9rem;
-            color: var(--text-muted);
             border-top: 1px solid var(--border);
-            padding-top: 30px;
+            padding: 30px;
         }
     </style>
 </head>
@@ -166,127 +138,107 @@
 
     <div class="container">
         <header>
-            <h1>Project CamaLEOnte</h1>
-            <div class="subtitle">Engineering Log & Technical Retrospective</div>
-            <p style="margin-top: 15px; font-family: 'Fira Code', monospace; color: var(--accent-green);">Status: PRODUCTION READY (v3.1.0)</p>
+            <h1>Project CamaLEOnte: Integrated Roadmap</h1>
+            <div class="subtitle">Fusione di Logiche Ingegneristiche e Strategie di Deployment Editoriale</div>
+            <p style="margin-top: 15px; font-family: 'Fira Code', monospace; color: var(--accent-green);">Status: PRODUCTION READY (v4.0.0-Integrated)</p>
         </header>
 
         <div class="warning-box">
-            <div class="warning-icon">⚠️</div>
-            <div>
-                <strong>Il Paradosso del "Falso Traguardo" (The False Summit)</strong><br>
-                Nella fase finale di collaudo, quando il progetto sembrava completo ("Golden Master"), sono emersi bug critici di interazione legati alla gestione asincrona del DOM e alla matematica vettoriale di visualizzazione. Quella che sembrava la fine era l'inizio della sfida più complessa.
-            </div>
+            <strong>⚠️ Il Paradosso del "Falso Traguardo":</strong> Nella fase finale di collaudo, bug critici di interazione legati alla gestione asincrona del DOM e alla matematica vettoriale hanno ridefinito il perimetro dello sviluppo.
         </div>
 
-        <h2>🔴 1. The Challenge Log (Analisi Ostacoli)</h2>
+        <h2>🔴 1. Log delle Criticità (Analisi Ostacoli)</h2>
         <div class="timeline">
             
             <div class="card">
-                <div class="card-header">
-                    <h3>Fase 1: Raster Quality Limitation</h3>
-                    <span class="badge problem">Legacy Tech</span>
-                </div>
+                <h3>Raster Quality & Legacy Tech Limitation</h3>
+                <span class="badge problem">Format Error</span>
                 <ul>
-                    <li><strong>Il Muro del Pixel:</strong> L'uso iniziale di immagini PNG/JPG rendeva il testo illeggibile allo zoom. L'articolo a pag. 11 era compromesso.</li>
-                    <li><strong>Black Box Content:</strong> Testo non selezionabile, zero accessibilità, impossibilità di indicizzazione.</li>
+                    <li><strong>Il Muro del Pixel:</strong> L'uso di immagini PNG/JPG rendeva il testo illeggibile allo zoom e poco nitido.</li>
+                    <li><strong>Content Access:</strong> Testo non selezionabile, zero accessibilità e impossibilità di inserire link ipertestuali diretti nelle immagini.</li>
+                    <li><strong>Inefficienza di Workflow:</strong> Il tentativo di unire file in Word e convertirli ha generato asset fuori scala o eccessivamente piccoli.</li>
                 </ul>
             </div>
 
             <div class="card">
-                <div class="card-header">
-                    <h3>Fase 2: The Viewport Paradox</h3>
-                    <span class="badge ux">Mobile UX</span>
-                </div>
+                <h3>Security & Browser Policy</h3>
+                <span class="badge problem">Environment</span>
                 <ul>
-                    <li><strong>Geometry Mismatch:</strong> <code>turn.js</code> forza una vista a doppia pagina (ratio 3:2). Su smartphone verticale (ratio 9:16), la rivista diventava una striscia microscopica.</li>
-                    <li><strong>Zoom Lock:</strong> L'impostazione <code>user-scalable=no</code> impediva l'interazione manuale.</li>
+                    <li><strong>CORS Restrictions:</strong> Blocchi di sicurezza del browser impedivano la visualizzazione fluida dei PDF.</li>
+                    <li><strong>Code Vulnerability:</strong> Necessità di mitigare il reverse engineering e la copia non autorizzata degli asset tramite console sviluppatore.</li>
                 </ul>
             </div>
 
             <div class="card critical">
-                <div class="card-header">
-                    <h3>Fase 4: The Race Condition Crash</h3>
-                    <span class="badge logic">Async Bug</span>
-                </div>
+                <h3>The Viewport Paradox & Geometry Mismatch</h3>
+                <span class="badge problem">UX Logic</span>
+                <ul>
+                    <li><strong>Ratio Conflict:</strong> <code>turn.js</code> forzava ratio 3:2 su schermi smartphone 9:16, rendendo la rivista microscopica o fuori margini.</li>
+                    <li><strong>The Phantom Coordinate:</strong> L'uso di <code>transform: scale()</code> CSS creava discrepanze tra coordinate visive e logiche del mouse, bloccando lo sfoglio delle pagine.</li>
+                </ul>
+            </div>
+
+            <div class="card critical">
+                <h3>The Race Condition Crash</h3>
+                <span class="badge problem">Async Conflict</span>
                 <div class="technical-deep-dive">
-                    <h4>Technical Analysis</h4>
-                    <p>Il rendering del PDF è asincrono (lento). La creazione dei div HTML è sincrona (veloce).<br>
-                    <strong>Risultato:</strong> Lo script creava i link interattivi -> Il PDF finiva di caricare -> La funzione di pulizia <code>container.innerHTML = ''</code> cancellava tutto, inclusi i link appena creati.</p>
+                    <p>Il rendering asincrono del PDF (lento) vs la creazione sincrona dei div HTML (veloce) causava la cancellazione dei link interattivi tramite la funzione di pulizia <code>container.innerHTML = ''</code> prima del completamento del caricamento.</p>
                 </div>
             </div>
-
-            <div class="card critical">
-                <div class="card-header">
-                    <h3>Fase 5: The Phantom Coordinate (Zoom Distortion)</h3>
-                    <span class="badge logic">Math Error</span>
-                </div>
-                <ul>
-                    <li><strong>Sintomo:</strong> I bottoni "Doppia Pagina" bloccavano lo sfoglio. Le pagine non giravano più al click sugli angoli.</li>
-                    <li><strong>Causa Radice:</strong> L'uso di <code>transform: scale()</code> CSS per adattare la rivista allo schermo creava una discrepanza tra le coordinate visive e quelle logiche del mouse. <code>turn.js</code> calcolava la posizione del click in base ai pixel reali, ignorando lo zoom CSS.</li>
-                </ul>
-            </div>
-
         </div>
 
-        <h2>🟢 2. The Architecture Solution (Soluzioni)</h2>
-
+        <h2>🟢 2. Soluzioni Architetturali (Implementazione)</h2>
         <div class="timeline">
+
             <div class="card active">
-                <div class="card-header">
-                    <h3>Soluzione 1: Vector Injection (PDF.js)</h3>
-                    <span class="badge solution">Rendering</span>
-                </div>
-                <p>Integrazione di <strong>Mozilla PDF.js</strong> con rendering su Canvas HTML5. Implementazione di <code>scale: 3.0</code> su mobile per garantire nitidezza assoluta (Retina-ready).</p>
+                <h3>Vector Injection & Rendering Engine</h3>
+                <span class="badge solution">Stability</span>
+                <ul>
+                    <li><strong>Mozilla PDF.js:</strong> Sostituzione integrale dei PNG con rendering vettoriale su Canvas HTML5, garantendo nitidezza assoluta.</li>
+                    <li><strong>Automated Indexing:</strong> Scripting per l'indicizzazione automatica delle pagine PDF numerate, eliminando la gestione manuale degli asset.</li>
+                </ul>
             </div>
 
             <div class="card active">
-                <div class="card-header">
-                    <h3>Soluzione 2: Adaptive Logical Engine</h3>
-                    <span class="badge solution">Logic</span>
-                </div>
-                <p>Algoritmo di rilevamento dispositivo:</p>
-                <code>const isMobile = window.innerWidth < 768;</code><br>
-                <code>display: isMobile ? 'single' : 'double'</code>
-            </div>
-
-            <div class="card active">
-                <div class="card-header">
-                    <h3>Soluzione 3: Layered DOM Architecture</h3>
-                    <span class="badge solution">Stability</span>
-                </div>
+                <h3>Layered DOM Architecture</h3>
+                <span class="badge solution">UX Fix</span>
                 <div class="technical-deep-dive">
-                    <h4>Fixing the Race Condition</h4>
-                    <p>Separazione fisica dei livelli per evitare sovrascritture:</p>
-                    <ul>
-                        <li><strong>Layer Z-1 (PDF):</strong> Canvas di sfondo (Dynamic).</li>
-                        <li><strong>Layer Z-10 (UI):</strong> Div trasparenti per i link (Static).</li>
-                    </ul>
-                    <p>I bottoni di navigazione sono stati spostati fuori dal flusso (<code>position: fixed</code>) per garantire accessibilità costante.</p>
+                    <p>Separazione fisica dei livelli: <strong>Layer Z-1</strong> per il PDF (dinamico) e <strong>Layer Z-10</strong> per la UI interattiva (statico) con riquadri illuminati e link cliccabili.</p>
                 </div>
             </div>
 
             <div class="card active">
-                <div class="card-header">
-                    <h3>Soluzione 4: Mathematical Resizing (No-Zoom)</h3>
-                    <span class="badge solution">Core Fix</span>
-                </div>
-                <div class="technical-deep-dive">
-                    <h4>Fixing the Coordinate Distortion</h4>
-                    <p>Rimozione totale di <code>transform: scale()</code>. Implementazione di un calcolo geometrico in tempo reale:</p>
-                    <ul>
-                        <li>Calcolo area disponibile (Viewport - Margini).</li>
-                        <li>Calcolo Aspect Ratio target (A4 vs Double A4).</li>
-                        <li>Applicazione dimensioni fisiche (<code>width/height</code>) all'istanza <code>turn.js</code> invece di scalarla visivamente.</li>
-                    </ul>
-                    <p>Questo garantisce che le coordinate del mouse (<code>event.pageX</code>) coincidano sempre con gli angoli della pagina.</p>
-                </div>
+                <h3>Adaptive Logical Engine & Mathematical Resizing</h3>
+                <span class="badge solution">Core Logic</span>
+                <ul>
+                    <li><strong>Rilevamento Device:</strong> Switch dinamico <code>display: isMobile ? 'single' : 'double'</code> con bottoni Call to Action dedicati.</li>
+                    <li><strong>No-Zoom Strategy:</strong> Rimozione di <code>transform: scale()</code> in favore di un ricalcolo geometrico in tempo reale dell'istanza <code>turn.js</code> basato sul viewport reale.</li>
+                    <li><strong>Integrazione Jmin/jQuery:</strong> Engine pushati direttamente nella repository GitHub per garantire la persistenza della logica di sfogliamento.</li>
+                </ul>
             </div>
+
+            <div class="card active">
+                <h3>Deployment, Analytics & Security</h3>
+                <span class="badge solution">Production</span>
+                <ul>
+                    <li><strong>CI/CD:</strong> Hosting su GitHub Pages con integrazione di Google Analytics per il tracciamento granulare delle visualizzazioni.</li>
+                    <li><strong>Code Protection:</strong> Implementazione di tecniche di offuscamento anti-copia e anti-screenshot.</li>
+                    <li><strong>QR Gateway:</strong> Generazione di un endpoint statico via QR Code per l'accesso stabile e permanente dall'ambiente scolastico.</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>🔵 3. Future Roadmap (Evoluzione)</h2>
+        <div class="card">
+            <ul>
+                <li><strong>Immersive Experience:</strong> Integrazione di video-asset e infografiche animate direttamente nelle pagine PDF.</li>
+                <li><strong>Cross-Browser Optimization:</strong> Validazione estesa delle performance su Firefox e Chrome.</li>
+            </ul>
         </div>
 
         <footer>
-            <p><strong>Il CamaLEOnte Project Documentation</strong><br>
-            <span style="opacity: 0.5;">Developed with Gemini AI • 2024/2025</span></p>
+            <p><strong>Project CamaLEOnte Documentation</strong><br>
+            Developed with Gemini AI • 2025/2026</p>
         </footer>
     </div>
 
