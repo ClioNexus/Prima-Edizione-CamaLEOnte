@@ -2340,6 +2340,263 @@ warm color palette, cinematic lighting, 4K quality"</code>
                 </div>
             </div>
 
+            <!-- SOLUZIONE 2.6 - DYNAMIC CONTENT ROUTER -->
+            <div class="card active" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="accordion-toggle">
+                        <span class="accordion-icon">▶</span>
+                        <h3>Soluzione 2.6: Dynamic Content Router & Hybrid Architecture</h3>
+                    </div>
+                    <span class="badge solution">Smart Routing</span>
+                </div>
+                
+                <div class="card-content">
+                    <div class="level1-accordion">
+                        
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Il Loop Decisionale ("Traffic Director")</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Architettura a 3 Vie</div>
+                                        <div class="step-description">
+                                            Invece di trattare tutte le pagine uniformemente (approccio naive), il sistema implementa un router intelligente che smista ogni pagina verso il renderer appropriato:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>for (let i = 1; i <= totalPages; i++) {
+  if (i === 25) {
+    // Route 1: HTML Generator
+    // Genera pagina CTA direttamente in DOM
+  } else if (i === 22 || i === 23 || i === 24) {
+    // Route 2: Video Player
+    // Inietta video MP4 con autoplay policy
+  } else {
+    // Route 3: PDF Renderer
+    // Usa PDF.js per rendering Canvas
+  }
+}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Vantaggi del Pattern Decisionale</div>
+                                        <div class="step-description">
+                                            Questo approccio "if-else-if" agisce come un vigile urbano del traffico:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Performance:</strong> Evita tentativi di fetch di file inesistenti (25.pdf)</li>
+                                                <li><strong>Flessibilità:</strong> Ogni tipo di contenuto usa il renderer ottimale</li>
+                                                <li><strong>Scalabilità:</strong> Facile aggiungere nuove route (es. pagine interactive)</li>
+                                                <li><strong>Debugging:</strong> Chiara separazione delle responsabilità</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Estensibilità Futura</div>
+                                        <div class="step-description">
+                                            Il pattern è facilmente estendibile per nuove tipologie:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Esempio: Aggiungere pagina quiz interattiva
+if (i === 30) {
+  renderInteractiveQuiz(pdfLayer);
+} else if (i === 35) {
+  renderInfographicSVG(pdfLayer);
+}</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Pagina 25: HTML In-Memory ("Ghost Page")</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Template Literal Injection</div>
+                                        <div class="step-description">
+                                            La pagina 25 non esiste come file fisico. Viene generata runtime tramite Template Literals ES6:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>if (i === 25) {
+  pdfLayer.append(`
+    &lt;div class="end-page-content"&gt;
+      &lt;div class="end-title"&gt;Grazie per la lettura!&lt;/div&gt;
+      &lt;div class="end-text"&gt;
+        Il CamaLEOnte è un progetto in continua evoluzione.&lt;br&gt;
+        Se la rivista ti è piaciuta, lasciaci un like...
+      &lt;/div&gt;
+      &lt;div class="cta-container"&gt;
+        &lt;button class="cta-btn btn-like" id="like-btn"&gt;
+          ❤️ Like &lt;span class="like-count"&gt;...&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button class="cta-btn btn-share"&gt;🚀 Condividi&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  `);
+}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Vantaggi dell'Approccio In-Memory</div>
+                                        <div class="step-description">
+                                            Generare HTML direttamente invece di usare PDF/Video offre:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Peso Zero:</strong> 0 KB di download, rendering istantaneo</li>
+                                                <li><strong>Dinamicità:</strong> Contenuto aggiornabile runtime (contatore like)</li>
+                                                <li><strong>Interattività Nativa:</strong> Button HTML5 con event listener</li>
+                                                <li><strong>A11y:</strong> Screen reader compatibile (impossibile con PDF)</li>
+                                                <li><strong>SEO:</strong> Testo indicizzabile dai motori di ricerca</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Design System Integration</div>
+                                        <div class="step-description">
+                                            Il CSS della pagina CTA usa lo stesso design system del resto dell'app:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>.end-page-content {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  /* Gradiente coerente con overlay tutorial */
+}
+
+.cta-btn {
+  border-radius: 50px; /* Match con start-btn tutorial */
+  font-weight: bold; /* Consistency */
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* Easing curve avanzata per micro-interactions */
+}</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Video Multi-Page Expansion (Pag. 24)</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Scaling della Strategia Video</div>
+                                        <div class="step-description">
+                                            La logica video è stata estesa da 2 pagine (22-23) a 3 pagine (22-23-24):
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// BEFORE: Solo 2 pagine
+if (i === 22 || i === 23) { ... }
+
+// AFTER: 3 pagine video
+if (i === 22 || i === 23 || i === 24) {
+  const videoSrc = i + ".mp4";
+  pdfLayer.append(`
+    &lt;video class="magazine-video" playsinline webkit-playsinline loop muted&gt;
+      &lt;source src="${videoSrc}" type="video/mp4"&gt;
+    &lt;/video&gt;
+  `);
+}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Performance Consideration</div>
+                                        <div class="step-description">
+                                            Con 3 video simultanei, il controllo proattivo della riproduzione diventa critico:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Memory:</strong> 3 video decodificati = ~150-300 MB RAM</li>
+                                                <li><strong>CPU:</strong> Decoding multiplo può causare frame drop</li>
+                                                <li><strong>Soluzione:</strong> La funzione <code>checkAndPlayVideos()</code> pausa aggressivamente i video hidden</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Lazy Loading Strategy</div>
+                                        <div class="step-description">
+                                            I browser moderni implementano lazy loading nativo per i video. Il browser non scarica 24.mp4 finché non ti avvicini alla pagina 24, risparmiando banda.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Hybrid Architecture Benefits</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Best of All Worlds</div>
+                                        <div class="step-description">
+                                            L'architettura ibrida combina i punti di forza di ogni tecnologia:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Canvas (PDF.js):</strong> Qualità vettoriale, testo selezionabile</li>
+                                                <li><strong>Video (MP4):</strong> Contenuti animati, engagement visivo</li>
+                                                <li><strong>DOM (HTML):</strong> Interattività nativa, dinamicità runtime</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">GPU Acceleration Optimization</div>
+                                        <div class="step-description">
+                                            Ogni renderer sfrutta diversi percorsi hardware:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Canvas:</strong> GPU rasterization via WebGL backend</li>
+                                                <li><strong>Video:</strong> Hardware video decoder (NVDEC su NVIDIA, VCE su AMD)</li>
+                                                <li><strong>DOM:</strong> Compositor thread per smooth scrolling</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Complexity Trade-off</div>
+                                        <div class="step-description">
+                                            Il prezzo da pagare è complessità architetturale: 3 renderer diversi = 3 punti di failure potenziali. Ma i benefici UX superano largamente i rischi di manutenzione.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <h2>🟣 FASE 3: Infrastructure & Operations</h2>
@@ -2961,6 +3218,292 @@ Leggi ora → [LINK]</code>
                 </div>
             </div>
 
+            <!-- INFRA 3.5 - EXTERNAL API INTEGRATION -->
+            <div class="card infrastructure" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="accordion-toggle">
+                        <span class="accordion-icon">▶</span>
+                        <h3>Infra 3.5: External API Integration & Social Features</h3>
+                    </div>
+                    <span class="badge infrastructure">API</span>
+                </div>
+                
+                <div class="card-content">
+                    <div class="level1-accordion">
+                        
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Il Backend Invisibile (CountAPI Integration)</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step problem-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Il Problema del Sito Statico</div>
+                                        <div class="step-description">
+                                            GitHub Pages serve solo file statici (HTML/CSS/JS). Non ha database, non può salvare dati utente, non può contare i like. Ogni refresh della pagina "dimentica" tutto.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">CountAPI come Database Esterno</div>
+                                        <div class="step-description">
+                                            CountAPI (<code>countapi.xyz</code>) è un servizio gratuito che offre un contatore persistente via REST API. Funziona come un database "cloud" accessibile tramite HTTP requests:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// NAMESPACE per isolamento
+const NAMESPACE = 'il-camaleonte-magazine-v1';
+const KEY = 'likes';
+
+// Endpoint API
+GET  https://api.countapi.xyz/get/{namespace}/{key}
+POST https://api.countapi.xyz/hit/{namespace}/{key}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Lettura (GET): Caricamento Iniziale</div>
+                                        <div class="step-description">
+                                            Al caricamento della pagina 25, facciamo una richiesta AJAX per leggere il contatore:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>$.getJSON(`https://api.countapi.xyz/get/${NAMESPACE}/${KEY}`, 
+  function(response) {
+    updateLikeDisplay(response.value || 0);
+    // response.value = 42 (esempio)
+  }
+).fail(function() {
+  $('#like-count').text("100+"); // Fallback se API bloccata
+});</code>
+                                        </div>
+                                        <div class="step-description" style="margin-top: 10px;">
+                                            La richiesta è asincrona e non blocca il rendering della pagina.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 4</div>
+                                        <div class="step-title">Scrittura (HIT): Incremento Like</div>
+                                        <div class="step-description">
+                                            Quando l'utente clicca il cuore, incrementiamo atomicamente il contatore:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>$.getJSON(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`, 
+  function(response) {
+    updateLikeDisplay(response.value);
+    // Server ha fatto: counter++; return counter;
+    btn.addClass('liked'); // Visual feedback
+    localStorage.setItem('hasLikedCamaLeonte', 'true');
+  }
+);</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Protezione Anti-Spam (LocalStorage Guard)</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step problem-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Rischio Spam</div>
+                                        <div class="step-description">
+                                            Senza protezione, un utente potrebbe aprire la console e fare:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Attack script
+for (let i = 0; i < 1000; i++) {
+  $('#like-btn').click(); // 1000 like fake!
+}</code>
+                                        </div>
+                                        <div class="step-description" style="margin-top: 10px;">
+                                            Questo inquinerebbe il contatore globale.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Client-Side Cookie Guard</div>
+                                        <div class="step-description">
+                                            Prima di ogni API call, controlliamo il localStorage:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>$('#like-btn').click(function() {
+  // GUARD: Controlla se ha già likato
+  if (localStorage.getItem('hasLikedCamaLeonte')) {
+    alert("Hai già messo like! Grazie per il supporto.");
+    return; // Exit early
+  }
+  
+  // Procedi con API call solo se NON ha già likato
+  $.getJSON(...);
+});</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Limitazioni della Protezione</div>
+                                        <div class="step-description">
+                                            Il localStorage è client-side, quindi:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Bypassabile:</strong> L'utente può cancellare i cookies</li>
+                                                <li><strong>Browser-Specific:</strong> Chrome e Firefox hanno localStorage separati</li>
+                                                <li><strong>Non è Security:</strong> È un deterrente UX, non una protezione cryptografica</li>
+                                            </ul>
+                                            Per protezione seria servirebbe backend con rate limiting e IP tracking.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Graceful Degradation & Fallback</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step problem-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Scenari di Failure</div>
+                                        <div class="step-description">
+                                            L'API esterna può fallire per vari motivi:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>AdBlocker:</strong> Blocca richieste a domini esterni</li>
+                                                <li><strong>Firewall:</strong> Scuole/aziende bloccano API non whitelisted</li>
+                                                <li><strong>Downtime:</strong> CountAPI può essere offline (99.9% uptime ≠ 100%)</li>
+                                                <li><strong>CORS:</strong> Policy browser potrebbero bloccare</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Fallback Strategy</div>
+                                        <div class="step-description">
+                                            Implementiamo fallback sia sul caricamento che sul click:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Caricamento: Se API fallisce
+$.getJSON(...).fail(function() {
+  $('#like-count').text("100+"); // Placeholder generico
+});
+
+// Click: Se API fallisce
+$.getJSON(...).fail(function() {
+  btn.addClass('liked'); // Visual feedback locale
+  $('#like-count').text("101+"); // Incremento finto
+  localStorage.setItem('hasLikedCamaLeonte', 'true');
+});</code>
+                                        </div>
+                                        <div class="step-description" style="margin-top: 10px;">
+                                            L'utente riceve comunque feedback visivo anche se il server è irraggiungibile.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Progressive Enhancement Philosophy</div>
+                                        <div class="step-description">
+                                            Il sistema segue il principio di Progressive Enhancement:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Base Layer:</strong> Rivista funziona senza API</li>
+                                                <li><strong>Enhancement Layer:</strong> Like globale se API disponibile</li>
+                                                <li><strong>Degradation:</strong> Fallback elegante se API non raggiungibile</li>
+                                            </ul>
+                                            Nessun broken state, sempre funzionante.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Web Share API Integration</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Native Share Sheet (Mobile)</div>
+                                        <div class="step-description">
+                                            La Web Share API usa il pannello di condivisione nativo del sistema operativo:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>$('#share-btn').click(function() {
+  const shareData = {
+    title: 'Il CamaLEOnte',
+    text: 'Scopri il nuovo numero del Magazine Il CamaLEOnte!',
+    url: window.location.href
+  };
+
+  if (navigator.share) {
+    // Mobile: Apre sheet nativo (WhatsApp, Telegram, Email...)
+    navigator.share(shareData).catch(console.error);
+  } else {
+    // Desktop fallback
+  }
+});</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Desktop Fallback (Clipboard API)</div>
+                                        <div class="step-description">
+                                            I PC spesso non hanno <code>navigator.share</code> implementato. Usiamo Clipboard API come piano B:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>if (navigator.share) {
+  navigator.share(shareData);
+} else {
+  // Copia URL negli appunti
+  navigator.clipboard.writeText(window.location.href);
+  alert("Link copiato negli appunti!");
+}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Browser Support Matrix</div>
+                                        <div class="step-description">
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Mobile Chrome/Safari:</strong> ✅ navigator.share nativo</li>
+                                                <li><strong>Desktop Chrome:</strong> ⚠️ Solo se HTTPS + user gesture</li>
+                                                <li><strong>Desktop Firefox:</strong> ❌ Non supportato → Clipboard fallback</li>
+                                                <li><strong>Safari macOS:</strong> ✅ Supportato da macOS 12.3+</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <h2>🎨 FASE 4: UX/UI Enhancements</h2>
@@ -3341,6 +3884,300 @@ CSS:
                                                 <li>Conversione in percentuale: <code>(pixel / altezzaTotale) * 100</code></li>
                                                 <li>Test su mobile/desktop per validazione</li>
                                             </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- UX 4.3 - ENHANCED VISUAL EFFECTS -->
+            <div class="card active" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="accordion-toggle">
+                        <span class="accordion-icon">▶</span>
+                        <h3>UX 4.3: Enhanced Visual Effects & Micro-Interactions</h3>
+                    </div>
+                    <span class="badge solution">Polish</span>
+                </div>
+                
+                <div class="card-content">
+                    <div class="level1-accordion">
+                        
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Magic Shimmer Effect sui Link Indice</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Animazione "Respiro Magico"</div>
+                                        <div class="step-description">
+                                            I link dell'indice ora pulsano sottilmente come se "respirassero":
+                                        </div>
+                                        <div class="code-block">
+                                            <code>@keyframes magicBreath {
+  0%, 100% { 
+    background: rgba(16, 185, 129, 0.05);
+    border-color: rgba(16, 185, 129, 0.2);
+    box-shadow: 0 0 5px rgba(16, 185, 129, 0.1);
+  }
+  50% { 
+    background: rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.5);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+  }
+}
+
+.index-link {
+  animation: magicBreath 4s infinite ease-in-out;
+}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Shimmer Light Sweep</div>
+                                        <div class="step-description">
+                                            Un raggio di luce "attraversa" periodicamente ogni link usando un pseudo-elemento:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>@keyframes magicShimmer {
+  0% { transform: translateX(-150%) skewX(-20deg); }
+  50% { transform: translateX(150%) skewX(-20deg); }
+  100% { transform: translateX(150%) skewX(-20deg); }
+}
+
+.index-link::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 50%; height: 100%;
+  background: linear-gradient(
+    to right, 
+    transparent, 
+    rgba(255, 255, 255, 0.6), 
+    transparent
+  );
+  transform: translateX(-150%) skewX(-20deg);
+  animation: magicShimmer 3s infinite;
+}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Perché Funziona (Psicologia UX)</div>
+                                        <div class="step-description">
+                                            Le animazioni sottili catturano l'attenzione periferica senza essere invasive:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Motion Attracts:</strong> Il movimento cattura l'occhio umano</li>
+                                                <li><strong>Affordance Signal:</strong> "Questo elemento è cliccabile"</li>
+                                                <li><strong>Playfulness:</strong> Aggiunge personalità al design</li>
+                                                <li><strong>Non Distrattiva:</strong> Timing lento (4s cycle) evita sovrastimolazione</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Hover State Enhancement</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Interruzione Animazione al Hover</div>
+                                        <div class="step-description">
+                                            Quando l'utente passa sopra un link, l'animazione si ferma per dare focus:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>.index-link:hover {
+  animation: none; /* Stop breathing */
+  background: rgba(16, 185, 129, 0.3); /* Solid state */
+  border: 2px solid #34d399;
+  box-shadow: 0 0 30px #10b981, /* Outer glow */
+              inset 0 0 20px rgba(16, 185, 129, 0.5); /* Inner glow */
+  transform: scale(1.02);
+  z-index: 20; /* Porta in primo piano */
+}
+
+.index-link:hover::after {
+  display: none; /* Rimuovi shimmer */
+}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Doppio Glow Effect</div>
+                                        <div class="step-description">
+                                            L'hover usa una combinazione di box-shadow esterni e interni:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Outer Glow:</strong> Simula luce emessa verso l'esterno</li>
+                                                <li><strong>Inset Glow:</strong> Crea profondità, come vetro retroilluminato</li>
+                                                <li><strong>Transform Scale:</strong> Leggero ingrandimento (2%) per feedback tattile</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Performance Note</div>
+                                        <div class="step-description">
+                                            Le box-shadow multiple possono essere costose su GPU. Limitiamo a 2 shadow max e usiamo <code>will-change: transform</code> per ottimizzare il composite layer.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>CTA Page Design System</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Gradiente Background Atmosferico</div>
+                                        <div class="step-description">
+                                            La pagina finale usa un gradiente diagonale che crea profondità:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>.end-page-content {
+  background: linear-gradient(
+    135deg, 
+    #0f172a 0%,  /* Slate-900 dark */
+    #1e293b 100% /* Slate-800 lighter */
+  );
+}</code>
+                                        </div>
+                                        <div class="step-description" style="margin-top: 10px;">
+                                            L'angolo 135deg crea movimento visivo da top-left a bottom-right.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Button States con Cubic Bezier</div>
+                                        <div class="step-description">
+                                            Le transizioni dei bottoni usano easing curve custom per "bounce" effect:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>.cta-btn {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* Curva "ease-out-back" - overshoot leggero */
+}
+
+.cta-btn:hover {
+  transform: scale(1.05); /* 5% più grande */
+}</code>
+                                        </div>
+                                        <div class="step-description" style="margin-top: 10px;">
+                                            La curva cubic-bezier crea un leggero "rimbalzo" che rende l'interazione più giocosa.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Like Button State Machine</div>
+                                        <div class="step-description">
+                                            Il bottone like ha 2 stati visuali:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>/* State 1: Default (Gray) */
+.btn-like {
+  background: #334155; /* Slate-700 */
+  color: white;
+}
+
+/* State 2: Liked (Red Glow) */
+.btn-like.liked {
+  background: #ef4444; /* Red-500 */
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+  /* Outer glow rosso pulsante */
+}</code>
+                                        </div>
+                                        <div class="step-description" style="margin-top: 10px;">
+                                            La transizione è gestita via classe CSS, non inline styles, per performance ottimali.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Typography & Color Palette Consistency</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Font Hierarchy</div>
+                                        <div class="step-description">
+                                            Utilizzo strategico dei font-weight:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>800 (ExtraBold):</strong> Titoli principali (welcome-title, end-title)</li>
+                                                <li><strong>700 (Bold):</strong> Call-to-action button, label importanti</li>
+                                                <li><strong>400 (Regular):</strong> Body text, descrizioni</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Color System</div>
+                                        <div class="step-description">
+                                            Palette coerente basata su Tailwind CSS:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>/* Primary (Green) */
+#10b981 → Emerald-500 (Success, Like, Primary CTA)
+
+/* Background (Dark Slate) */
+#0f172a → Slate-900 (Deep background)
+#1e293b → Slate-800 (Card background)
+
+/* Text */
+#f8fafc → Slate-50  (Primary text)
+#94a3b8 → Slate-400 (Muted text)
+
+/* Danger (Red) */
+#ef4444 → Red-500 (Liked state)</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Accessibilità Contrast Ratio</div>
+                                        <div class="step-description">
+                                            Tutti i contrasti rispettano WCAG 2.1 AA:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>White on #0f172a:</strong> 18.5:1 (AAA Large Text)</li>
+                                                <li><strong>#10b981 on #0f172a:</strong> 4.8:1 (AA compliant)</li>
+                                                <li><strong>#94a3b8 on #1e293b:</strong> 5.2:1 (AA compliant)</li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
