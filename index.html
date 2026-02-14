@@ -5,16 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Il CamaLEOnte - Magazine Ufficiale</title>
     
-    <!-- FAVICON -->
     <link rel="icon" type="image/png" href="favicon.png">
 
-    <!-- GOOGLE ANALYTICS -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-XXXXXXXXXX'); 
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        // Configura il worker per PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -32,8 +36,15 @@
         #flipbook { width: 960px; height: 680px; opacity: 0; transition: opacity 1.2s; visibility: visible; }
         #flipbook.visible { opacity: 1; }
 
-        .page { background-color: white; position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.8); }
-        .page-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: 100% 100%; z-index: 1; }
+        .page { background-color: white; position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.8); overflow: hidden; }
+        
+        /* Classe per il canvas del PDF */
+        .pdf-canvas { 
+            width: 100%; 
+            height: 100%; 
+            display: block; 
+            pointer-events: none; /* Lascia passare i click ai link sopra */
+        }
 
         .magazine-video { 
             width: 100%; height: 100%; object-fit: cover; 
@@ -44,13 +55,12 @@
         /* --- ANIMAZIONE RESPIRO (FAMIGLIA VERDE) --- */
         @keyframes aiPulse {
             0% { 
-                background: rgba(16, 185, 129, 0.05); /* Verde smeraldo scuro quasi invisibile */
+                background: rgba(16, 185, 129, 0.05);
                 box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
                 border: 1px solid rgba(16, 185, 129, 0.1);
             }
             50% { 
-                /* Il momento di "pensiero": si illumina */
-                background: rgba(52, 211, 153, 0.25); /* Verde brillante */
+                background: rgba(52, 211, 153, 0.25);
                 box-shadow: 0 0 15px 2px rgba(52, 211, 153, 0.4);
                 border: 1px solid rgba(110, 231, 183, 0.6);
             }
@@ -67,17 +77,16 @@
             cursor: pointer; 
             z-index: 1000; 
             border-radius: 8px;
-            /* L'animazione cicla tra le sfumature della famiglia Verde */
             animation: aiPulse 3s infinite ease-in-out;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         /* EFFETTO HOVER: VETRO LUMINOSO VERDE */
         .index-link:hover {
-            animation: none; /* Ferma il respiro */
-            background: rgba(209, 250, 229, 0.4); /* Verde chiarissimo (effetto vetro) */
-            border: 1px solid rgba(52, 211, 153, 1); /* Bordo solido */
-            box-shadow: 0 0 30px rgba(52, 211, 153, 0.8); /* Glow intenso */
+            animation: none;
+            background: rgba(209, 250, 229, 0.4);
+            border: 1px solid rgba(52, 211, 153, 1);
+            box-shadow: 0 0 30px rgba(52, 211, 153, 0.8);
             transform: scale(1.04);
             z-index: 1001;
         }
@@ -116,13 +125,47 @@
                 { t: 70, l: 50, w: 40, h: 10, p: 21 },{ t: 82, l: 50, w: 40, h: 8, p: 22 }
             ];
 
+            // FUNZIONE ASINCRONA PER RENDERIZZARE I PDF
+            async function renderPage(pageNum, container) {
+                try {
+                    const url = pageNum + '.pdf';
+                    const loadingTask = pdfjsLib.getDocument(url);
+                    const pdf = await loadingTask.promise;
+                    const page = await pdf.getPage(1);
+                    
+                    // Scale 2.0 per alta definizione (retina ready)
+                    const viewport = page.getViewport({ scale: 2.0 }); 
+                    
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.className = 'pdf-canvas';
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    
+                    // Aggiunge il canvas al contenitore
+                    container.appendChild(canvas);
+                    
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    await page.render(renderContext).promise;
+                    
+                } catch (error) {
+                    console.error('Errore caricamento PDF pagina ' + pageNum, error);
+                    container.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100%;color:red;">Errore PDF</div>';
+                }
+            }
+
             $(document).ready(function() {
                 const fb = $('#flipbook');
 
                 for (let i = 1; i <= totalPages; i++) {
-                    const pg = $('<div class="page"></div>');
+                    const pg = $('<div class="page" id="page-' + i + '"></div>');
 
+                    // GESTIONE CONTENUTI PAGINE
                     if (i === 23) {
+                        // PAGINA VIDEO (Rimane invariata)
                         const vid = $(`
                             <video class="magazine-video" playsinline webkit-playsinline>
                                 <source src="23.mp4" type="video/mp4">
@@ -131,14 +174,15 @@
                         `);
                         pg.append(vid);
                     } else {
-                        const bg = $(`<div class="page-bg" style="background-image: url('${i}.png')"></div>`);
-                        pg.append(bg);
+                        // TUTTE LE ALTRE PAGINE (inclusa la 3): Carica il PDF
+                        // Nota: Passiamo l'elemento DOM nativo [0] alla funzione di rendering
+                        renderPage(i, pg[0]);
                     }
 
+                    // GESTIONE INDICE (Pagina 3)
+                    // I link vengono aggiunti SOPRA il PDF renderizzato
                     if (i === 3) {
-                        // Generazione Link Indice con ritardo sequenziale
                         map.forEach((l, index) => {
-                            // 0.3s di ritardo tra un link e l'altro crea l'effetto "onda"
                             const delay = index * 0.3; 
                             const link = $('<div class="index-link"></div>').css({
                                 top: l.t + '%', 
@@ -150,6 +194,7 @@
                             pg.append(link);
                         });
                     }
+                    
                     fb.append(pg);
                 }
 
