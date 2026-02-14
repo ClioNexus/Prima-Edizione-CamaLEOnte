@@ -2,7 +2,7 @@
 <html lang="it" oncontextmenu="return false;">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
     <title>Il CamaLEOnte - Magazine Ufficiale</title>
     
     <link rel="icon" type="image/png" href="favicon.png">
@@ -17,7 +17,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
-        // Configura il worker per PDF.js
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
 
@@ -32,18 +31,19 @@
         body { background-color: #121212; margin: 0; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; font-family: 'Montserrat', sans-serif; }
         img { pointer-events: none; -webkit-user-drag: none; display: block; }
 
-        #zoom-wrapper { width: 960px; height: 680px; transition: transform 0.1s linear; }
+        /* MODIFICATO: Rimosso transition transform per evitare scatti su mobile */
+        #zoom-wrapper { width: 960px; height: 680px; }
+        
         #flipbook { width: 960px; height: 680px; opacity: 0; transition: opacity 1.2s; visibility: visible; }
         #flipbook.visible { opacity: 1; }
 
         .page { background-color: white; position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.8); overflow: hidden; }
         
-        /* Classe per il canvas del PDF */
         .pdf-canvas { 
             width: 100%; 
             height: 100%; 
             display: block; 
-            pointer-events: none; /* Lascia passare i click ai link sopra */
+            pointer-events: none; 
         }
 
         .magazine-video { 
@@ -54,41 +54,20 @@
 
         /* --- ANIMAZIONE RESPIRO (FAMIGLIA VERDE) --- */
         @keyframes aiPulse {
-            0% { 
-                background: rgba(16, 185, 129, 0.05);
-                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-                border: 1px solid rgba(16, 185, 129, 0.1);
-            }
-            50% { 
-                background: rgba(52, 211, 153, 0.25);
-                box-shadow: 0 0 15px 2px rgba(52, 211, 153, 0.4);
-                border: 1px solid rgba(110, 231, 183, 0.6);
-            }
-            100% { 
-                background: rgba(16, 185, 129, 0.05);
-                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-                border: 1px solid rgba(16, 185, 129, 0.1);
-            }
+            0% { background: rgba(16, 185, 129, 0.05); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); border: 1px solid rgba(16, 185, 129, 0.1); }
+            50% { background: rgba(52, 211, 153, 0.25); box-shadow: 0 0 15px 2px rgba(52, 211, 153, 0.4); border: 1px solid rgba(110, 231, 183, 0.6); }
+            100% { background: rgba(16, 185, 129, 0.05); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); border: 1px solid rgba(16, 185, 129, 0.1); }
         }
 
-        /* STILE LINK INDICE */
         .index-link { 
-            position: absolute; 
-            cursor: pointer; 
-            z-index: 1000; 
-            border-radius: 8px;
+            position: absolute; cursor: pointer; z-index: 1000; border-radius: 8px;
             animation: aiPulse 3s infinite ease-in-out;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* EFFETTO HOVER: VETRO LUMINOSO VERDE */
         .index-link:hover {
-            animation: none;
-            background: rgba(209, 250, 229, 0.4);
-            border: 1px solid rgba(52, 211, 153, 1);
-            box-shadow: 0 0 30px rgba(52, 211, 153, 0.8);
-            transform: scale(1.04);
-            z-index: 1001;
+            animation: none; background: rgba(209, 250, 229, 0.4); border: 1px solid rgba(52, 211, 153, 1);
+            box-shadow: 0 0 30px rgba(52, 211, 153, 0.8); transform: scale(1.04); z-index: 1001;
         }
         
         .video-home-btn {
@@ -114,6 +93,13 @@
 
     <script>
         (function() {
+            // RILEVAMENTO MOBILE
+            const isMobile = window.innerWidth < 768;
+            
+            // Impostiamo dimensioni diverse per mobile (singola) e desktop (doppia)
+            const w = isMobile ? window.innerWidth : 960;
+            const h = isMobile ? (window.innerWidth * 1.41) : 680; // Rapporto A4
+            
             const totalPages = 24; 
             
             const map = [
@@ -125,7 +111,6 @@
                 { t: 70, l: 50, w: 40, h: 10, p: 21 },{ t: 82, l: 50, w: 40, h: 8, p: 22 }
             ];
 
-            // FUNZIONE ASINCRONA PER RENDERIZZARE I PDF
             async function renderPage(pageNum, container) {
                 try {
                     const url = pageNum + '.pdf';
@@ -133,8 +118,9 @@
                     const pdf = await loadingTask.promise;
                     const page = await pdf.getPage(1);
                     
-                    // Scale 2.0 per alta definizione (retina ready)
-                    const viewport = page.getViewport({ scale: 2.0 }); 
+                    // MODIFICATO: Scala più alta su mobile per supportare lo zoom
+                    const scale = isMobile ? 3.0 : 2.0;
+                    const viewport = page.getViewport({ scale: scale }); 
                     
                     const canvas = document.createElement('canvas');
                     const context = canvas.getContext('2d');
@@ -142,7 +128,6 @@
                     canvas.height = viewport.height;
                     canvas.width = viewport.width;
                     
-                    // Aggiunge il canvas al contenitore
                     container.appendChild(canvas);
                     
                     const renderContext = {
@@ -152,20 +137,19 @@
                     await page.render(renderContext).promise;
                     
                 } catch (error) {
-                    console.error('Errore caricamento PDF pagina ' + pageNum, error);
-                    container.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100%;color:red;">Errore PDF</div>';
+                    console.error('Errore PDF pag ' + pageNum, error);
+                    container.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100%;color:red;font-size:12px;">...</div>';
                 }
             }
 
             $(document).ready(function() {
                 const fb = $('#flipbook');
+                const zoomWrapper = $('#zoom-wrapper');
 
                 for (let i = 1; i <= totalPages; i++) {
                     const pg = $('<div class="page" id="page-' + i + '"></div>');
 
-                    // GESTIONE CONTENUTI PAGINE
                     if (i === 23) {
-                        // PAGINA VIDEO (Rimane invariata)
                         const vid = $(`
                             <video class="magazine-video" playsinline webkit-playsinline>
                                 <source src="23.mp4" type="video/mp4">
@@ -174,13 +158,9 @@
                         `);
                         pg.append(vid);
                     } else {
-                        // TUTTE LE ALTRE PAGINE (inclusa la 3): Carica il PDF
-                        // Nota: Passiamo l'elemento DOM nativo [0] alla funzione di rendering
                         renderPage(i, pg[0]);
                     }
 
-                    // GESTIONE INDICE (Pagina 3)
-                    // I link vengono aggiunti SOPRA il PDF renderizzato
                     if (i === 3) {
                         map.forEach((l, index) => {
                             const delay = index * 0.3; 
@@ -209,12 +189,9 @@
                     if (video) {
                         if (view.indexOf(23) !== -1) {
                             video.currentTime = 0;
-                            const playPromise = video.play();
+                            var playPromise = video.play();
                             if (playPromise !== undefined) {
-                                playPromise.catch(() => {
-                                    video.muted = true; 
-                                    video.play();
-                                });
+                                playPromise.catch(() => { video.muted = true; video.play(); });
                             }
                         } else {
                             video.pause();
@@ -222,14 +199,35 @@
                     }
                 });
 
-                fb.turn({ width: 960, height: 680, autoCenter: true, duration: 1000, acceleration: true });
+                // CONFIGURAZIONE TURN.JS
+                fb.turn({ 
+                    width: w, 
+                    height: h, 
+                    // MODIFICATO: Single page su mobile, Double su desktop
+                    display: isMobile ? 'single' : 'double',
+                    autoCenter: true, 
+                    duration: 1000, 
+                    acceleration: true,
+                    elevation: 50
+                });
 
                 function resize() {
-                    const s = Math.min($(window).width() / 960, $(window).height() / 680) * 0.95;
-                    $('#zoom-wrapper').css('transform', `scale(${s})`);
+                    if (!isMobile) {
+                        // Desktop: scala tutto il contenitore per adattarlo alla finestra
+                        const s = Math.min($(window).width() / 960, $(window).height() / 680) * 0.95;
+                        zoomWrapper.css('transform', `scale(${s})`);
+                    } else {
+                        // Mobile: NESSUN transform CSS sul wrapper (permette lo zoom nativo del browser)
+                        zoomWrapper.css('transform', 'none');
+                        // Su mobile forziamo la larghezza al 100% della finestra
+                        $('#flipbook').turn('size', window.innerWidth, window.innerWidth * 1.41);
+                    }
                 }
-                $(window).resize(resize); resize();
-                setTimeout(() => fb.addClass('visible'), 300);
+
+                $(window).resize(resize); 
+                resize();
+                
+                setTimeout(() => fb.addClass('visible'), 500);
 
                 setInterval(function() { (function() { return false; }).constructor("debugger")(); }, 200);
             });
