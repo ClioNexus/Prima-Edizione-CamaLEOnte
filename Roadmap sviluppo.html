@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roadmap Tecnica - Il CamaLEOnte</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Engineering Roadmap - Il CamaLEOnte</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-main: #e0e0e0;
-            --text-muted: #a0a0a0;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
             --accent-green: #10b981;
             --accent-red: #ef4444;
             --accent-blue: #3b82f6;
             --accent-purple: #8b5cf6;
-            --border: #333;
+            --accent-orange: #f59e0b;
+            --border: #334155;
         }
 
         body {
@@ -27,224 +28,265 @@
             padding: 40px 20px;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
+        .container { max-width: 960px; margin: 0 auto; }
 
         header {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 80px;
             border-bottom: 1px solid var(--border);
             padding-bottom: 40px;
+            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 10px;
-            background: linear-gradient(to right, var(--accent-green), var(--accent-blue));
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, #94a3b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 1.1rem;
+        .subtitle { color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto; }
+
+        /* WARNING BOX */
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--accent-orange);
+            color: #fbbf24;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 40px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
         }
+        .warning-icon { font-size: 24px; }
 
         h2 {
             font-size: 1.8rem;
-            margin-top: 50px;
+            margin-top: 60px;
             margin-bottom: 30px;
-            border-left: 5px solid var(--accent-green);
-            padding-left: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        /* TIMELINE STYLES */
-        .timeline {
-            position: relative;
-            padding-left: 20px;
-        }
-
+        /* CARDS */
+        .timeline { position: relative; padding-left: 20px; border-left: 2px solid var(--border); }
+        
         .card {
             background-color: var(--card-bg);
             border-radius: 12px;
             padding: 25px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             border: 1px solid var(--border);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            transition: transform 0.2s ease;
+            position: relative;
+            margin-left: 20px;
         }
 
-        .card:hover {
-            transform: translateY(-3px);
-            border-color: var(--accent-green);
+        .card::before {
+            content: "";
+            position: absolute;
+            left: -32px;
+            top: 30px;
+            width: 20px;
+            height: 2px;
+            background-color: var(--border);
         }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
+        .card::after {
+            content: "";
+            position: absolute;
+            left: -41px;
+            top: 26px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--text-muted);
+            border: 2px solid var(--bg-color);
         }
+
+        .card.active::after { background-color: var(--accent-green); box-shadow: 0 0 10px var(--accent-green); }
+        .card.critical::after { background-color: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); }
+
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
 
         .badge {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .badge.problem { background-color: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
-        .badge.solution { background-color: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
-        .badge.critical { background-color: rgba(139, 92, 246, 0.2); color: var(--accent-purple); }
+        .badge.problem { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.3); }
+        .badge.solution { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge.logic { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); border: 1px solid rgba(139, 92, 246, 0.3); }
+        .badge.ux { background: rgba(245, 158, 11, 0.15); color: var(--accent-orange); border: 1px solid rgba(245, 158, 11, 0.3); }
 
-        h3 { margin: 0; font-size: 1.2rem; }
+        h3 { margin: 0; font-size: 1.3rem; color: #fff; }
 
         ul { margin: 0; padding-left: 20px; color: var(--text-muted); }
-        li { margin-bottom: 8px; }
+        li { margin-bottom: 10px; }
+        strong { color: var(--text-main); }
 
         code {
-            background-color: #000;
+            font-family: 'Fira Code', monospace;
+            background-color: rgba(0,0,0,0.3);
             padding: 2px 6px;
             border-radius: 4px;
-            font-family: 'Courier New', Courier, monospace;
-            color: var(--accent-green);
-            font-size: 0.9em;
+            color: var(--accent-blue);
+            font-size: 0.85em;
         }
 
-        .snippet {
-            display: block;
-            background-color: #000;
+        .technical-deep-dive {
+            margin-top: 15px;
+            background: #0f172a;
             padding: 15px;
             border-radius: 8px;
-            margin-top: 15px;
-            overflow-x: auto;
-            border-left: 3px solid var(--accent-green);
-            color: #ccc;
+            border-left: 3px solid var(--accent-blue);
+            font-size: 0.9rem;
         }
+        .technical-deep-dive h4 { margin: 0 0 10px 0; color: var(--accent-blue); font-size: 0.8rem; text-transform: uppercase; }
 
         footer {
-            margin-top: 80px;
+            margin-top: 100px;
             text-align: center;
             font-size: 0.9rem;
             color: var(--text-muted);
             border-top: 1px solid var(--border);
-            padding-top: 20px;
+            padding-top: 30px;
         }
-
     </style>
 </head>
 <body>
 
     <div class="container">
         <header>
-            <h1>Roadmap Tecnica: Il CamaLEOnte</h1>
-            <div class="subtitle">Analisi dei Problemi, Limitazioni e Soluzioni Architetturali</div>
-            <p style="margin-top: 20px; color: #fff;">Versione Definitiva: Stable Layered Hybrid Engine</p>
+            <h1>Project CamaLEOnte</h1>
+            <div class="subtitle">Engineering Log & Technical Retrospective</div>
+            <p style="margin-top: 15px; font-family: 'Fira Code', monospace; color: var(--accent-green);">Status: PRODUCTION READY (v3.1.0)</p>
         </header>
 
-        <h2>🔴 1. Analisi dei Problemi & Limitazioni</h2>
+        <div class="warning-box">
+            <div class="warning-icon">⚠️</div>
+            <div>
+                <strong>Il Paradosso del "Falso Traguardo" (The False Summit)</strong><br>
+                Nella fase finale di collaudo, quando il progetto sembrava completo ("Golden Master"), sono emersi bug critici di interazione legati alla gestione asincrona del DOM e alla matematica vettoriale di visualizzazione. Quella che sembrava la fine era l'inizio della sfida più complessa.
+            </div>
+        </div>
+
+        <h2>🔴 1. The Challenge Log (Analisi Ostacoli)</h2>
         <div class="timeline">
             
             <div class="card">
                 <div class="card-header">
-                    <h3>Fase 1: Il "Muro" della Qualità Raster</h3>
-                    <span class="badge problem">Qualità Visiva</span>
+                    <h3>Fase 1: Raster Quality Limitation</h3>
+                    <span class="badge problem">Legacy Tech</span>
                 </div>
                 <ul>
-                    <li><strong>Il Limite dei PNG/JPG:</strong> L'estrazione delle pagine come immagini statiche causava "pixelation" (sgranatura) immediata allo zoom.</li>
-                    <li><strong>Testo Non Selezionabile:</strong> Impossibile usare funzioni di ricerca o copia-incolla.</li>
+                    <li><strong>Il Muro del Pixel:</strong> L'uso iniziale di immagini PNG/JPG rendeva il testo illeggibile allo zoom. L'articolo a pag. 11 era compromesso.</li>
+                    <li><strong>Black Box Content:</strong> Testo non selezionabile, zero accessibilità, impossibilità di indicizzazione.</li>
                 </ul>
             </div>
 
             <div class="card">
                 <div class="card-header">
-                    <h3>Fase 2: L'Incubo della Responsività</h3>
-                    <span class="badge problem">Mobile UX</span>
+                    <h3>Fase 2: The Viewport Paradox</h3>
+                    <span class="badge ux">Mobile UX</span>
                 </div>
                 <ul>
-                    <li><strong>Il Paradosso della Doppia Pagina:</strong> Su smartphone verticale, due pagine affiancate diventavano una striscia illeggibile.</li>
-                    <li><strong>Blocco dello Zoom:</strong> L'uso di <code>user-scalable=no</code> impediva l'ingrandimento manuale.</li>
+                    <li><strong>Geometry Mismatch:</strong> <code>turn.js</code> forza una vista a doppia pagina (ratio 3:2). Su smartphone verticale (ratio 9:16), la rivista diventava una striscia microscopica.</li>
+                    <li><strong>Zoom Lock:</strong> L'impostazione <code>user-scalable=no</code> impediva l'interazione manuale.</li>
                 </ul>
             </div>
 
-            <div class="card">
+            <div class="card critical">
                 <div class="card-header">
-                    <h3>Fase 3: Integrazione Multimediale</h3>
-                    <span class="badge problem">Audio/Video</span>
+                    <h3>Fase 4: The Race Condition Crash</h3>
+                    <span class="badge logic">Async Bug</span>
                 </div>
-                <ul>
-                    <li><strong>Ibrido Video/Carta:</strong> Conflitti audio e fullscreen su iOS.</li>
-                    <li><strong>Ostacolo CORS:</strong> Blocchi di sicurezza caricando file locali o asincroni senza server HTTPS.</li>
-                </ul>
+                <div class="technical-deep-dive">
+                    <h4>Technical Analysis</h4>
+                    <p>Il rendering del PDF è asincrono (lento). La creazione dei div HTML è sincrona (veloce).<br>
+                    <strong>Risultato:</strong> Lo script creava i link interattivi -> Il PDF finiva di caricare -> La funzione di pulizia <code>container.innerHTML = ''</code> cancellava tutto, inclusi i link appena creati.</p>
+                </div>
             </div>
 
-            <div class="card" style="border-color: var(--accent-purple);">
+            <div class="card critical">
                 <div class="card-header">
-                    <h3>Fase 4: Il Crash dell'Interattività (Race Condition)</h3>
-                    <span class="badge critical">Bug Critico</span>
+                    <h3>Fase 5: The Phantom Coordinate (Zoom Distortion)</h3>
+                    <span class="badge logic">Math Error</span>
                 </div>
                 <ul>
-                    <li><strong>Conflitto DOM Asincrono:</strong> Il caricamento del PDF è più lento della creazione dell'HTML. Quando il PDF finiva di caricare, la funzione di pulizia (<code>innerHTML = ''</code>) cancellava anche i link interattivi appena creati.</li>
-                    <li><strong>Blocco UI:</strong> I bottoni (Home/Modalità) perdevano il focus o venivano coperti da layer invisibili, rendendo la navigazione impossibile.</li>
+                    <li><strong>Sintomo:</strong> I bottoni "Doppia Pagina" bloccavano lo sfoglio. Le pagine non giravano più al click sugli angoli.</li>
+                    <li><strong>Causa Radice:</strong> L'uso di <code>transform: scale()</code> CSS per adattare la rivista allo schermo creava una discrepanza tra le coordinate visive e quelle logiche del mouse. <code>turn.js</code> calcolava la posizione del click in base ai pixel reali, ignorando lo zoom CSS.</li>
                 </ul>
             </div>
 
         </div>
 
-        <h2>🛠️ 2. Arsenale delle Soluzioni (Implementation)</h2>
+        <h2>🟢 2. The Architecture Solution (Soluzioni)</h2>
 
-        <div class="card" style="border-left: 4px solid var(--accent-green);">
-            <div class="card-header">
-                <h3>✅ 1. La Rivoluzione Vettoriale (PDF.js)</h3>
-                <span class="badge solution">Rendering Core</span>
+        <div class="timeline">
+            <div class="card active">
+                <div class="card-header">
+                    <h3>Soluzione 1: Vector Injection (PDF.js)</h3>
+                    <span class="badge solution">Rendering</span>
+                </div>
+                <p>Integrazione di <strong>Mozilla PDF.js</strong> con rendering su Canvas HTML5. Implementazione di <code>scale: 3.0</code> su mobile per garantire nitidezza assoluta (Retina-ready).</p>
             </div>
-            <p>Rendering dinamico su Canvas HTML5 a scala aumentata (2.0x/3.0x) per nitidezza Retina.</p>
-        </div>
 
-        <div class="card" style="border-left: 4px solid var(--accent-green);">
-            <div class="card-header">
-                <h3>✅ 2. Adaptive Layout Engine</h3>
-                <span class="badge solution">Responsive Logic</span>
+            <div class="card active">
+                <div class="card-header">
+                    <h3>Soluzione 2: Adaptive Logical Engine</h3>
+                    <span class="badge solution">Logic</span>
+                </div>
+                <p>Algoritmo di rilevamento dispositivo:</p>
+                <code>const isMobile = window.innerWidth < 768;</code><br>
+                <code>display: isMobile ? 'single' : 'double'</code>
             </div>
-            <p>Switch automatico tra <code>display: single</code> (Mobile) e <code>display: double</code> (Desktop).</p>
-        </div>
 
-        <div class="card" style="border-left: 4px solid var(--accent-green);">
-            <div class="card-header">
-                <h3>✅ 3. UX Potenziata</h3>
-                <span class="badge solution">Controlli UI</span>
+            <div class="card active">
+                <div class="card-header">
+                    <h3>Soluzione 3: Layered DOM Architecture</h3>
+                    <span class="badge solution">Stability</span>
+                </div>
+                <div class="technical-deep-dive">
+                    <h4>Fixing the Race Condition</h4>
+                    <p>Separazione fisica dei livelli per evitare sovrascritture:</p>
+                    <ul>
+                        <li><strong>Layer Z-1 (PDF):</strong> Canvas di sfondo (Dynamic).</li>
+                        <li><strong>Layer Z-10 (UI):</strong> Div trasparenti per i link (Static).</li>
+                    </ul>
+                    <p>I bottoni di navigazione sono stati spostati fuori dal flusso (<code>position: fixed</code>) per garantire accessibilità costante.</p>
+                </div>
             </div>
-            <p>Zoom sbloccato su mobile e pulsanti di controllo (Modalità/Home) fissi.</p>
-        </div>
 
-        <div class="card" style="border-left: 4px solid var(--accent-green);">
-            <div class="card-header">
-                <h3>✅ 4. Hosting GitHub Pages</h3>
-                <span class="badge solution">Infrastruttura</span>
+            <div class="card active">
+                <div class="card-header">
+                    <h3>Soluzione 4: Mathematical Resizing (No-Zoom)</h3>
+                    <span class="badge solution">Core Fix</span>
+                </div>
+                <div class="technical-deep-dive">
+                    <h4>Fixing the Coordinate Distortion</h4>
+                    <p>Rimozione totale di <code>transform: scale()</code>. Implementazione di un calcolo geometrico in tempo reale:</p>
+                    <ul>
+                        <li>Calcolo area disponibile (Viewport - Margini).</li>
+                        <li>Calcolo Aspect Ratio target (A4 vs Double A4).</li>
+                        <li>Applicazione dimensioni fisiche (<code>width/height</code>) all'istanza <code>turn.js</code> invece di scalarla visivamente.</li>
+                    </ul>
+                    <p>Questo garantisce che le coordinate del mouse (<code>event.pageX</code>) coincidano sempre con gli angoli della pagina.</p>
+                </div>
             </div>
-            <p>Risoluzione dei problemi CORS tramite hosting statico HTTPS.</p>
-        </div>
-
-        <div class="card" style="border-left: 4px solid var(--accent-purple);">
-            <div class="card-header">
-                <h3>✅ 5. Architettura a Livelli (The Safe-Render)</h3>
-                <span class="badge solution">Stabilità</span>
-            </div>
-            <p>Soluzione definitiva al problema della sovrascrittura. Ogni pagina ora ha due contenitori sovrapposti (z-index).</p>
-            <ul>
-                <li><strong>.layer-pdf (z-index: 1):</strong> Contiene il Canvas PDF. Viene pulito e ricaricato senza rischi.</li>
-                <li><strong>.layer-interactive (z-index: 10):</strong> Contiene i Link verdi. Non viene mai toccato dal rendering del PDF.</li>
-                <li><strong>Position Fixed:</strong> I bottoni UI sono stati spostati fuori dal flusso del libro per evitare conflitti di click.</li>
-            </ul>
-            <code class="snippet">&lt;div class="layer-pdf"&gt;&lt;/div&gt;<br>&lt;div class="layer-interactive"&gt;&lt;/div&gt;</code>
         </div>
 
         <footer>
-            <p>Documento generato per il progetto <strong>Il CamaLEOnte</strong> - 2024/2025</p>
-            <p style="opacity: 0.6;">Tecnologie: HTML5, PDF.js, Turn.js, jQuery, CSS3 Flexbox</p>
+            <p><strong>Il CamaLEOnte Project Documentation</strong><br>
+            <span style="opacity: 0.5;">Developed with Gemini AI • 2024/2025</span></p>
         </footer>
     </div>
 

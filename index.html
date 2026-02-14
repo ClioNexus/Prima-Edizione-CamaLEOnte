@@ -21,16 +21,21 @@
         * { -webkit-user-select: none; -moz-user-select: none; user-select: none; -webkit-touch-callout: none; }
         body { background-color: #121212; margin: 0; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; font-family: 'Montserrat', sans-serif; }
         
-        #zoom-wrapper { width: 960px; height: 680px; transition: transform 0.2s ease; transform-origin: center center; }
-        #flipbook { width: 960px; height: 680px; opacity: 0; transition: opacity 1s; }
+        /* WRAPPER CENTRALE: Niente più dimensioni fisse o trasformazioni qui */
+        #zoom-wrapper { 
+            width: 100%; height: 100%; 
+            display: flex; justify-content: center; align-items: center; 
+            overflow: hidden;
+        }
+
+        #flipbook { opacity: 0; transition: opacity 1s; }
         #flipbook.visible { opacity: 1; }
 
         .page { background-color: white; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.5); overflow: hidden; }
         
-        /* LAYERS (STRATI) PER EVITARE CONFLITTI */
+        /* LAYERS */
         .layer-pdf { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
         .layer-interactive { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
-        /* I link devono avere pointer-events auto per essere cliccabili */
         .layer-interactive * { pointer-events: auto; }
 
         .pdf-canvas { width: 100%; height: 100%; display: block; }
@@ -41,9 +46,9 @@
             position: absolute; top: 0; left: 0; z-index: 5; background: #000; 
         }
 
-        /* --- STILE BOTTONI AZIONE (Home & Mode) --- */
+        /* --- BOTTONI --- */
         .action-btn {
-            position: fixed; top: 20px; z-index: 9999; /* Z-index altissimo per stare sopra a tutto */
+            position: fixed; top: 20px; z-index: 9999;
             width: 50px; height: 50px; border-radius: 50%;
             background: rgba(30,30,30,0.8); color: white;
             display: flex; justify-content: center; align-items: center;
@@ -51,12 +56,11 @@
             transition: all 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
         .action-btn:hover { background: #10b981; transform: scale(1.1); color: white; }
-        .action-btn:active { transform: scale(0.95); }
         
         #mode-btn { left: 20px; }
         #home-btn { right: 20px; }
 
-        /* --- LINK INDICE LUMINOSI --- */
+        /* --- LINK INDICE --- */
         @keyframes aiPulse {
             0% { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); }
             50% { background: rgba(52, 211, 153, 0.3); box-shadow: 0 0 15px rgba(52, 211, 153, 0.5); border: 1px solid rgba(110, 231, 183, 0.8); }
@@ -87,13 +91,15 @@
 
     <script>
         (function() {
-            // Rilevamento iniziale
+            // Stato Iniziale
             let isMobile = window.innerWidth < 768;
-            let isSingleMode = isMobile; // Su mobile parte singolo, su desktop doppio
+            let isSingleMode = isMobile; 
             
             const totalPages = 24; 
-            const baseW = 960;
-            const baseH = 680;
+            // Proporzione standard di UNA pagina A4 (Larghezza / Altezza)
+            // 960x680 in doppia pagina significa 480x680 per pagina singola.
+            // Ratio = 480 / 680 = 0.7058
+            const pageRatio = 0.7058; 
 
             const map = [
                 { t: 20, l: 5,  w: 40, h: 8, p: 4 },  { t: 30, l: 5,  w: 40, h: 12, p: 5 }, 
@@ -104,7 +110,7 @@
                 { t: 70, l: 50, w: 40, h: 10, p: 21 },{ t: 82, l: 50, w: 40, h: 8, p: 22 }
             ];
 
-            // RENDER PDF SICURO (Non cancella più i link)
+            // RENDER PDF
             async function renderPage(pageNum, container) {
                 try {
                     const url = pageNum + '.pdf';
@@ -112,7 +118,6 @@
                     const pdf = await loadingTask.promise;
                     const page = await pdf.getPage(1);
                     
-                    // Scala alta per nitidezza
                     const viewport = page.getViewport({ scale: 2.5 }); 
                     
                     const canvas = document.createElement('canvas');
@@ -121,7 +126,6 @@
                     canvas.height = viewport.height;
                     canvas.width = viewport.width;
                     
-                    // Pulisce SOLO il container del PDF, non tutta la pagina!
                     container.innerHTML = ''; 
                     container.appendChild(canvas);
                     
@@ -134,26 +138,20 @@
                 const wrapper = $('#zoom-wrapper');
                 const modeBtn = $('#mode-btn');
 
-                // 1. COSTRUZIONE PAGINE
+                // 1. CREAZIONE PAGINE
                 for (let i = 1; i <= totalPages; i++) {
                     const pg = $('<div class="page"></div>');
-                    
-                    // Creiamo DUE livelli separati
                     const pdfLayer = $('<div class="layer-pdf"></div>');
                     const interactiveLayer = $('<div class="layer-interactive"></div>');
 
-                    pg.append(pdfLayer);
-                    pg.append(interactiveLayer);
+                    pg.append(pdfLayer).append(interactiveLayer);
 
-                    // Contenuto: Video o PDF
                     if (i === 23) {
                         pdfLayer.append(`<video class="magazine-video" playsinline webkit-playsinline><source src="23.mp4" type="video/mp4"></video>`);
                     } else {
-                        // Carichiamo il PDF dentro il SUO layer specifico
                         renderPage(i, pdfLayer[0]);
                     }
 
-                    // Pagina 3: Aggiunta Link nel livello interattivo (SOPRA il PDF)
                     if (i === 3) {
                         map.forEach((l) => {
                             const link = $('<div class="index-link"></div>').css({
@@ -162,40 +160,64 @@
                             interactiveLayer.append(link);
                         });
                     }
-
                     fb.append(pg);
                 }
 
-                // 2. FUNZIONI DI RESIZE E MODALITÀ
+                // 2. MOTORE DI RIDIMENSIONAMENTO MATEMATICO (CORE FIX)
                 function updateLayout() {
-                    // Aggiorna icona
-                    modeBtn.text(isSingleMode ? '📄' : '📖'); 
-
-                    const winW = $(window).width();
-                    const winH = $(window).height();
+                    modeBtn.text(isSingleMode ? '📄' : '📖');
+                    
+                    // Dimensioni disponibili nella finestra (meno margini)
+                    const availW = $(window).width() * 0.95; 
+                    const availH = $(window).height() * 0.95;
+                    
+                    let targetW, targetH;
 
                     if (isSingleMode) {
-                        // MODALITÀ LETTURA (Singola)
-                        wrapper.css({ width: '100%', height: 'auto', transform: 'none' });
-                        // Calcola dimensioni pagina singola
-                        const pageW = winW;
-                        const pageH = winW * 1.41; 
-                        fb.turn('display', 'single');
-                        fb.turn('size', pageW, pageH);
-                    } else {
-                        // MODALITÀ RIVISTA (Doppia)
-                        // Calcola zoom per far stare tutto nello schermo
-                        let scale = Math.min(winW / baseW, winH / baseH) * 0.95;
-                        wrapper.css({ width: baseW, height: baseH, transform: `scale(${scale})` });
+                        // CALCOLO MODALITÀ SINGOLA
+                        // La pagina deve stare nello schermo mantenendo ratio
+                        if (availW / availH > pageRatio) {
+                            // Schermo più largo della pagina: Vincola l'altezza
+                            targetH = availH;
+                            targetW = targetH * pageRatio;
+                        } else {
+                            // Schermo più stretto della pagina: Vincola la larghezza
+                            targetW = availW;
+                            targetH = targetW / pageRatio;
+                        }
                         
+                        fb.turn('display', 'single');
+                        // Forza dimensioni esplicite
+                        fb.turn('size', targetW, targetH);
+                        
+                    } else {
+                        // CALCOLO MODALITÀ DOPPIA (RIVISTA APERTA)
+                        // Ratio doppia pagina = pageRatio * 2 = 1.41
+                        const doubleRatio = pageRatio * 2; 
+
+                        if (availW / availH > doubleRatio) {
+                            // Schermo molto largo: Vincola altezza
+                            targetH = availH;
+                            targetW = targetH * doubleRatio;
+                        } else {
+                            // Schermo stretto: Vincola larghezza
+                            targetW = availW;
+                            targetH = targetW / doubleRatio;
+                        }
+
                         fb.turn('display', 'double');
-                        fb.turn('size', baseW, baseH);
+                        // Forza dimensioni esplicite
+                        fb.turn('size', targetW, targetH);
                     }
+                    
+                    // Centra il flipbook nel wrapper (che è flexbox)
+                    fb.css({ width: targetW, height: targetH });
                 }
 
-                // 3. INIZIALIZZAZIONE TURN.JS
+                // 3. AVVIO TURN.JS
+                // Inizializziamo con dimensioni dummy, tanto updateLayout corregge subito
                 fb.turn({
-                    width: baseW, height: baseH,
+                    width: 1000, height: 600,
                     elevation: 50,
                     duration: 1000,
                     gradients: true,
@@ -203,31 +225,24 @@
                     display: isSingleMode ? 'single' : 'double'
                 });
 
-                // 4. GESTIONE CLICK
-                // Click sui link indice
+                // 4. EVENTI
+                $(window).resize(function() {
+                    clearTimeout(window.resizedFinished);
+                    window.resizedFinished = setTimeout(updateLayout, 100);
+                });
+
+                $('#mode-btn').click(function() {
+                    isSingleMode = !isSingleMode;
+                    updateLayout();
+                });
+
+                $('#home-btn').click(function() { fb.turn('page', 3); });
+
                 $(document).on('click', '.index-link', function() {
                     fb.turn('page', $(this).attr('data-target'));
                 });
 
-                // Click Home
-                $('#home-btn').click(function() {
-                    fb.turn('page', 3); // Vai all'indice
-                });
-
-                // Click Cambio Modalità
-                modeBtn.click(function() {
-                    isSingleMode = !isSingleMode;
-                    updateLayout(); // Ricalcola tutto
-                });
-
-                // Resize Finestra
-                $(window).resize(function() {
-                    // Piccolo debounce per non sovraccaricare
-                    clearTimeout(window.resizedFinished);
-                    window.resizedFinished = setTimeout(updateLayout, 250);
-                });
-
-                // Avvio iniziale
+                // Avvio layout
                 updateLayout();
                 setTimeout(() => fb.addClass('visible'), 500);
             });
