@@ -171,12 +171,13 @@
         (function() {
             let isMobile = window.innerWidth < 768;
             let isSingleMode = isMobile; 
-            const totalPages = 25; // <--- AGGIORNATO A 25!
+            const totalPages = 25; 
             const pageRatio = 0.7058; 
 
-            // NAMESPACE PER IL CONTATORE DI LIKE
+            // NAMESPACE DATI (API ESTERNA)
             const NAMESPACE = 'il-camaleonte-magazine-v1';
-            const KEY = 'likes';
+            const KEY_LIKES = 'likes';
+            const KEY_SHARES = 'shares'; // Nuova chiave nascosta
 
             const map = [
                 { t: 20, l: 5,  w: 40, h: 8, p: 4 },  { t: 30, l: 5,  w: 40, h: 12, p: 5 }, 
@@ -226,7 +227,6 @@
 
                     // LOGICA CONTENUTO PAGINE
                     if (i === 25) {
-                        // --- PAGINA FINALE CTA (HTML GENERATO) ---
                         pdfLayer.append(`
                             <div class="end-page-content">
                                 <div class="end-title">Grazie per la lettura!</div>
@@ -263,22 +263,18 @@
                     fb.append(pg);
                 }
 
-                // --- GESTIONE LIKE & SHARE ---
-                // Nota: Per usare il contatore globale serve CountAPI. 
-                // Qui usiamo un endpoint pubblico. Se non funziona (blocco adblock), mostriamo un fallback.
+                // --- SISTEMA DI MONITORAGGIO INTELLIGENTE ---
                 
                 function updateLikeDisplay(count) {
                     $('#like-count').text(count);
                 }
 
-                // Carica Likes iniziali
-                $.getJSON(`https://api.countapi.xyz/get/${NAMESPACE}/${KEY}`, function(response) {
+                // 1. CARICAMENTO INIZIALE LIKE
+                $.getJSON(`https://api.countapi.xyz/get/${NAMESPACE}/${KEY_LIKES}`, function(response) {
                     updateLikeDisplay(response.value || 0);
-                }).fail(function() {
-                    $('#like-count').text("100+"); // Fallback visivo se API bloccata
-                });
+                }).fail(function() { $('#like-count').text("100+"); });
 
-                // Click Like
+                // 2. GESTIONE LIKE (Click)
                 $(document).on('click', '#like-btn', function() {
                     const btn = $(this);
                     if (localStorage.getItem('hasLikedCamaLeonte')) {
@@ -286,32 +282,43 @@
                         return;
                     }
 
-                    // Incrementa API
-                    $.getJSON(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`, function(response) {
+                    // A. Hit API
+                    $.getJSON(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY_LIKES}`, function(response) {
                         updateLikeDisplay(response.value);
                         btn.addClass('liked');
                         localStorage.setItem('hasLikedCamaLeonte', 'true');
-                    }).fail(function() {
-                        btn.addClass('liked'); // Feedback visivo locale
-                        $('#like-count').text("101+");
-                        localStorage.setItem('hasLikedCamaLeonte', 'true');
+                        
+                        // B. Invia evento a Google Analytics (se presente)
+                        if (typeof gtag !== 'undefined') {
+                            gtag('event', 'like_magazine', { 'event_category': 'engagement' });
+                        }
                     });
                 });
 
-                // Click Share
+                // 3. GESTIONE SHARE (Click) - CON TRACKING NASCOSTO
                 $(document).on('click', '#share-btn', function() {
+                    // A. Conta il click in modo invisibile (Counter SPIA)
+                    $.getJSON(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY_SHARES}`, function() {
+                        console.log("Share tracked silently.");
+                    });
+
+                    // B. Invia evento a Google Analytics (se presente)
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'share_magazine', { 'event_category': 'engagement' });
+                    }
+
                     const shareData = {
                         title: 'Il CamaLEOnte',
                         text: 'Scopri il nuovo numero del Magazine Il CamaLEOnte!',
                         url: window.location.href
                     };
 
+                    // C. Apre il pannello nativo
                     if (navigator.share) {
                         navigator.share(shareData).catch(console.error);
                     } else {
-                        // Fallback Desktop
                         navigator.clipboard.writeText(window.location.href);
-                        alert("Link copiato negli appunti!");
+                        alert("Link copiato negli appunti! Incollalo dove vuoi.");
                     }
                 });
 
