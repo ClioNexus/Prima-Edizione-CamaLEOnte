@@ -6,35 +6,13 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 40px auto; padding: 20px; background: #f4f7f6; }
         .container { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        h1 { color: #1a365d; border-bottom: 3px solid #3498db; padding-bottom: 15px; text-align: center; }
-        h2 { color: #2c5282; margin-top: 35px; border-left: 5px solid #3498db; padding-left: 15px; background: #f8fafc; padding-top: 5px; padding-bottom: 5px; }
+        h1 { color: #1a365d; border-bottom: 3px solid #10b981; padding-bottom: 15px; text-align: center; }
+        h2 { color: #2c5282; margin-top: 35px; border-left: 5px solid #10b981; padding-left: 15px; background: #f8fafc; padding-top: 5px; padding-bottom: 5px; }
+        h3 { color: #2d3748; margin-top: 25px; font-weight: 600; }
         code { background: #edf2f7; padding: 3px 6px; border-radius: 4px; font-family: 'Consolas', monospace; color: #e53e3e; font-size: 0.95em; }
         .alert { background: #fffaf0; border-left: 5px solid #ed8936; padding: 20px; margin: 25px 0; border-radius: 4px; }
         .cmd { background: #1a202c; color: #e2e8f0; padding: 20px; border-radius: 8px; overflow-x: auto; display: block; white-space: pre; font-family: 'Consolas', monospace; margin: 15px 0; }
         
-        /* Stili per le immagini di riferimento */
-        .img-container {
-            text-align: center;
-            margin: 25px 0;
-            background: #ffffff;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .img-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 6px;
-            display: block;
-            margin: 0 auto 10px auto;
-        }
-        .image-caption {
-            font-size: 0.9em;
-            font-style: italic;
-            color: #4a5568;
-        }
-
         .tech-box {
             background: #ebf8ff;
             border: 1px solid #bee3f8;
@@ -45,70 +23,91 @@
         .tech-box strong { color: #2b6cb0; }
         
         ul li { margin-bottom: 10px; }
+        
+        /* Stili per la sezione manutenzione */
+        .maint-step { border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; color: white; margin-right: 5px;}
+        .badge-js { background-color: #f6ad55; }
+        .badge-file { background-color: #4299e1; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📖 Manuale Operativo - Il CamaLEOnte</h1>
-        <p>Questa documentazione riassume le caratteristiche tecniche, le procedure di aggiornamento e gli standard di qualità per la rivista digitale.</p>
+        <h1>📖 Manuale Tecnico & Manutenzione<br><small style="font-size: 0.6em; color: #666;">Il CamaLEOnte - Versione Ibrida (PDF + Video)</small></h1>
+        
+        <p>Questa documentazione illustra l'architettura tecnica del progetto, passata da immagini statiche a un sistema ibrido <strong>Vettoriale (PDF.js) + Multimediale</strong>, e fornisce le istruzioni per l'aggiornamento futuro.</p>
 
-        <h2>1. Funzioni Implementate</h2>
+        <h2>1. Architettura del Sistema</h2>
         <ul>
-            <li><strong>Sfoglio Turn.js:</strong> Animazione fluida delle pagine per un'esperienza realistica.</li>
-            <li><strong>Indice Interattivo:</strong> Area cliccabile a pagina 3 per il salto diretto alle sezioni.</li>
-            <li><strong>Video Autoplay (Pag 23):</strong> Avvio automatico intelligente. Il video riparte da zero ogni volta che si entra nella pagina e si mette in pausa quando si esce.</li>
-            <li><strong>Google Analytics 4:</strong> Monitoraggio degli utenti attivi e del comportamento di lettura integrato.</li>
+            <li><strong>Rendering Ibrido:</strong> Utilizza <em>PDF.js</em> per renderizzare i file PDF su Canvas HTML5 (garantendo nitidezza a qualsiasi livello di zoom) e Tag HTML <code>&lt;video&gt;</code> per le pagine animate.</li>
+            <li><strong>Turn.js:</strong> Gestisce l'effetto "sfoglio" realistico.</li>
+            <li><strong>Layered DOM:</strong> Ogni pagina ha due livelli sovrapposti (z-index):
+                <ul>
+                    <li>Livello 1 (Sotto): Il PDF o il Video.</li>
+                    <li>Livello 10 (Sopra): I link interattivi (per evitare che il rendering sovrascriva i bottoni).</li>
+                </ul>
+            </li>
+            <li><strong>Responsive Logic:</strong> Un algoritmo matematico ridimensiona le pagine senza usare lo zoom CSS, prevenendo bug di clic su dispositivi mobili.</li>
         </ul>
 
-        <h2>2. Ottimizzazione e Qualità Immagini</h2>
-        <p>Per garantire che la rivista sia nitida su ogni dispositivo, è fondamentale seguire questi parametri durante la conversione da PDF a PNG:</p>
-        
+        <h2>2. Standard dei File (Importante)</h2>
         <div class="tech-box">
+            <p>Il sistema è <strong>Case Sensitive</strong> (distingue maiuscole e minuscole). Seguire rigorosamente queste regole:</p>
             <ul>
-                <li><strong>Risoluzione (DPI):</strong> Impostare almeno <strong>300 DPI</strong>. Valori standard (72 o 150) rendono i testi sgranati.</li>
-                <li><strong>Larghezza minima:</strong> Almeno <strong>2000px</strong> per pagina.</li>
-                <li><strong>Effetto Retina:</strong> Caricando immagini a risoluzione doppia rispetto alla visualizzazione (960px), il browser le rimpicciolisce rendendo il testo estremamente nitido.</li>
+                <li><strong>PDF:</strong> Nominare i file <code>1.pdf</code>, <code>2.pdf</code>, ecc. (Tutto minuscolo). Risoluzione consigliata export: "Standard Web" o 150dpi (il rendering vettoriale farà il resto).</li>
+                <li><strong>Video:</strong> Formato <code>.mp4</code>. Nominare come <code>22.mp4</code>. Devono essere privi di traccia audio o mutati via codice per l'autoplay.</li>
+                <li><strong>Numerazione:</strong> I file devono essere consecutivi. Non saltare numeri (es. non passare da 10 a 12).</li>
             </ul>
         </div>
 
-        <div class="alert">
-            <strong>PROCEDURA DI CORREZIONE:</strong> Riconverti il PDF a 300 DPI, rinomina i file da <code>1.png</code> a <code>24.png</code>, sovrascrivili nella cartella locale e procedi con il comando <code>git push</code>.
-        </div>
-
-        <h2>3. Monitoraggio e Performance</h2>
-        <p>Riferimenti visivi per controllare l'andamento della rivista tramite i pannelli di controllo.</p>
+        <h2>3. Guida alla Manutenzione ed Espansione</h2>
         
-        <div class="img-container">
-            <img src="stats_analytics.png" alt="Dati Google Analytics">
-            <div class="image-caption">Monitoraggio degli utenti attivi nel pannello "In tempo reale" di Analytics.</div>
+        <div class="maint-step">
+            <h3>A. Aggiungere o Rimuovere Pagine</h3>
+            <p><span class="badge badge-file">File</span> Carica i nuovi PDF nella cartella principale seguendo la numerazione progressiva.</p>
+            <p><span class="badge badge-js">Codice</span> Apri <code>index.html</code> e modifica la variabile all'inizio dello script:</p>
+            <code class="cmd">const totalPages = 30; // Cambia da 24 a 30</code>
         </div>
 
-        <div class="img-container">
-            <img src="traffico_sito.png" alt="Grafici di traffico">
-            <div class="image-caption">Analisi delle sorgenti di traffico e della durata delle sessioni.</div>
+        <div class="maint-step">
+            <h3>B. Aggiungere un nuovo Video</h3>
+            <p>Se vuoi che la pagina 10 diventi un video invece di un PDF:</p>
+            <ol>
+                <li>Carica il file <code>10.mp4</code> nella cartella.</li>
+                <li>In <code>index.html</code>, cerca il ciclo di creazione pagine e modifica la condizione <code>if</code>:</li>
+            </ol>
+            <code class="cmd">
+// Aggiungi la nuova pagina con l'operatore || (oppure)
+if (i === 22 || i === 23 || i === 10) { 
+    const videoSrc = i + ".mp4";
+    pdfLayer.append(`&lt;video ... src="${videoSrc}" ...&gt;&lt;/video&gt;`);
+}</code>
         </div>
 
-        <div class="img-container">
-            <img src="github_deploy.png" alt="Stato Deployment GitHub">
-            <div class="image-caption">Stato della pubblicazione online su GitHub Pages.</div>
+        <div class="maint-step">
+            <h3>C. Aggiornare l'Indice (Pagina 3)</h3>
+            <p>Per rendere cliccabili nuovi titoli nell'indice, modifica l'array <code>map</code> in <code>index.html</code>:</p>
+            <code class="cmd">
+const map = [
+    // t=Top%, l=Left%, w=Width%, h=Height%, p=Pagina Destinazione
+    { t: 20, l: 5,  w: 40, h: 8, p: 4 },
+    { t: 30, l: 5,  w: 40, h: 12, p: 5 },
+    // Aggiungi qui sotto la nuova riga
+    { t: 50, l: 50, w: 40, h: 8, p: 25 } 
+];</code>
         </div>
 
-        <h2>4. Come Aggiornare il Sito</h2>
-        <p>Esegui questi comandi nel terminale di VS Code ogni volta che modifichi il codice o aggiungi nuove immagini (es. dopo la conversione a 300 DPI):</p>
+        <h2>4. Procedura di Deploy (GitHub)</h2>
+        <p>Ogni volta che aggiungi file (PDF/MP4) o modifichi l'HTML, esegui questi comandi nel terminale di VS Code:</p>
         <code class="cmd">
 git add .
-git commit -m "Aggiornata risoluzione immagini e documentazione"
+git commit -m "Descrizione delle modifiche (es. Aggiunte pagine 25-30)"
 git push origin main
         </code>
+        <div class="alert">
+            <strong>Nota:</strong> Se non vedi le modifiche online, ricorda che GitHub Pages può impiegare fino a 2-3 minuti per aggiornarsi. Prova a svuotare la cache del browser o usa la modalità Incognito.
+        </div>
 
-        <h2>5. Struttura dei File</h2>
-        <ul>
-            <li><code>index.html</code>: Il file sorgente principale del progetto.</li>
-            <li><code>[1-24].png</code>: Le pagine PNG del giornalino (Ottimizzate a 300 DPI).</li>
-            <li><code>23.mp4</code>: Il file video per la pagina 23.</li>
-            <li><code>favicon.png</code>: L'icona visualizzata nella scheda del browser.</li>
-            <li><code>stats_analytics.png</code>: Screenshot di riferimento per la documentazione.</li>
-        </ul>
     </div>
 </body>
 </html>
