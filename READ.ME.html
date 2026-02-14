@@ -13,51 +13,48 @@
         .alert { background: #fffaf0; border-left: 5px solid #ed8936; padding: 20px; margin: 25px 0; border-radius: 4px; }
         .cmd { background: #1a202c; color: #e2e8f0; padding: 20px; border-radius: 8px; overflow-x: auto; display: block; white-space: pre; font-family: 'Consolas', monospace; margin: 15px 0; }
         
-        .tech-box {
-            background: #ebf8ff;
-            border: 1px solid #bee3f8;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
+        .tech-box { background: #ebf8ff; border: 1px solid #bee3f8; padding: 20px; border-radius: 8px; margin: 20px 0; }
         .tech-box strong { color: #2b6cb0; }
         
+        .admin-box { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 15px; border-radius: 8px; margin-top: 10px; }
+        .admin-link { color: #15803d; font-weight: bold; text-decoration: none; border-bottom: 1px dashed #15803d; }
+        .admin-link:hover { background-color: #dcfce7; }
+
         ul li { margin-bottom: 10px; }
-        
-        /* Stili per la sezione manutenzione */
         .maint-step { border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
         .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; color: white; margin-right: 5px;}
         .badge-js { background-color: #f6ad55; }
         .badge-file { background-color: #4299e1; }
-        .badge-ai { background-color: #8b5cf6; } /* Viola per AI */
+        .badge-ai { background-color: #8b5cf6; } 
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📖 Manuale Tecnico & Manutenzione<br><small style="font-size: 0.6em; color: #666;">Il CamaLEOnte - Versione Ibrida (PDF + Video)</small></h1>
+        <h1>📖 Manuale Tecnico & Manutenzione<br><small style="font-size: 0.6em; color: #666;">Il CamaLEOnte - Versione Ibrida (PDF + Video + API)</small></h1>
         
-        <p>Questa documentazione illustra l'architettura tecnica del progetto, passata da immagini statiche a un sistema ibrido <strong>Vettoriale (PDF.js) + Multimediale (Veo AI)</strong>.</p>
+        <p>Questa documentazione illustra l'architettura tecnica del progetto: un sistema ibrido <strong>Vettoriale (PDF.js) + Multimediale (Veo AI) + Social (CountAPI)</strong>.</p>
 
         <h2>1. Architettura del Sistema</h2>
         <ul>
-            <li><strong>Rendering Ibrido:</strong> Utilizza <em>PDF.js</em> per renderizzare i file PDF su Canvas HTML5 (nitidezza Retina) e Tag HTML <code>&lt;video&gt;</code> per le pagine animate.</li>
-            <li><strong>Layered DOM:</strong> Ogni pagina ha due livelli sovrapposti (z-index):
+            <li><strong>Rendering Ibrido:</strong> 
                 <ul>
-                    <li>Livello 1 (Sotto): Il PDF o il Video.</li>
-                    <li>Livello 10 (Sopra): I link interattivi (per evitare sovrascritture).</li>
+                    <li>PDF.js per testo nitido vettoriale.</li>
+                    <li>Tag <code>&lt;video&gt;</code> per pagine animate (Veo AI).</li>
+                    <li><strong>DOM Injection:</strong> La Pagina 25 è generata dinamicamente via codice (HTML/CSS) per gestire le API.</li>
                 </ul>
             </li>
-            <li><strong>Onboarding Immersivo:</strong> Tutorial animato in puro CSS (Glassmorphism) che appare al primo avvio (gestito via <code>localStorage</code>).</li>
-            <li><strong>Responsive Logic:</strong> Algoritmo matematico che ridimensiona le pagine senza zoom CSS, prevenendo bug sui dispositivi mobili.</li>
+            <li><strong>Viral Loop Engine:</strong> Sistema backend-less per contare Like e Share usando API esterne.</li>
+            <li><strong>Protezione:</strong> Offuscamento codice, blocco tasto destro e selezione testo.</li>
+            <li><strong>QR Code:</strong> Statico Vettoriale (Eterno) generato su standard Adobe.</li>
         </ul>
 
         <h2>2. Standard dei File (Importante)</h2>
         <div class="tech-box">
-            <p>Il sistema è <strong>Case Sensitive</strong>. Seguire rigorosamente queste regole:</p>
+            <p>Il sistema è <strong>Case Sensitive</strong>. Regole:</p>
             <ul>
-                <li><strong>PDF:</strong> Nominare <code>1.pdf</code>, <code>2.pdf</code>... (tutto minuscolo).</li>
-                <li><strong>Video:</strong> Formato <code>.mp4</code>. Nominare come il numero pagina (es. <code>22.mp4</code>). Devono essere privi di traccia audio (o mutati) per l'autoplay.</li>
-                <li><strong>Numerazione:</strong> I file devono essere consecutivi. Non saltare numeri.</li>
+                <li><strong>PDF:</strong> <code>1.pdf</code>... (tutto minuscolo).</li>
+                <li><strong>Video:</strong> <code>22.mp4</code>. Senza audio (o mutati).</li>
+                <li><strong>Pagina 25:</strong> NON esiste file fisico. È nel codice JS.</li>
             </ul>
         </div>
 
@@ -65,49 +62,48 @@
         
         <div class="maint-step">
             <h3>A. Aggiungere Pagine</h3>
-            <p><span class="badge badge-file">File</span> Carica i nuovi PDF numerati progressivamente.</p>
-            <p><span class="badge badge-js">Codice</span> In <code>index.html</code>, aggiorna la variabile:</p>
-            <code class="cmd">const totalPages = 30; // Aggiorna il numero totale</code>
+            <p><span class="badge badge-file">File</span> Carica i nuovi PDF numerati.</p>
+            <p><span class="badge badge-js">Codice</span> Aggiorna <code>totalPages</code> in <code>index.html</code>.</p>
         </div>
 
         <div class="maint-step">
-            <h3>B. Inserire un nuovo Video</h3>
-            <p>Per trasformare una pagina (es. pag 10) in video:</p>
-            <ol>
-                <li>Carica <code>10.mp4</code> nella cartella.</li>
-                <li>In <code>index.html</code>, modifica la condizione nel ciclo di creazione:</li>
-            </ol>
-            <code class="cmd">
-// Aggiungi la pagina con l'operatore || (oppure)
-if (i === 22 || i === 23 || i === 10) { 
-    // Il codice inserirà automaticamente il video invece del PDF
-}</code>
+            <h3>B. Inserire Video</h3>
+            <p>Per trasformare una pagina in video, modifica la condizione nel ciclo <code>for</code>:</p>
+            <code class="cmd">if (i === 22 || i === 23) { ... }</code>
         </div>
 
-        <h2>4. Ambiente di Sviluppo & AI Assistant</h2>
-        <p>Per accelerare lo sviluppo futuro, si consiglia l'integrazione di <strong>Gemini</strong> in VS Code.</p>
-        
+        <h2>4. Ambiente di Sviluppo & AI</h2>
         <div class="tech-box" style="background-color: #f3e8ff; border-color: #d8b4fe;">
-            <strong>🚀 Setup Gemini in VS Code (Metodo Gratuito):</strong><br>
-            L'abbonamento <em>Google One AI Premium</em> non abilita direttamente l'editor.
-            Bisogna usare una <strong>API Key per Sviluppatori</strong>.
-        </div>
-
-        <div class="maint-step">
-            <ol>
-                <li>Vai su <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a> e genera una <strong>API Key</strong> (Gratis).</li>
-                <li>In VS Code, installa l'estensione <strong>CodeGPT</strong> (o simile).</li>
-                <li>Imposta il provider su <em>Google / Gemini</em> e incolla la chiave.</li>
-            </ol>
-            <p><span class="badge badge-ai">AI Tip</span> Utile per chiedere: <em>"Spiegami come modificare l'animazione del tutorial"</em> o <em>"Perché il video non parte?"</em> direttamente nel codice.</p>
+            <strong>🚀 Setup Gemini in VS Code:</strong><br>
+            Usa una <strong>API Key per Sviluppatori</strong> (da Google AI Studio) nell'estensione <strong>CodeGPT</strong>.
         </div>
 
         <h2>5. Procedura di Deploy</h2>
         <code class="cmd">
 git add .
-git commit -m "Descrizione modifiche"
+git commit -m "🆕 Nuova Feature: [Descrizione]"
 git push origin main
         </code>
+        <p><strong>Standard Commit:</strong> Usare icone (🆕, 🐛, 📝) per chiarezza.</p>
+
+        <h2>6. 🕵️‍♂️ Pannello Admin & Analytics</h2>
+        <p>Usa questi link segreti per monitorare l'andamento della rivista:</p>
+        
+        <div class="admin-box">
+            <h3>📊 Dati in Tempo Reale</h3>
+            <p>Clicca per vedere i dati grezzi dal database (JSON):</p>
+            <ul>
+                <li>
+                    <strong>Contatore Like (Pubblico):</strong><br>
+                    <a href="https://api.countapi.xyz/info/il-camaleonte-magazine-v1/likes" target="_blank" class="admin-link">Visualizza Totale Like</a>
+                </li>
+                <li>
+                    <strong>Contatore Share (Nascosto/Spia):</strong><br>
+                    <a href="https://api.countapi.xyz/info/il-camaleonte-magazine-v1/shares" target="_blank" class="admin-link">Visualizza Totale Tentativi Condivisione</a>
+                </li>
+            </ul>
+            <p><small><em>Nota: Se il valore è <code>{"value": X}</code>, X è il numero di interazioni totali.</em></small></p>
+        </div>
 
     </div>
 </body>
