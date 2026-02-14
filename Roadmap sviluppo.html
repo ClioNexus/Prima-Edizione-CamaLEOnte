@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap Tecnica - Il CamaLEOnte</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-blue: #3b82f6;
+            --border: #333;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 50px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--accent-green);
+            padding-left: 15px;
+        }
+
+        /* TIMELINE STYLES */
+        .timeline {
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-green);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge.problem { background-color: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+        .badge.solution { background-color: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
+        .badge.phase { background-color: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
+
+        h3 { margin: 0; font-size: 1.2rem; }
+
+        ul { margin: 0; padding-left: 20px; color: var(--text-muted); }
+        li { margin-bottom: 8px; }
+
+        code {
+            background-color: #000;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--accent-green);
+            font-size: 0.9em;
+        }
+
+        .snippet {
+            display: block;
+            background-color: #000;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            overflow-x: auto;
+            border-left: 3px solid var(--accent-green);
+            color: #ccc;
+        }
+
+        footer {
+            margin-top: 80px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Roadmap Tecnica: Il CamaLEOnte</h1>
+            <div class="subtitle">Analisi dei Problemi, Limitazioni e Soluzioni Architetturali</div>
+            <p style="margin-top: 20px; color: #fff;">Versione Definitiva: PDF Rendering & Responsive Hybrid Engine</p>
+        </header>
+
+        <h2>🔴 1. Analisi dei Problemi & Limitazioni</h2>
+        <div class="timeline">
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>Fase 1: Il "Muro" della Qualità Raster</h3>
+                    <span class="badge problem">Qualità Visiva</span>
+                </div>
+                <ul>
+                    <li><strong>Il Limite dei PNG/JPG:</strong> L'estrazione delle pagine come immagini statiche causava "pixelation" (sgranatura) immediata allo zoom. L'articolo a pagina 11 risultava illeggibile.</li>
+                    <li><strong>Testo Non Selezionabile:</strong> Impossibile copiare frasi o usare la ricerca (CTRL+F), rendendo la rivista inaccessibile.</li>
+                    <li><strong>Blocco Logico Browser:</strong> Impossibile applicare effetti 3D (sfoglio) direttamente al visualizzatore PDF nativo del browser.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Fase 2: L'Incubo della Responsività</h3>
+                    <span class="badge problem">Mobile UX</span>
+                </div>
+                <ul>
+                    <li><strong>Il Paradosso della Doppia Pagina:</strong> <code>turn.js</code> mostra due pagine affiancate. Su smartphone verticale (9:16), questo riduceva il contenuto a una striscia minuscola illeggibile.</li>
+                    <li><strong>Blocco dello Zoom:</strong> L'uso errato di <code>user-scalable=no</code> impediva all'utente mobile di ingrandire i dettagli.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Fase 3: Integrazione Multimediale</h3>
+                    <span class="badge problem">Audio/Video</span>
+                </div>
+                <ul>
+                    <li><strong>Ibrido Video/Carta (Pagina 23):</strong> Su iOS, i video tendevano ad andare in fullscreen forzato o continuavano a riprodurre l'audio anche dopo aver cambiato pagina.</li>
+                    <li><strong>Ostacolo CORS:</strong> Testando in locale (file://), il browser bloccava il caricamento asincrono delle risorse per sicurezza.</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <h2>🛠️ 2. Arsenale delle Soluzioni (Implementation)</h2>
+
+        <div class="card" style="border-left: 4px solid var(--accent-green);">
+            <div class="card-header">
+                <h3>✅ 1. La Rivoluzione Vettoriale (PDF.js)</h3>
+                <span class="badge solution">Rendering Core</span>
+            </div>
+            <p>Abbandono delle immagini statiche per il rendering dinamico tramite <strong>Mozilla PDF.js</strong>.</p>
+            <ul>
+                <li>Uso di <code>&lt;canvas&gt;</code> HTML5 al posto di <code>&lt;img&gt;</code>.</li>
+                <li><strong>Scale Boosting:</strong> Rendering a scala 2.0x (Desktop) e 3.0x (Mobile) per nitidezza "Retina" durante lo zoom.</li>
+            </ul>
+            <code class="snippet">const viewport = page.getViewport({ scale: isMobile ? 3.0 : 2.0 });<br>await page.render({ canvasContext: context, viewport: viewport }).promise;</code>
+        </div>
+
+        <div class="card" style="border-left: 4px solid var(--accent-green);">
+            <div class="card-header">
+                <h3>✅ 2. Adaptive Layout Engine</h3>
+                <span class="badge solution">Responsive Logic</span>
+            </div>
+            <p>Il codice ora "sente" il dispositivo e adatta la modalità di lettura.</p>
+            <ul>
+                <li><strong>Mobile (< 768px):</strong> Modalità <code>display: single</code>. Una pagina alla volta, full-width.</li>
+                <li><strong>Desktop (> 768px):</strong> Modalità <code>display: double</code>. Classica vista a rivista aperta.</li>
+            </ul>
+        </div>
+
+        <div class="card" style="border-left: 4px solid var(--accent-green);">
+            <div class="card-header">
+                <h3>✅ 3. User Experience Potenziata</h3>
+                <span class="badge solution">Controlli UI</span>
+            </div>
+            <p>Restituito il controllo all'utente per una navigazione fluida.</p>
+            <ul>
+                <li><strong>Zoom Sbloccato:</strong> Meta tag <code>user-scalable=yes</code> e rimozione blocchi CSS su mobile.</li>
+                <li><strong>Bottone Modalità (📖/📄):</strong> Permette di switchare tra vista singola e doppia manualmente.</li>
+                <li><strong>Home Button (🏠):</strong> Navigazione rapida sempre presente fuori dal canvas.</li>
+            </ul>
+        </div>
+
+        <div class="card" style="border-left: 4px solid var(--accent-green);">
+            <div class="card-header">
+                <h3>✅ 4. Architettura Ibrida (Il "Panino")</h3>
+                <span class="badge solution">Interattività</span>
+            </div>
+            <p>Soluzione per rendere cliccabile un PDF renderizzato.</p>
+            <ul>
+                <li><strong>Layer 1 (Sotto):</strong> Canvas con il disegno vettoriale del PDF.</li>
+                <li><strong>Layer 2 (Sopra):</strong> Div HTML trasparenti assoluti per i link (Indice Pagina 3).</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>Documento generato per il progetto <strong>Il CamaLEOnte</strong> - 2024/2025</p>
+            <p style="opacity: 0.6;">Tecnologie: HTML5, PDF.js, Turn.js, jQuery, CSS3 Flexbox</p>
+        </footer>
+    </div>
+
+</body>
+</html>
