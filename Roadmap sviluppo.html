@@ -14,6 +14,7 @@
             --accent-green: #10b981;
             --accent-red: #ef4444;
             --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
             --border: #333;
         }
 
@@ -97,7 +98,7 @@
 
         .badge.problem { background-color: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
         .badge.solution { background-color: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
-        .badge.phase { background-color: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
+        .badge.critical { background-color: rgba(139, 92, 246, 0.2); color: var(--accent-purple); }
 
         h3 { margin: 0; font-size: 1.2rem; }
 
@@ -141,7 +142,7 @@
         <header>
             <h1>Roadmap Tecnica: Il CamaLEOnte</h1>
             <div class="subtitle">Analisi dei Problemi, Limitazioni e Soluzioni Architetturali</div>
-            <p style="margin-top: 20px; color: #fff;">Versione Definitiva: PDF Rendering & Responsive Hybrid Engine</p>
+            <p style="margin-top: 20px; color: #fff;">Versione Definitiva: Stable Layered Hybrid Engine</p>
         </header>
 
         <h2>🔴 1. Analisi dei Problemi & Limitazioni</h2>
@@ -153,9 +154,8 @@
                     <span class="badge problem">Qualità Visiva</span>
                 </div>
                 <ul>
-                    <li><strong>Il Limite dei PNG/JPG:</strong> L'estrazione delle pagine come immagini statiche causava "pixelation" (sgranatura) immediata allo zoom. L'articolo a pagina 11 risultava illeggibile.</li>
-                    <li><strong>Testo Non Selezionabile:</strong> Impossibile copiare frasi o usare la ricerca (CTRL+F), rendendo la rivista inaccessibile.</li>
-                    <li><strong>Blocco Logico Browser:</strong> Impossibile applicare effetti 3D (sfoglio) direttamente al visualizzatore PDF nativo del browser.</li>
+                    <li><strong>Il Limite dei PNG/JPG:</strong> L'estrazione delle pagine come immagini statiche causava "pixelation" (sgranatura) immediata allo zoom.</li>
+                    <li><strong>Testo Non Selezionabile:</strong> Impossibile usare funzioni di ricerca o copia-incolla.</li>
                 </ul>
             </div>
 
@@ -165,8 +165,8 @@
                     <span class="badge problem">Mobile UX</span>
                 </div>
                 <ul>
-                    <li><strong>Il Paradosso della Doppia Pagina:</strong> <code>turn.js</code> mostra due pagine affiancate. Su smartphone verticale (9:16), questo riduceva il contenuto a una striscia minuscola illeggibile.</li>
-                    <li><strong>Blocco dello Zoom:</strong> L'uso errato di <code>user-scalable=no</code> impediva all'utente mobile di ingrandire i dettagli.</li>
+                    <li><strong>Il Paradosso della Doppia Pagina:</strong> Su smartphone verticale, due pagine affiancate diventavano una striscia illeggibile.</li>
+                    <li><strong>Blocco dello Zoom:</strong> L'uso di <code>user-scalable=no</code> impediva l'ingrandimento manuale.</li>
                 </ul>
             </div>
 
@@ -176,8 +176,19 @@
                     <span class="badge problem">Audio/Video</span>
                 </div>
                 <ul>
-                    <li><strong>Ibrido Video/Carta (Pagina 23):</strong> Su iOS, i video tendevano ad andare in fullscreen forzato o continuavano a riprodurre l'audio anche dopo aver cambiato pagina.</li>
-                    <li><strong>Ostacolo CORS:</strong> Testando in locale (file://), il browser bloccava il caricamento asincrono delle risorse per sicurezza.</li>
+                    <li><strong>Ibrido Video/Carta:</strong> Conflitti audio e fullscreen su iOS.</li>
+                    <li><strong>Ostacolo CORS:</strong> Blocchi di sicurezza caricando file locali o asincroni senza server HTTPS.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-color: var(--accent-purple);">
+                <div class="card-header">
+                    <h3>Fase 4: Il Crash dell'Interattività (Race Condition)</h3>
+                    <span class="badge critical">Bug Critico</span>
+                </div>
+                <ul>
+                    <li><strong>Conflitto DOM Asincrono:</strong> Il caricamento del PDF è più lento della creazione dell'HTML. Quando il PDF finiva di caricare, la funzione di pulizia (<code>innerHTML = ''</code>) cancellava anche i link interattivi appena creati.</li>
+                    <li><strong>Blocco UI:</strong> I bottoni (Home/Modalità) perdevano il focus o venivano coperti da layer invisibili, rendendo la navigazione impossibile.</li>
                 </ul>
             </div>
 
@@ -190,12 +201,7 @@
                 <h3>✅ 1. La Rivoluzione Vettoriale (PDF.js)</h3>
                 <span class="badge solution">Rendering Core</span>
             </div>
-            <p>Abbandono delle immagini statiche per il rendering dinamico tramite <strong>Mozilla PDF.js</strong>.</p>
-            <ul>
-                <li>Uso di <code>&lt;canvas&gt;</code> HTML5 al posto di <code>&lt;img&gt;</code>.</li>
-                <li><strong>Scale Boosting:</strong> Rendering a scala 2.0x (Desktop) e 3.0x (Mobile) per nitidezza "Retina" durante lo zoom.</li>
-            </ul>
-            <code class="snippet">const viewport = page.getViewport({ scale: isMobile ? 3.0 : 2.0 });<br>await page.render({ canvasContext: context, viewport: viewport }).promise;</code>
+            <p>Rendering dinamico su Canvas HTML5 a scala aumentata (2.0x/3.0x) per nitidezza Retina.</p>
         </div>
 
         <div class="card" style="border-left: 4px solid var(--accent-green);">
@@ -203,36 +209,37 @@
                 <h3>✅ 2. Adaptive Layout Engine</h3>
                 <span class="badge solution">Responsive Logic</span>
             </div>
-            <p>Il codice ora "sente" il dispositivo e adatta la modalità di lettura.</p>
-            <ul>
-                <li><strong>Mobile (< 768px):</strong> Modalità <code>display: single</code>. Una pagina alla volta, full-width.</li>
-                <li><strong>Desktop (> 768px):</strong> Modalità <code>display: double</code>. Classica vista a rivista aperta.</li>
-            </ul>
+            <p>Switch automatico tra <code>display: single</code> (Mobile) e <code>display: double</code> (Desktop).</p>
         </div>
 
         <div class="card" style="border-left: 4px solid var(--accent-green);">
             <div class="card-header">
-                <h3>✅ 3. User Experience Potenziata</h3>
+                <h3>✅ 3. UX Potenziata</h3>
                 <span class="badge solution">Controlli UI</span>
             </div>
-            <p>Restituito il controllo all'utente per una navigazione fluida.</p>
-            <ul>
-                <li><strong>Zoom Sbloccato:</strong> Meta tag <code>user-scalable=yes</code> e rimozione blocchi CSS su mobile.</li>
-                <li><strong>Bottone Modalità (📖/📄):</strong> Permette di switchare tra vista singola e doppia manualmente.</li>
-                <li><strong>Home Button (🏠):</strong> Navigazione rapida sempre presente fuori dal canvas.</li>
-            </ul>
+            <p>Zoom sbloccato su mobile e pulsanti di controllo (Modalità/Home) fissi.</p>
         </div>
 
         <div class="card" style="border-left: 4px solid var(--accent-green);">
             <div class="card-header">
-                <h3>✅ 4. Architettura Ibrida (Il "Panino")</h3>
-                <span class="badge solution">Interattività</span>
+                <h3>✅ 4. Hosting GitHub Pages</h3>
+                <span class="badge solution">Infrastruttura</span>
             </div>
-            <p>Soluzione per rendere cliccabile un PDF renderizzato.</p>
+            <p>Risoluzione dei problemi CORS tramite hosting statico HTTPS.</p>
+        </div>
+
+        <div class="card" style="border-left: 4px solid var(--accent-purple);">
+            <div class="card-header">
+                <h3>✅ 5. Architettura a Livelli (The Safe-Render)</h3>
+                <span class="badge solution">Stabilità</span>
+            </div>
+            <p>Soluzione definitiva al problema della sovrascrittura. Ogni pagina ora ha due contenitori sovrapposti (z-index).</p>
             <ul>
-                <li><strong>Layer 1 (Sotto):</strong> Canvas con il disegno vettoriale del PDF.</li>
-                <li><strong>Layer 2 (Sopra):</strong> Div HTML trasparenti assoluti per i link (Indice Pagina 3).</li>
+                <li><strong>.layer-pdf (z-index: 1):</strong> Contiene il Canvas PDF. Viene pulito e ricaricato senza rischi.</li>
+                <li><strong>.layer-interactive (z-index: 10):</strong> Contiene i Link verdi. Non viene mai toccato dal rendering del PDF.</li>
+                <li><strong>Position Fixed:</strong> I bottoni UI sono stati spostati fuori dal flusso del libro per evitare conflitti di click.</li>
             </ul>
+            <code class="snippet">&lt;div class="layer-pdf"&gt;&lt;/div&gt;<br>&lt;div class="layer-interactive"&gt;&lt;/div&gt;</code>
         </div>
 
         <footer>
