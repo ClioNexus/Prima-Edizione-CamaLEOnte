@@ -29,84 +29,85 @@
         .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; color: white; margin-right: 5px;}
         .badge-js { background-color: #f6ad55; }
         .badge-file { background-color: #4299e1; }
+        .badge-ai { background-color: #8b5cf6; } /* Viola per AI */
     </style>
 </head>
 <body>
     <div class="container">
         <h1>📖 Manuale Tecnico & Manutenzione<br><small style="font-size: 0.6em; color: #666;">Il CamaLEOnte - Versione Ibrida (PDF + Video)</small></h1>
         
-        <p>Questa documentazione illustra l'architettura tecnica del progetto, passata da immagini statiche a un sistema ibrido <strong>Vettoriale (PDF.js) + Multimediale</strong>, e fornisce le istruzioni per l'aggiornamento futuro.</p>
+        <p>Questa documentazione illustra l'architettura tecnica del progetto, passata da immagini statiche a un sistema ibrido <strong>Vettoriale (PDF.js) + Multimediale (Veo AI)</strong>.</p>
 
         <h2>1. Architettura del Sistema</h2>
         <ul>
-            <li><strong>Rendering Ibrido:</strong> Utilizza <em>PDF.js</em> per renderizzare i file PDF su Canvas HTML5 (garantendo nitidezza a qualsiasi livello di zoom) e Tag HTML <code>&lt;video&gt;</code> per le pagine animate.</li>
-            <li><strong>Turn.js:</strong> Gestisce l'effetto "sfoglio" realistico.</li>
+            <li><strong>Rendering Ibrido:</strong> Utilizza <em>PDF.js</em> per renderizzare i file PDF su Canvas HTML5 (nitidezza Retina) e Tag HTML <code>&lt;video&gt;</code> per le pagine animate.</li>
             <li><strong>Layered DOM:</strong> Ogni pagina ha due livelli sovrapposti (z-index):
                 <ul>
                     <li>Livello 1 (Sotto): Il PDF o il Video.</li>
-                    <li>Livello 10 (Sopra): I link interattivi (per evitare che il rendering sovrascriva i bottoni).</li>
+                    <li>Livello 10 (Sopra): I link interattivi (per evitare sovrascritture).</li>
                 </ul>
             </li>
-            <li><strong>Responsive Logic:</strong> Un algoritmo matematico ridimensiona le pagine senza usare lo zoom CSS, prevenendo bug di clic su dispositivi mobili.</li>
+            <li><strong>Onboarding Immersivo:</strong> Tutorial animato in puro CSS (Glassmorphism) che appare al primo avvio (gestito via <code>localStorage</code>).</li>
+            <li><strong>Responsive Logic:</strong> Algoritmo matematico che ridimensiona le pagine senza zoom CSS, prevenendo bug sui dispositivi mobili.</li>
         </ul>
 
         <h2>2. Standard dei File (Importante)</h2>
         <div class="tech-box">
-            <p>Il sistema è <strong>Case Sensitive</strong> (distingue maiuscole e minuscole). Seguire rigorosamente queste regole:</p>
+            <p>Il sistema è <strong>Case Sensitive</strong>. Seguire rigorosamente queste regole:</p>
             <ul>
-                <li><strong>PDF:</strong> Nominare i file <code>1.pdf</code>, <code>2.pdf</code>, ecc. (Tutto minuscolo). Risoluzione consigliata export: "Standard Web" o 150dpi (il rendering vettoriale farà il resto).</li>
-                <li><strong>Video:</strong> Formato <code>.mp4</code>. Nominare come <code>22.mp4</code>. Devono essere privi di traccia audio o mutati via codice per l'autoplay.</li>
-                <li><strong>Numerazione:</strong> I file devono essere consecutivi. Non saltare numeri (es. non passare da 10 a 12).</li>
+                <li><strong>PDF:</strong> Nominare <code>1.pdf</code>, <code>2.pdf</code>... (tutto minuscolo).</li>
+                <li><strong>Video:</strong> Formato <code>.mp4</code>. Nominare come il numero pagina (es. <code>22.mp4</code>). Devono essere privi di traccia audio (o mutati) per l'autoplay.</li>
+                <li><strong>Numerazione:</strong> I file devono essere consecutivi. Non saltare numeri.</li>
             </ul>
         </div>
 
-        <h2>3. Guida alla Manutenzione ed Espansione</h2>
+        <h2>3. Guida alla Manutenzione</h2>
         
         <div class="maint-step">
-            <h3>A. Aggiungere o Rimuovere Pagine</h3>
-            <p><span class="badge badge-file">File</span> Carica i nuovi PDF nella cartella principale seguendo la numerazione progressiva.</p>
-            <p><span class="badge badge-js">Codice</span> Apri <code>index.html</code> e modifica la variabile all'inizio dello script:</p>
-            <code class="cmd">const totalPages = 30; // Cambia da 24 a 30</code>
+            <h3>A. Aggiungere Pagine</h3>
+            <p><span class="badge badge-file">File</span> Carica i nuovi PDF numerati progressivamente.</p>
+            <p><span class="badge badge-js">Codice</span> In <code>index.html</code>, aggiorna la variabile:</p>
+            <code class="cmd">const totalPages = 30; // Aggiorna il numero totale</code>
         </div>
 
         <div class="maint-step">
-            <h3>B. Aggiungere un nuovo Video</h3>
-            <p>Se vuoi che la pagina 10 diventi un video invece di un PDF:</p>
+            <h3>B. Inserire un nuovo Video</h3>
+            <p>Per trasformare una pagina (es. pag 10) in video:</p>
             <ol>
-                <li>Carica il file <code>10.mp4</code> nella cartella.</li>
-                <li>In <code>index.html</code>, cerca il ciclo di creazione pagine e modifica la condizione <code>if</code>:</li>
+                <li>Carica <code>10.mp4</code> nella cartella.</li>
+                <li>In <code>index.html</code>, modifica la condizione nel ciclo di creazione:</li>
             </ol>
             <code class="cmd">
-// Aggiungi la nuova pagina con l'operatore || (oppure)
+// Aggiungi la pagina con l'operatore || (oppure)
 if (i === 22 || i === 23 || i === 10) { 
-    const videoSrc = i + ".mp4";
-    pdfLayer.append(`&lt;video ... src="${videoSrc}" ...&gt;&lt;/video&gt;`);
+    // Il codice inserirà automaticamente il video invece del PDF
 }</code>
         </div>
 
-        <div class="maint-step">
-            <h3>C. Aggiornare l'Indice (Pagina 3)</h3>
-            <p>Per rendere cliccabili nuovi titoli nell'indice, modifica l'array <code>map</code> in <code>index.html</code>:</p>
-            <code class="cmd">
-const map = [
-    // t=Top%, l=Left%, w=Width%, h=Height%, p=Pagina Destinazione
-    { t: 20, l: 5,  w: 40, h: 8, p: 4 },
-    { t: 30, l: 5,  w: 40, h: 12, p: 5 },
-    // Aggiungi qui sotto la nuova riga
-    { t: 50, l: 50, w: 40, h: 8, p: 25 } 
-];</code>
+        <h2>4. Ambiente di Sviluppo & AI Assistant</h2>
+        <p>Per accelerare lo sviluppo futuro, si consiglia l'integrazione di <strong>Gemini</strong> in VS Code.</p>
+        
+        <div class="tech-box" style="background-color: #f3e8ff; border-color: #d8b4fe;">
+            <strong>🚀 Setup Gemini in VS Code (Metodo Gratuito):</strong><br>
+            L'abbonamento <em>Google One AI Premium</em> non abilita direttamente l'editor.
+            Bisogna usare una <strong>API Key per Sviluppatori</strong>.
         </div>
 
-        <h2>4. Procedura di Deploy (GitHub)</h2>
-        <p>Ogni volta che aggiungi file (PDF/MP4) o modifichi l'HTML, esegui questi comandi nel terminale di VS Code:</p>
+        <div class="maint-step">
+            <ol>
+                <li>Vai su <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a> e genera una <strong>API Key</strong> (Gratis).</li>
+                <li>In VS Code, installa l'estensione <strong>CodeGPT</strong> (o simile).</li>
+                <li>Imposta il provider su <em>Google / Gemini</em> e incolla la chiave.</li>
+            </ol>
+            <p><span class="badge badge-ai">AI Tip</span> Utile per chiedere: <em>"Spiegami come modificare l'animazione del tutorial"</em> o <em>"Perché il video non parte?"</em> direttamente nel codice.</p>
+        </div>
+
+        <h2>5. Procedura di Deploy</h2>
         <code class="cmd">
 git add .
-git commit -m "Descrizione delle modifiche (es. Aggiunte pagine 25-30)"
+git commit -m "Descrizione modifiche"
 git push origin main
         </code>
-        <div class="alert">
-            <strong>Nota:</strong> Se non vedi le modifiche online, ricorda che GitHub Pages può impiegare fino a 2-3 minuti per aggiornarsi. Prova a svuotare la cache del browser o usa la modalità Incognito.
-        </div>
 
     </div>
 </body>
