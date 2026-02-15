@@ -251,7 +251,8 @@
                         `);
                     } else if (i === 22 || i === 23 || i === 24) { 
                         const videoSrc = i + ".mp4"; 
-                        pdfLayer.append(`<video class="magazine-video" playsinline webkit-playsinline loop muted><source src="${videoSrc}" type="video/mp4"></video>`);
+                        // MODIFICA: RIMOSSO 'LOOP' - IL VIDEO ORA SI FERMA ALLA FINE
+                        pdfLayer.append(`<video class="magazine-video" playsinline webkit-playsinline muted><source src="${videoSrc}" type="video/mp4"></video>`);
                     } else {
                         renderPage(i, pdfLayer[0]);
                     }
