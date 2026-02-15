@@ -8775,6 +8775,235 @@ SOCIAL_PLATFORMS.forEach(platform => {
                             </div>
                         </div>
 
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Maintenance: Counter Reset Strategy (Pre-Launch)</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step problem-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Il Problema dei Dati di Test</div>
+                                        <div class="step-description">
+                                            Dopo tutti i test, i contatori sono "sporchi":
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Situazione Pre-Launch:
+- Likes: 15 (test manuali)
+- Shares: 4 (test share button)
+- Instagram: 8 (test utm_source)
+
+Problema:
+→ Questi numeri non rappresentano traffico reale
+→ Dashboard mostra dati fake ai docenti
+→ Metriche iniziali inquinate
+
+Obiettivo:
+→ Partire da ZERO al lancio ufficiale
+→ Solo traffico reale conteggiato</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Perché Non Possiamo "Resettare"</div>
+                                        <div class="step-description">
+                                            CounterAPI pubblico non ha funzione reset:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>No Authentication:</strong> Nessun login, nessun pannello admin</li>
+                                                <li><strong>No Reset Button:</strong> Altrimenti chiunque potrebbe azzerare contatori altrui</li>
+                                                <li><strong>Solo Incremento:</strong> API supporta solo <code>/up</code>, non <code>/set</code> pubblicamente</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Soluzione: Cambio Chiavi (Channel Switching)</div>
+                                        <div class="step-description">
+                                            La strategia professionale: Cambiare "frequenza radio":
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Metafora:
+→ Canale v1: Pieno di rumore di test (15 like fake)
+→ Canale v2: Nuovo e pulito (0 like, dati reali)
+
+Implementazione:
+→ Rinominare le chiavi (slug) nei file
+→ CounterAPI crea automaticamente nuovo counter a 0
+→ Vecchi counter v1 ignorati, ma conservati
+
+Vantaggi:
+✅ Reset istantaneo
+✅ Zero downtime
+✅ Vecchi dati conservati per confronto</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 4</div>
+                                        <div class="step-title">Modifica index.html (Rivista)</div>
+                                        <div class="step-description">
+                                            Aggiornamento chiavi nel file principale:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// BEFORE (Test Phase)
+const KEY_LIKES = 'likes-v1';
+const KEY_SHARES = 'shares-v1';
+const KEY_INSTAGRAM = 'instagram-v1';
+
+// AFTER (Official Launch)
+const KEY_LIKES = 'likes-official';      // ← Nuovo canale pulito
+const KEY_SHARES = 'shares-official';    // ← Nuovo canale pulito
+const KEY_INSTAGRAM = 'ig-official';     // ← Nuovo canale pulito
+
+// Alternative naming:
+// - likes-v2 / shares-v2 / instagram-v2
+// - likes-prod / shares-prod / instagram-prod
+// - likes-launch / shares-launch / instagram-launch
+
+// Scegli nomenclatura che preferisci, l'importante è cambiarle tutte</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 5</div>
+                                        <div class="step-title">Modifica dashboard.html (Pannello Admin)</div>
+                                        <div class="step-description">
+                                            ⚠️ **CRITICO:** Stesse identiche modifiche nel dashboard:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// BEFORE
+const KEY_LIKES = 'likes-v1';
+const KEY_SHARES = 'shares-v1';
+const KEY_INSTAGRAM = 'instagram-v1';
+
+// AFTER
+const KEY_LIKES = 'likes-official';
+const KEY_SHARES = 'shares-official';
+const KEY_INSTAGRAM = 'ig-official';
+
+⚠️ ATTENZIONE:
+Se modifichi solo index.html e NON dashboard.html:
+→ Rivista scrive su canale nuovo (official)
+→ Dashboard legge canale vecchio (v1)
+→ Dashboard mostra 0 forever (bug!)
+
+Soluzione: Aggiornare ENTRAMBI i file con stesse chiavi</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 6</div>
+                                        <div class="step-title">Deploy: The "Big Bang" Reset</div>
+                                        <div class="step-description">
+                                            Procedura di deploy per reset contatori:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Git workflow
+git add index.html dashboard.html
+git commit -m "🧹 RESET: Aggiornamento chiavi API per lancio ufficiale"
+git push origin main
+
+Timeline:
+T = 0s:    Push su GitHub
+T = 30s:   GitHub Pages rebuild
+T = 60s:   Sito aggiornato online
+T = 61s:   Prossimo utente → Incrementa counter "official" (0 → 1)
+
+Risultato:
+- Dashboard mostra tutti 0
+- Primo like reale sarà il primo numero
+- Dati puliti da subito</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 7</div>
+                                        <div class="step-title">Timing Strategico: Quando Fare il Reset</div>
+                                        <div class="step-description">
+                                            Best practice per timing del reset:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>❌ NON fare reset:
+- Durante i test (perdi capacità di verificare funzionamento)
+- Ore di punta (studenti potrebbero vedere dashboard vuota)
+- Metà campagna (perdi dati storici parziali)
+
+✅ Momento IDEALE per reset:
+- La sera prima del lancio ufficiale
+- Esempio: Venerdì sera, lancio social Lunedì mattina
+- Finestra temporale: 19:00-22:00 quando nessuno sta testando
+
+Workflow Consigliato:
+1. Testing Phase (2 settimane): Usa chiavi v1
+   → Testa tutto liberamente, non importa se sporchi dati
+2. Pre-Launch (Venerdì sera): Reset chiavi → official
+3. Launch (Lunedì): Docenti postano su Instagram
+4. Monitor (Martedì): Dashboard mostra primi dati reali puliti</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 8</div>
+                                        <div class="step-title">Backup Dati Test (Opzionale)</div>
+                                        <div class="step-description">
+                                            Se vuoi conservare memoria dei dati di test:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Prima del reset, copia i numeri finali test
+GET https://api.counterapi.dev/v1/camaleonte-v1/likes-v1/
+→ { count: 15 }
+
+GET https://api.counterapi.dev/v1/camaleonte-v1/shares-v1/
+→ { count: 4 }
+
+GET https://api.counterapi.dev/v1/camaleonte-v1/instagram-v1/
+→ { count: 8 }
+
+// Salvare in file README.md o note interne:
+## Test Phase Results (Pre-Launch)
+- Test Likes: 15
+- Test Shares: 4
+- Test Instagram: 8
+- Testing Period: 1-14 Feb 2025
+
+Utility: Dimostra che hai testato approfonditamente</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 9</div>
+                                        <div class="step-title">Future: Versioning Strategy</div>
+                                        <div class="step-description">
+                                            Per prossimi numeri rivista, pattern scalabile:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Numero 1 (Febbraio 2025):
+- likes-official
+- shares-official
+- ig-official
+
+Numero 2 (Aprile 2025):
+- likes-official-apr
+- shares-official-apr
+- ig-official-apr
+
+Oppure namespace separato:
+- Numero 1: namespace camaleonte-v1
+- Numero 2: namespace camaleonte-v2
+
+Pro: Storicizzazione dati per numero
+Contro: Complessità dashboard (più API calls)</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
