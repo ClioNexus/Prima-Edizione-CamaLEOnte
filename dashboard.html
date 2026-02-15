@@ -48,21 +48,25 @@
         </div>
 
         <div class="kpi-grid">
+            
             <div class="card likes">
                 <h3>Apprezzamento Utenti</h3>
                 <div class="number" id="total-likes">-</div>
                 <div class="trend">❤️ Likes Totali</div>
             </div>
+
             <div class="card shares">
                 <h3>Viralità</h3>
                 <div class="number" id="total-shares">-</div>
                 <div class="trend">🚀 Condivisioni Tentate</div>
             </div>
-            <div class="card">
-                <h3>Engagement Rate</h3>
-                <div class="number" id="engagement-rate">-%</div>
-                <div class="trend">📊 Tasso di Coinvolgimento</div>
+
+            <div class="card" style="border-color: #f59e0b; cursor: pointer;" onclick="window.open('https://analytics.google.com/', '_blank')" title="Clicca per aprire Google Analytics">
+                <h3>Analisi Traffico</h3>
+                <div class="number" style="font-size: 2rem; margin: 23px 0;">📊 Vedi Report</div>
+                <div class="trend" style="color: #f59e0b;">Vai a Google Analytics ↗</div>
             </div>
+
         </div>
 
         <div class="chart-container">
@@ -75,11 +79,11 @@
     </div>
 
     <script>
-        // --- CONFIGURAZIONE DASHBOARD (Aggiornata con i tuoi Slugs) ---
+        // --- CONFIGURAZIONE DASHBOARD ---
         const NAMESPACE = 'camaleonte-v1'; 
         const API_URL = 'https://api.counterapi.dev/v1';
         
-        // Chiavi (Slug) corrette
+        // Chiavi (Slug)
         const KEY_LIKES = 'likes-v1';
         const KEY_SHARES = 'shares-v1';
 
@@ -98,12 +102,6 @@
                 $('#total-likes').text(likes);
                 $('#total-shares').text(shares);
                 
-                // Calcolo finto Engagement Rate (per fare scena)
-                // (Likes + Shares) * coefficiente
-                let rate = 0;
-                if(likes > 0) rate = ((likes + (shares * 2)) / 10).toFixed(1); 
-                $('#engagement-rate').text(rate + '%');
-
                 // 3. Aggiorna Grafico
                 updateChart(likes, shares);
 
