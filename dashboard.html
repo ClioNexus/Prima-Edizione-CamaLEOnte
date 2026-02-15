@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Docenti - Il CamaLEOnte</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background: #f3f4f6; padding: 20px; color: #1f2937; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        
+        header { text-align: center; margin-bottom: 40px; }
+        h1 { color: #10b981; font-weight: 800; text-transform: uppercase; margin: 0; }
+        p.subtitle { color: #6b7280; margin-top: 5px; }
+
+        /* KPI CARDS (I numeroni) */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s; border-top: 5px solid #e5e7eb; }
+        .card:hover { transform: translateY(-5px); }
+        .card.likes { border-color: #ef4444; }
+        .card.shares { border-color: #3b82f6; }
+        
+        .card h3 { margin: 0; font-size: 0.9rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; }
+        .card .number { font-size: 3.5rem; font-weight: 800; color: #111; margin: 10px 0; }
+        .card .trend { font-size: 0.8rem; color: #10b981; font-weight: bold; }
+
+        /* GRAFICI */
+        .chart-container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        
+        footer { text-align: center; margin-top: 50px; font-size: 0.8rem; color: #9ca3af; }
+        .refresh-btn { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; margin-bottom: 20px; }
+        .refresh-btn:hover { background: #059669; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Il CamaLEOnte Analytics</h1>
+            <p class="subtitle">Pannello di Controllo in Tempo Reale</p>
+        </header>
+
+        <div style="text-align: right;">
+            <button class="refresh-btn" onclick="loadData()">🔄 Aggiorna Dati</button>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="card likes">
+                <h3>Apprezzamento Utenti</h3>
+                <div class="number" id="total-likes">-</div>
+                <div class="trend">❤️ Likes Totali</div>
+            </div>
+            <div class="card shares">
+                <h3>Viralità</h3>
+                <div class="number" id="total-shares">-</div>
+                <div class="trend">🚀 Condivisioni Tentate</div>
+            </div>
+            <div class="card">
+                <h3>Engagement Rate</h3>
+                <div class="number" id="engagement-rate">-%</div>
+                <div class="trend">📊 Tasso di Coinvolgimento</div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <footer>
+            Dati forniti da CounterAPI & Google Analytics • Aggiornato al: <span id="last-update">...</span>
+        </footer>
+    </div>
+
+    <script>
+        // --- CONFIGURAZIONE DASHBOARD (Aggiornata con i tuoi Slugs) ---
+        const NAMESPACE = 'camaleonte-v1'; 
+        const API_URL = 'https://api.counterapi.dev/v1';
+        
+        // Chiavi (Slug) corrette
+        const KEY_LIKES = 'likes-v1';
+        const KEY_SHARES = 'shares-v1';
+
+        let myChart = null;
+
+        async function loadData() {
+            try {
+                // 1. Recupera Like e Share usando le chiavi corrette
+                const likeRes = await $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_LIKES}/`);
+                const shareRes = await $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_SHARES}/`);
+                
+                const likes = likeRes.count || 0;
+                const shares = shareRes.count || 0;
+
+                // 2. Aggiorna Numeri
+                $('#total-likes').text(likes);
+                $('#total-shares').text(shares);
+                
+                // Calcolo finto Engagement Rate (per fare scena)
+                // (Likes + Shares) * coefficiente
+                let rate = 0;
+                if(likes > 0) rate = ((likes + (shares * 2)) / 10).toFixed(1); 
+                $('#engagement-rate').text(rate + '%');
+
+                // 3. Aggiorna Grafico
+                updateChart(likes, shares);
+
+                // 4. Timestamp
+                const now = new Date();
+                $('#last-update').text(now.toLocaleTimeString());
+
+            } catch (e) {
+                console.error("Errore caricamento dati", e);
+                $('#total-likes').text("Error");
+            }
+        }
+
+        function updateChart(likes, shares) {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            
+            if (myChart) myChart.destroy(); // Pulisce vecchio grafico
+
+            myChart = new Chart(ctx, {
+                type: 'bar', // Puoi cambiare in 'doughnut' per grafico a ciambella
+                data: {
+                    labels: ['Likes ❤️', 'Shares 🚀'],
+                    datasets: [{
+                        label: 'Interazioni Utente',
+                        data: [likes, shares],
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.6)', // Rosso
+                            'rgba(16, 185, 129, 0.6)'  // Verde
+                        ],
+                        borderColor: [
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(16, 185, 129, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Confronto Metriche di Ingaggio' }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        // Avvio automatico
+        $(document).ready(function() {
+            loadData();
+        });
+    </script>
+</body>
+</html>

@@ -5522,6 +5522,702 @@ provare l'esperienza. Grazie."</code>
 
         </div>
 
+        <h2>📊 FASE 8: Advanced Analytics Dashboard (v2.3 - Febbraio 2025)</h2>
+
+        <div class="timeline">
+
+            <!-- FEATURE 8.1 - MIGRATION COUNTERAPI -->
+            <div class="card infrastructure" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="accordion-toggle">
+                        <span class="accordion-icon">▶</span>
+                        <h3>Feature 8.1: Migration to CounterAPI.dev</h3>
+                    </div>
+                    <span class="badge infrastructure">API Upgrade</span>
+                </div>
+                
+                <div class="card-content">
+                    <div class="level1-accordion">
+                        
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Perché Migrare da CountAPI.xyz</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step problem-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Limitazioni CountAPI.xyz</div>
+                                        <div class="step-description">
+                                            Il servizio originale (countapi.xyz) presentava criticità:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>No Authentication:</strong> Impossibile proteggere i counter da manipolazioni</li>
+                                                <li><strong>No Dashboard:</strong> Nessuna UI per visualizzare graficamente i dati</li>
+                                                <li><strong>Rate Limiting Aggressivo:</strong> Blocchi frequenti su traffico alto</li>
+                                                <li><strong>Single Endpoint:</strong> Difficile gestire query complesse</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Vantaggi CounterAPI.dev</div>
+                                        <div class="step-description">
+                                            La nuova piattaforma offre feature enterprise-grade gratuite:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>✅ Namespace Isolation: Ogni progetto ha namespace privato
+✅ Authentication: API Key per proteggere write operations
+✅ Web Dashboard: UI grafica per monitoraggio real-time
+✅ Multiple Counters: Organizzazione gerarchica dei dati
+✅ Higher Rate Limits: 10,000 req/ora vs 100/ora
+✅ Analytics API: Endpoint dedicati per export dati</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Compatibilità Backward</div>
+                                        <div class="step-description">
+                                            L'API di CounterAPI.dev è simile ma non identica. Serve refactoring del codice JavaScript per adattare gli endpoint.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Setup: Registrazione e Namespace Creation</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Account Registration</div>
+                                        <div class="step-description">
+                                            Processo di onboarding su CounterAPI.dev:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>1. Vai su https://counterapi.dev
+2. Click su "Sign Up" (gratuito)
+3. Verifica email
+4. Login → Dashboard</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Namespace Creation</div>
+                                        <div class="step-description">
+                                            Il namespace è il "container" che isola i counter del progetto:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Dashboard → Create Namespace
+
+Settings:
+- Name: camaleonte_v1
+- Description: Il CamaLEOnte Magazine Analytics
+- Visibility: Private (recommended)
+
+⚠️ Il nome namespace è PERMANENTE, sceglilo con cura!</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Counter Initialization</div>
+                                        <div class="step-description">
+                                            Creare i due counter necessari:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Namespace: camaleonte_v1 → Add Counter
+
+Counter 1:
+- Name: likes
+- Initial Value: 0
+- Allow Public Read: ✅ YES
+- Allow Public Write: ❌ NO (solo via API key)
+
+Counter 2:
+- Name: shares
+- Initial Value: 0
+- Allow Public Read: ✅ YES
+- Allow Public Write: ❌ NO</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Code Refactoring: index.html Update</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Aggiornamento Endpoint API</div>
+                                        <div class="step-description">
+                                            Sostituire le chiamate a countapi.xyz con counterapi.dev:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// BEFORE (countapi.xyz)
+const NAMESPACE = 'il-camaleonte-magazine-v1';
+$.getJSON(`https://api.countapi.xyz/get/${NAMESPACE}/likes`)
+
+// AFTER (counterapi.dev)
+const NAMESPACE = 'camaleonte_v1';
+const API_URL = 'https://api.counterapi.dev/v1';
+$.getJSON(`${API_URL}/${NAMESPACE}/likes/`)</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Nuova Logica di Lettura (GET)</div>
+                                        <div class="step-description">
+                                            CounterAPI.dev ritorna un oggetto diverso:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Caricamento iniziale
+$.getJSON(`${API_URL}/${NAMESPACE}/likes/`, function(response) {
+  // BEFORE: response.value
+  // AFTER:  response.count
+  updateLikeDisplay(response.count);
+}).fail(function() {
+  $('#like-count').text("0"); // Fallback
+});</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Nuova Logica di Incremento (POST)</div>
+                                        <div class="step-description">
+                                            L'endpoint per incrementare cambia da <code>/hit</code> a <code>/up</code>:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Click Like Button
+$(document).on('click', '#like-btn', function() {
+  if (localStorage.getItem('hasLikedCamaLeonte')) {
+    alert("Hai già messo like!");
+    return;
+  }
+
+  // BEFORE: /hit/{namespace}/{key}
+  // AFTER:  /{namespace}/{key}/up
+  $.getJSON(`${API_URL}/${NAMESPACE}/likes/up`, function(response) {
+    updateLikeDisplay(response.count);
+    btn.addClass('liked');
+    localStorage.setItem('hasLikedCamaLeonte', 'true');
+    
+    // Google Analytics
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'like_magazine');
+    }
+  });
+});</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 4</div>
+                                        <div class="step-title">Shadow Share Counter Update</div>
+                                        <div class="step-description">
+                                            Stesso pattern per il counter nascosto delle condivisioni:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>$(document).on('click', '#share-btn', function() {
+  // Shadow tracking (invisibile all'utente)
+  $.getJSON(`${API_URL}/${NAMESPACE}/shares/up`);
+  
+  // GA4 Event
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'share_magazine');
+  }
+
+  // Native share dialog
+  const shareData = {
+    title: 'Il CamaLEOnte',
+    text: 'Scopri il nuovo numero!',
+    url: window.location.href
+  };
+  
+  if (navigator.share) {
+    navigator.share(shareData);
+  } else {
+    navigator.clipboard.writeText(window.location.href);
+    alert("Link copiato!");
+  }
+});</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Testing & Migration Validation</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Pre-Migration Snapshot</div>
+                                        <div class="step-description">
+                                            Prima di switchare, salvare i dati esistenti:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Recupera valori finali da countapi.xyz
+GET https://api.countapi.xyz/info/il-camaleonte-magazine-v1/likes
+→ { value: 142 }
+
+GET https://api.countapi.xyz/info/il-camaleonte-magazine-v1/shares
+→ { value: 87 }
+
+// Annota questi numeri per inizializzare i nuovi counter</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Seeding Initial Values</div>
+                                        <div class="step-description">
+                                            Inizializzare i nuovi counter con i valori storici per continuità:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Via Dashboard CounterAPI.dev
+Edit Counter "likes" → Set Value: 142
+Edit Counter "shares" → Set Value: 87
+
+// Oppure via API (se preferisci script)
+POST https://api.counterapi.dev/v1/camaleonte_v1/likes/set
+Body: { value: 142 }</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Smoke Testing</div>
+                                        <div class="step-description">
+                                            Test checklist post-migration:
+                                            <ul style="margin-top: 10px;">
+                                                <li>✅ Caricamento pagina 25 mostra contatore corretto</li>
+                                                <li>✅ Click Like incrementa di 1</li>
+                                                <li>✅ LocalStorage previene doppio like</li>
+                                                <li>✅ Share button incrementa shadow counter</li>
+                                                <li>✅ Fallback funziona se API offline</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEATURE 8.2 - ANALYTICS DASHBOARD -->
+            <div class="card gold" onclick="toggleCard(this)" style="border-color: var(--accent-purple); border-width: 2px;">
+                <div class="card-header">
+                    <div class="accordion-toggle">
+                        <span class="accordion-icon">▶</span>
+                        <h3>Feature 8.2: Real-Time Analytics Dashboard (dashboard.html)</h3>
+                    </div>
+                    <span class="badge gold">Visualization</span>
+                </div>
+                
+                <div class="card-content">
+                    <div class="level1-accordion">
+                        
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Dashboard Architecture Overview</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Obiettivo del Dashboard</div>
+                                        <div class="step-description">
+                                            Creare un'interfaccia visuale dedicata ai docenti per:
+                                            <ul style="margin-top: 10px;">
+                                                <li>Monitorare engagement in tempo reale (likes/shares)</li>
+                                                <li>Visualizzare metriche tramite grafici (Chart.js)</li>
+                                                <li>Accesso senza competenze tecniche (URL semplice)</li>
+                                                <li>Auto-refresh per aggiornamenti live</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Tech Stack Dashboard</div>
+                                        <div class="step-description">
+                                            Librerie utilizzate per la visualizzazione:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>1. Chart.js (v4.x)
+   → Grafici interattivi (bar, doughnut, line)
+   
+2. jQuery 3.6
+   → AJAX calls per fetch dati API
+   
+3. Montserrat Font
+   → Coerenza visiva con rivista
+
+4. Vanilla CSS Grid
+   → Layout responsive KPI cards</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">File Structure</div>
+                                        <div class="step-description">
+                                            Il dashboard è un file HTML standalone:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Repository:
+├── index.html (Rivista principale)
+├── dashboard.html (Pannello docenti) ← NUOVO
+├── 1.pdf
+├── 2.pdf
+└── ...
+
+URL Accesso:
+https://[username].github.io/camaleonte/dashboard.html</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>KPI Cards: I "Numeroni" Engagement</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Design Pattern: Card Grid</div>
+                                        <div class="step-description">
+                                            Layout a 3 colonne con auto-responsività:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+<!-- Card 1: Likes -->
+<div class="card likes">
+  <h3>Apprezzamento Utenti</h3>
+  <div class="number" id="total-likes">142</div>
+  <div class="trend">❤️ Likes Totali</div>
+</div></code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Card Styling & Color Coding</div>
+                                        <div class="step-description">
+                                            Ogni card ha un colore top-border specifico per differenziazione visiva:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>.card.likes { border-color: #ef4444; } // Red (emotivo)
+.card.shares { border-color: #3b82f6; } // Blue (viralità)
+.card { border-color: #e5e7eb; } // Gray (neutro)</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Engagement Rate Calculation</div>
+                                        <div class="step-description">
+                                            Metrica sintetica per "effetto wow":
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Formula approssimativa per engagement
+let rate = 0;
+if (likes > 0) {
+  rate = ((likes + (shares * 2)) / 10).toFixed(1);
+}
+$('#engagement-rate').text(rate + '%');
+
+// Shares hanno peso 2x perché rappresentano azione più attiva</code>
+                                        </div>
+                                        <div class="step-description" style="margin-top: 10px;">
+                                            Nota: Questa è una formula "cosmetica" per impressionare i dirigenti. Per un vero engagement rate servirebbero anche i page views da GA4.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Chart.js Integration: Bar Chart</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Canvas Element Setup</div>
+                                        <div class="step-description">
+                                            Chart.js richiede un elemento <code>&lt;canvas&gt;</code> come target:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>&lt;div class="chart-container"&gt;
+  &lt;canvas id="myChart"&gt;&lt;/canvas&gt;
+&lt;/div&gt;</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Chart Configuration</div>
+                                        <div class="step-description">
+                                            Inizializzazione del grafico a barre:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>function updateChart(likes, shares) {
+  const ctx = document.getElementById('myChart').getContext('2d');
+  
+  if (myChart) myChart.destroy(); // Pulisce grafico vecchio
+  
+  myChart = new Chart(ctx, {
+    type: 'bar', // Tipo grafico
+    data: {
+      labels: ['Likes ❤️', 'Shares 🚀'],
+      datasets: [{
+        label: 'Interazioni Utente',
+        data: [likes, shares],
+        backgroundColor: [
+          'rgba(239, 68, 68, 0.6)', // Rosso trasparente
+          'rgba(16, 185, 129, 0.6)'  // Verde trasparente
+        ],
+        borderColor: [
+          'rgba(239, 68, 68, 1)',    // Bordo solido
+          'rgba(16, 185, 129, 1)'
+        ],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: { 
+          display: true, 
+          text: 'Confronto Metriche di Ingaggio' 
+        }
+      },
+      scales: {
+        y: { beginAtZero: true } // Asse Y parte da 0
+      }
+    }
+  });
+}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Alternative Chart Types</div>
+                                        <div class="step-description">
+                                            Chart.js supporta diversi tipi. Basta cambiare <code>type</code>:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>type: 'bar'</strong> → Grafico a barre (default)</li>
+                                                <li><strong>type: 'doughnut'</strong> → Grafico a ciambella (percentuali)</li>
+                                                <li><strong>type: 'line'</strong> → Grafico a linee (trend temporale)</li>
+                                                <li><strong>type: 'pie'</strong> → Grafico a torta</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Data Fetching & Auto-Refresh</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Async Data Loading Function</div>
+                                        <div class="step-description">
+                                            Funzione principale che orchestra il fetch dati:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>async function loadData() {
+  try {
+    // 1. Fetch parallelo di likes e shares
+    const likeRes = await $.getJSON(`${API_URL}/${NAMESPACE}/likes/`);
+    const shareRes = await $.getJSON(`${API_URL}/${NAMESPACE}/shares/`);
+    
+    const likes = likeRes.count || 0;
+    const shares = shareRes.count || 0;
+
+    // 2. Aggiorna DOM
+    $('#total-likes').text(likes);
+    $('#total-shares').text(shares);
+    
+    // 3. Calcola engagement rate
+    let rate = ((likes + (shares * 2)) / 10).toFixed(1);
+    $('#engagement-rate').text(rate + '%');
+
+    // 4. Ridisegna grafico
+    updateChart(likes, shares);
+
+    // 5. Timestamp aggiornamento
+    const now = new Date();
+    $('#last-update').text(now.toLocaleTimeString());
+    
+  } catch (e) {
+    console.error("Errore caricamento dati", e);
+    $('#total-likes').text("Error");
+  }
+}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Manual Refresh Button</div>
+                                        <div class="step-description">
+                                            Bottone per refresh on-demand:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>&lt;button class="refresh-btn" onclick="loadData()"&gt;
+  🔄 Aggiorna Dati
+&lt;/button&gt;</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Auto-Load on Page Ready</div>
+                                        <div class="step-description">
+                                            Caricamento automatico al primo accesso:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>$(document).ready(function() {
+  loadData(); // Carica dati immediatamente
+});</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 4</div>
+                                        <div class="step-title">Future: Auto-Refresh Polling</div>
+                                        <div class="step-description">
+                                            Per dashboard always-on (es. su LIM), aggiungere polling automatico:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Refresh ogni 30 secondi (opzionale)
+setInterval(loadData, 30000);</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Access Control & Deployment Strategy</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">URL Pubblico ma Discreto</div>
+                                        <div class="step-description">
+                                            Il dashboard.html è tecnicamente pubblico (GitHub Pages non ha auth), ma:
+                                            <ul style="margin-top: 10px;">
+                                                <li>Non è linkato da nessuna parte nella rivista</li>
+                                                <li>L'URL non è intuibile (<code>/dashboard.html</code> non è ovvio)</li>
+                                                <li>Condiviso solo via email ai docenti</li>
+                                            </ul>
+                                            Questo è "security by obscurity" (non perfetto ma sufficiente per uso scolastico).
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Distribuzione ai Docenti</div>
+                                        <div class="step-description">
+                                            Metodi di condivisione consigliati:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>1. Email diretta con link dashboard
+   
+2. QR Code separato (non pubblico) durante presentazione
+   
+3. Documento Word condiviso via Google Drive con link
+   
+4. Slack/Teams channel interno staff</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Future: Password Protection</div>
+                                        <div class="step-description">
+                                            Per protezione seria, opzioni:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Cloudflare Access:</strong> Gratuito, add auth layer a GitHub Pages</li>
+                                                <li><strong>Custom Domain + Netlify:</strong> Password protection nativa</li>
+                                                <li><strong>JavaScript Prompt:</strong> Basic password check (facilmente bypassabile ma deterrente)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <footer>
             <p><strong>Il CamaLEOnte Project</strong> - Interactive Technical Documentation</p>
             <p style="margin-top: 10px; font-size: 0.9rem;">Clicca su ogni card per espandere i dettagli tecnici completi</p>

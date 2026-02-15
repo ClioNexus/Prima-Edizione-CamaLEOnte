@@ -174,10 +174,14 @@
             const totalPages = 25; 
             const pageRatio = 0.7058; 
 
-            // NAMESPACE DATI (API ESTERNA)
-            const NAMESPACE = 'il-camaleonte-magazine-v1';
-            const KEY_LIKES = 'likes';
-            const KEY_SHARES = 'shares'; // Nuova chiave nascosta
+            // --- CONFIGURAZIONE NUOVO SERVER (CounterAPI.dev) ---
+            // ⚠️ Configurazione corretta basata sui tuoi screenshot
+            const NAMESPACE = 'camaleonte-v1';  // Slug del workspace
+            const API_URL = 'https://api.counterapi.dev/v1';
+            
+            // Chiavi dei contatori (Slug)
+            const KEY_LIKES = 'likes-v1';
+            const KEY_SHARES = 'shares-v1';
 
             const map = [
                 { t: 20, l: 5,  w: 40, h: 8, p: 4 },  { t: 30, l: 5,  w: 40, h: 12, p: 5 }, 
@@ -263,18 +267,19 @@
                     fb.append(pg);
                 }
 
-                // --- SISTEMA DI MONITORAGGIO INTELLIGENTE ---
+                // --- SISTEMA DI MONITORAGGIO INTELLIGENTE (Updated to CounterAPI.dev) ---
                 
                 function updateLikeDisplay(count) {
                     $('#like-count').text(count);
                 }
 
-                // 1. CARICAMENTO INIZIALE LIKE
-                $.getJSON(`https://api.countapi.xyz/get/${NAMESPACE}/${KEY_LIKES}`, function(response) {
-                    updateLikeDisplay(response.value || 0);
-                }).fail(function() { $('#like-count').text("100+"); });
+                // 1. CARICAMENTO INIZIALE LIKE (Lettura)
+                // Usa NAMESPACE e KEY_LIKES definiti in alto
+                $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_LIKES}/`, function(response) {
+                    updateLikeDisplay(response.count);
+                }).fail(function() { $('#like-count').text("0"); });
 
-                // 2. GESTIONE LIKE (Click)
+                // 2. GESTIONE LIKE (Click) - Incrementa
                 $(document).on('click', '#like-btn', function() {
                     const btn = $(this);
                     if (localStorage.getItem('hasLikedCamaLeonte')) {
@@ -282,9 +287,9 @@
                         return;
                     }
 
-                    // A. Hit API
-                    $.getJSON(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY_LIKES}`, function(response) {
-                        updateLikeDisplay(response.value);
+                    // A. Hit API (CounterAPI usa /up per incrementare)
+                    $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_LIKES}/up`, function(response) {
+                        updateLikeDisplay(response.count);
                         btn.addClass('liked');
                         localStorage.setItem('hasLikedCamaLeonte', 'true');
                         
@@ -298,7 +303,8 @@
                 // 3. GESTIONE SHARE (Click) - CON TRACKING NASCOSTO
                 $(document).on('click', '#share-btn', function() {
                     // A. Conta il click in modo invisibile (Counter SPIA)
-                    $.getJSON(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY_SHARES}`, function() {
+                    // Usa KEY_SHARES definito in alto
+                    $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_SHARES}/up`, function() {
                         console.log("Share tracked silently.");
                     });
 
