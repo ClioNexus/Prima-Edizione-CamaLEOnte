@@ -6498,6 +6498,101 @@ $.getJSON(`${API_URL}/${NAMESPACE}/likes-v1/`)
 }</code>
                                         </div>
                                     </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 4</div>
+                                        <div class="step-title">Dashboard UX Improvements</div>
+                                        <div class="step-description">
+                                            Ulteriori ottimizzazioni al dashboard.html per migliore user experience:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// 1. Rimozione Engagement Rate "Finto"
+// Rimossa card con calcolo arbitrario ((likes + shares*2)/10)
+// Motivo: Metrica non standard, poteva confondere i docenti
+
+// 2. Aggiunta Google Analytics Direct Link
+&lt;div class="card" style="border-color: #f59e0b; cursor: pointer;" 
+     onclick="window.open('https://analytics.google.com/', '_blank')"&gt;
+  &lt;h3&gt;Analisi Traffico&lt;/h3&gt;
+  &lt;div class="number"&gt;📊 Vedi Report&lt;/div&gt;
+  &lt;div class="trend"&gt;Vai a Google Analytics ↗&lt;/div&gt;
+&lt;/div&gt;
+
+// 3. Costanti Slug Esplicite
+const KEY_LIKES = 'likes-v1';
+const KEY_SHARES = 'shares-v1';
+
+// Uso:
+$.getJSON(`${API_URL}/${NAMESPACE}/${KEY_LIKES}/`)</code>
+                                        </div>
+                                        <div class="step-description" style="margin-top: 15px;">
+                                            <strong>Rationale delle modifiche:</strong>
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Rimozione Engagement Rate:</strong> Evita metriche "inventate" che non hanno standard di riferimento</li>
+                                                <li><strong>Google Analytics Link:</strong> One-click access per docenti a metriche professionali (page views, bounce rate, geografiche)</li>
+                                                <li><strong>Costanti Slug:</strong> Migliore manutenibilità del codice, cambio slug centralizzato</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 5</div>
+                                        <div class="step-title">Comparativa: Google Analytics vs CounterAPI.dev</div>
+                                        <div class="step-description">
+                                            Il progetto utilizza **due "cervelli"** distinti per tracking complementare:
+                                        </div>
+                                        <div class="step-description" style="margin-top: 15px; padding: 20px; background: rgba(59, 130, 246, 0.05); border-radius: 8px;">
+                                            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                                                <thead>
+                                                    <tr style="background: rgba(0,0,0,0.1);">
+                                                        <th style="padding: 12px; text-align: left; border: 1px solid var(--border);">Caratteristica</th>
+                                                        <th style="padding: 12px; text-align: left; border: 1px solid var(--border);">📊 Google Analytics</th>
+                                                        <th style="padding: 12px; text-align: left; border: 1px solid var(--border);">🔢 CounterAPI.dev</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="padding: 10px; border: 1px solid var(--border); font-weight: bold;">Il suo ruolo</td>
+                                                        <td style="padding: 10px; border: 1px solid var(--border);">È la <strong>Telecamera di Sicurezza</strong></td>
+                                                        <td style="padding: 10px; border: 1px solid var(--border);">È il <strong>Tabellone Punti</strong></td>
+                                                    </tr>
+                                                    <tr style="background: rgba(0,0,0,0.02);">
+                                                        <td style="padding: 10px; border: 1px solid var(--border); font-weight: bold;">Cosa registra</td>
+                                                        <td style="padding: 10px; border: 1px solid var(--border);"><strong>CHI</strong> sono, <strong>DA DOVE</strong> arrivano (QR Code vs Link), <strong>QUANTO</strong> restano a leggere, che dispositivo usano</td>
+                                                        <td style="padding: 10px; border: 1px solid var(--border);">Solo due numeri grezzi: <strong>Quanti Like</strong> totali e <strong>Quante Share</strong> totali</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 10px; border: 1px solid var(--border); font-weight: bold;">Privacy</td>
+                                                        <td style="padding: 10px; border: 1px solid var(--border);">I dati sono <strong>Privati</strong> (li vedi solo tu col login)</td>
+                                                        <td style="padding: 10px; border: 1px solid var(--border);">I dati sono <strong>Pubblici</strong> (il numero dei like deve essere visto da tutti sulla rivista)</td>
+                                                    </tr>
+                                                    <tr style="background: rgba(0,0,0,0.02);">
+                                                        <td style="padding: 10px; border: 1px solid var(--border); font-weight: bold;">Complessità</td>
+                                                        <td style="padding: 10px; border: 1px solid var(--border);">Altissima (Grafici, mappe, flussi)</td>
+                                                        <td style="padding: 10px; border: 1px solid var(--border);">Bassissima (Solo un numero che sale: 1, 2, 3...)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 10px; border: 1px solid var(--border); font-weight: bold;">Esempio</td>
+                                                        <td style="padding: 10px; border: 1px solid var(--border); font-style: italic;">"Un utente da Milano, con iPhone, è entrato dal QR Code alle 10:00"</td>
+                                                        <td style="padding: 10px; border: 1px solid var(--border); font-style: italic;">"Siamo a 154 Like totali"</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="step-description" style="margin-top: 15px;">
+                                            <strong>💡 Perché Usare Entrambi?</strong>
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Google Analytics:</strong> Per analisi professionali riservate ai docenti (chi, quando, da dove)</li>
+                                                <li><strong>CounterAPI.dev:</strong> Per gamification pubblica visibile agli studenti (like counter sulla rivista)</li>
+                                                <li><strong>Complementarità:</strong> GA4 non può mostrare contatori pubblici in tempo reale, CounterAPI non può tracciare UTM/geo</li>
+                                            </ul>
+                                        </div>
+                                        <div class="step-description" style="margin-top: 15px; padding: 15px; background: rgba(16, 185, 129, 0.1); border-radius: 8px;">
+                                            <strong>🎯 In pratica:</strong><br>
+                                            GA4 risponde a: <em>"Quanti studenti hanno letto la rivista questa settimana?"</em><br>
+                                            CounterAPI risponde a: <em>"Quanto è piaciuta agli studenti?"</em> (Like count)
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
