@@ -37,15 +37,15 @@
         /* --- CREDITS OVERLAY (PAGINA 2) --- */
         .credits-container {
             position: absolute;
-            bottom: 40px; /* Regola questa altezza se necessario */
+            bottom: 40px; 
             width: 100%;
             text-align: center;
-            z-index: 20; /* Deve essere sopra il video (z-index 5) */
-            color: #0f0f0f; /* Colore scuro */
+            z-index: 20; 
+            color: #0f0f0f; 
             font-family: 'Montserrat', sans-serif;
-            opacity: 0; /* Inizialmente INVISIBILE */
-            transition: opacity 1.5s ease-in-out; /* Apparizione morbida */
-            pointer-events: none; /* Lascia passare i click */
+            opacity: 0; 
+            transition: opacity 1.5s ease-in-out; 
+            pointer-events: none; 
         }
         .credits-names {
             font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;
@@ -53,7 +53,6 @@
         .credits-pg-num {
             margin-top: 15px; font-weight: 800; font-size: 1.1rem;
         }
-        /* Classe che verrà aggiunta via JS dopo 8 secondi */
         .credits-visible { opacity: 1 !important; }
 
 
@@ -197,13 +196,14 @@
             const totalPages = 25; 
             const pageRatio = 0.7058; 
 
-            // --- CONFIGURAZIONE NUOVO SERVER (CounterAPI.dev) ---
+            // --- CONFIGURAZIONE API (CounterAPI.dev) ---
             const NAMESPACE = 'camaleonte-v1';  
             const API_URL = 'https://api.counterapi.dev/v1';
             
             // Chiavi dei contatori (Slug)
             const KEY_LIKES = 'likes-v1';
             const KEY_SHARES = 'shares-v1';
+            const KEY_IG = 'ig-visits-v1'; // NUOVO TRACKER INSTAGRAM
 
             const map = [
                 { t: 20, l: 5,  w: 40, h: 8, p: 4 },  { t: 30, l: 5,  w: 40, h: 12, p: 5 }, 
@@ -253,7 +253,6 @@
 
                     // LOGICA CONTENUTO PAGINE
                     if (i === 25) {
-                        // ... Pagina finale (invariata) ...
                         pdfLayer.append(`
                             <div class="end-page-content">
                                 <div class="end-title">Grazie per la lettura!</div>
@@ -273,10 +272,9 @@
                             </div>
                         `);
                     } else if (i === 2) { 
-                        // --- PAGINA 2: VIDEO CON OVERLAY TESTO A COMPARSA ---
+                        // --- PAGINA 2: VIDEO CON OVERLAY TESTO ---
                         const videoSrc = i + ".mp4"; 
                         pdfLayer.append(`<video class="magazine-video" playsinline webkit-playsinline muted><source src="${videoSrc}" type="video/mp4"></video>`);
-                        // Aggiungiamo il testo nascosto sopra il video
                         pdfLayer.append(`
                             <div class="credits-container">
                                 <div class="credits-names">Graphic designers: Aurora Baratta, Bertine Maniriho, Xhuliano Hysenji</div>
@@ -284,7 +282,7 @@
                             </div>
                         `);
                     } else if (i === 22 || i === 23 || i === 24) { 
-                        // --- ALTRI VIDEO (senza overlay) ---
+                        // --- ALTRI VIDEO ---
                         const videoSrc = i + ".mp4"; 
                         pdfLayer.append(`<video class="magazine-video" playsinline webkit-playsinline muted><source src="${videoSrc}" type="video/mp4"></video>`);
                     } else {
@@ -304,6 +302,18 @@
 
                 // --- SISTEMA DI MONITORAGGIO INTELLIGENTE ---
                 
+                // 1. RILEVAMENTO INSTAGRAM (Nuovo)
+                const urlParams = new URLSearchParams(window.location.search);
+                const source = urlParams.get('utm_source');
+
+                if (source === 'instagram') {
+                    // Notifica silenziosa al database
+                    $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_IG}/up`, function() {
+                        console.log("📸 Visita da Instagram tracciata!");
+                    });
+                }
+
+                // 2. GESTIONE LIKE
                 function updateLikeDisplay(count) {
                     $('#like-count').text(count);
                 }
@@ -322,19 +332,14 @@
                         updateLikeDisplay(response.count);
                         btn.addClass('liked');
                         localStorage.setItem('hasLikedCamaLeonte', 'true');
-                        if (typeof gtag !== 'undefined') {
-                            gtag('event', 'like_magazine', { 'event_category': 'engagement' });
-                        }
                     });
                 });
 
+                // 3. GESTIONE SHARE
                 $(document).on('click', '#share-btn', function() {
                     $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_SHARES}/up`, function() {
                         console.log("Share tracked silently.");
                     });
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'share_magazine', { 'event_category': 'engagement' });
-                    }
                     const shareData = {
                         title: 'Il CamaLEOnte',
                         text: 'Scopri il nuovo numero del Magazine Il CamaLEOnte!',
@@ -348,7 +353,7 @@
                     }
                 });
 
-
+                // 4. GESTIONE VIDEO
                 function checkAndPlayVideos(view) {
                     $('video').each(function() { this.pause(); });
                     view.forEach(pageNum => {
@@ -364,24 +369,21 @@
                     });
                 }
 
-                // Variabile per tenere traccia del timer dei crediti
+                // 5. TIMER CREDITS PAGINA 2
                 let creditsTimer;
 
                 fb.bind("turned", function(event, page, view) { 
                     checkAndPlayVideos(view); 
                     
-                    // --- LOGICA TIMER CREDITS PAGINA 2 ---
-                    // 1. Reset: Cancella timer precedenti e nascondi il testo (importante se si sfoglia velocemente)
+                    // Reset timer e testo
                     clearTimeout(creditsTimer);
                     $('.credits-container').removeClass('credits-visible');
 
-                    // 2. Check: Se la vista corrente include la pagina 2
+                    // Se siamo a pagina 2
                     if (view.includes(2)) {
-                        // 3. Start Timer: Aspetta 8000ms (8 secondi)
                         creditsTimer = setTimeout(() => {
-                             // 4. Azione: Aggiungi la classe che fa apparire il testo
                             $('#p2 .credits-container').addClass('credits-visible');
-                        }, 8000);
+                        }, 8000); // 8 secondi
                     }
                 });
 
