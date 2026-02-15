@@ -6218,6 +6218,362 @@ setInterval(loadData, 30000);</code>
 
         </div>
 
+        <h2>🔧 FASE 9: Production Fix & Namespace Stabilization (v2.4 - Febbraio 2025)</h2>
+
+        <div class="timeline">
+
+            <!-- FEATURE 9.1 - HOTFIX NAMESPACE -->
+            <div class="card critical" onclick="toggleCard(this)" style="border-color: var(--accent-red); border-width: 3px;">
+                <div class="card-header">
+                    <div class="accordion-toggle">
+                        <span class="accordion-icon">▶</span>
+                        <h3>Feature 9.1: API Namespace & Slug Correction</h3>
+                    </div>
+                    <span class="badge critical" style="background: var(--accent-red);">Hotfix</span>
+                </div>
+                
+                <div class="card-content">
+                    <div class="level1-accordion">
+                        
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Il Bug del Servizio Offline</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step problem-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Downtime Improvviso di countapi.xyz</div>
+                                        <div class="step-description">
+                                            Durante i test post-deploy, scoperto che countapi.xyz era completamente offline:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Error in Console:
+GET https://api.countapi.xyz/get/...
+→ net::ERR_CONNECTION_REFUSED
+
+// Tutti i contatori tornavano "Error" o "0"
+// Dashboard docenti non funzionante</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step problem-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Impatto Utente</div>
+                                        <div class="step-description">
+                                            Conseguenze immediate del downtime:
+                                            <ul style="margin-top: 10px;">
+                                                <li>Pagina 25 mostra "Error" invece del contatore like</li>
+                                                <li>Bottoni Like/Share non incrementano nulla</li>
+                                                <li>Dashboard docenti completamente vuota</li>
+                                                <li>Impossibilità di tracciare nuovi engagement</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Decisione: Immediate Migration</div>
+                                        <div class="step-description">
+                                            Necessità di migrare urgentemente a servizio stabile (CounterAPI.dev) che era già stato configurato nella FASE 8, ma non ancora deployato in produzione.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Namespace Naming Convention Fix</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step problem-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Problemi con Underscore nel Namespace</div>
+                                        <div class="step-description">
+                                            Il namespace originale <code>camaleonte_v1</code> causava errori intermittenti:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// PROBLEMA: CounterAPI.dev tratta _ come carattere speciale
+const NAMESPACE = 'camaleonte_v1'; // ❌ Encoding issues
+
+// Alcuni browser encodavano _ come %5F in URL
+// Risultato: namespace non trovato</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Adozione Naming Convention Standard</div>
+                                        <div class="step-description">
+                                            Passaggio a kebab-case (trattini invece underscore):
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// BEFORE
+const NAMESPACE = 'camaleonte_v1'; // ❌
+
+// AFTER
+const NAMESPACE = 'camaleonte-v1'; // ✅
+
+// Vantaggi:
+// - URL-safe nativo (no encoding needed)
+// - Standard REST API conventions
+// - Compatibilità cross-browser garantita</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Creazione Namespace Definitivo</div>
+                                        <div class="step-description">
+                                            Configurazione finale su CounterAPI.dev dashboard:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Dashboard → Create New Namespace
+
+Name: camaleonte-v1
+Description: Il CamaLEOnte Magazine - Production Counters
+Visibility: Private
+Status: Active
+
+✅ Namespace creato e verificato funzionante</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Slug Standardization: likes-v1 & shares-v1</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Da Counter Names a Slugs</div>
+                                        <div class="step-description">
+                                            CounterAPI.dev usa il termine "slug" invece di "counter name". Aggiornamento nomenclatura:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// BEFORE (FASE 8 originale)
+Counter name: likes
+Counter name: shares
+
+// AFTER (Production)
+Slug: likes-v1
+Slug: shares-v1
+
+// Suffisso -v1 per versioning futuro</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Configurazione Slugs nel Dashboard</div>
+                                        <div class="step-description">
+                                            Setup dei due counter nel namespace:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Namespace: camaleonte-v1 → Add Counter
+
+Slug 1:
+- Name: likes-v1
+- Initial Value: 0
+- Enable Public Read: ✅ YES
+- Enable Public Write: ❌ NO
+
+Slug 2:
+- Name: shares-v1
+- Initial Value: 0
+- Enable Public Read: ✅ YES
+- Enable Public Write: ❌ NO</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Aggiornamento Endpoint nel Codice</div>
+                                        <div class="step-description">
+                                            Modifica delle URL API in index.html e dashboard.html:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// index.html & dashboard.html
+const NAMESPACE = 'camaleonte-v1';
+const API_URL = 'https://api.counterapi.dev/v1';
+
+// Endpoint Likes
+GET  ${API_URL}/${NAMESPACE}/likes-v1/
+POST ${API_URL}/${NAMESPACE}/likes-v1/up
+
+// Endpoint Shares
+GET  ${API_URL}/${NAMESPACE}/shares-v1/
+POST ${API_URL}/${NAMESPACE}/shares-v1/up</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Code Refactoring & Async Optimization</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Pulizia Callback Hell</div>
+                                        <div class="step-description">
+                                            Refactoring delle chiamate AJAX per migliorare leggibilità:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// BEFORE (Callback nesting)
+$.getJSON(url, function(res) {
+  updateLikeDisplay(res.count);
+}).fail(function() {
+  $('#like-count').text("0");
+});
+
+// AFTER (Cleaner chaining)
+$.getJSON(`${API_URL}/${NAMESPACE}/likes-v1/`)
+  .done(response => updateLikeDisplay(response.count))
+  .fail(() => $('#like-count').text("0"));</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Gestione Errori Centralizzata</div>
+                                        <div class="step-description">
+                                            Funzione helper per error handling uniforme:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>function handleAPIError(context) {
+  console.error(`API Error in ${context}`);
+  // Fallback graceful per ogni contesto
+  if (context === 'likes') $('#like-count').text("0");
+  if (context === 'shares') console.log("Share tracking failed");
+}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Promise-Based Dashboard Loading</div>
+                                        <div class="step-description">
+                                            Dashboard refactored per usare async/await pattern:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>async function loadData() {
+  try {
+    // Parallel fetch invece di sequential
+    const [likeRes, shareRes] = await Promise.all([
+      $.getJSON(`${API_URL}/${NAMESPACE}/likes-v1/`),
+      $.getJSON(`${API_URL}/${NAMESPACE}/shares-v1/`)
+    ]);
+    
+    const likes = likeRes.count || 0;
+    const shares = shareRes.count || 0;
+    
+    // Update UI
+    updateDashboard(likes, shares);
+    
+  } catch (e) {
+    handleAPIError('dashboard');
+  }
+}</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Production Validation & Smoke Testing</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Checklist Post-Deploy</div>
+                                        <div class="step-description">
+                                            Test eseguiti dopo il fix:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>✅ Test 1: Caricamento Pagina 25
+   → Contatore like visibile con valore corretto
+
+✅ Test 2: Click Like Button
+   → Incremento +1 immediato, feedback visivo
+
+✅ Test 3: LocalStorage Guard
+   → Secondo click bloccato con alert
+
+✅ Test 4: Share Button Tracking
+   → Shadow counter shares-v1 incrementa silenziosamente
+
+✅ Test 5: Dashboard Loading
+   → Grafici Chart.js renderizzano correttamente
+
+✅ Test 6: Refresh Button
+   → Dati aggiornati in tempo reale</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Cross-Browser Testing</div>
+                                        <div class="step-description">
+                                            Verifica compatibilità:
+                                            <ul style="margin-top: 10px;">
+                                                <li>✅ Chrome 120+ (Desktop & Android)</li>
+                                                <li>✅ Safari 17+ (macOS & iOS)</li>
+                                                <li>✅ Firefox 121+</li>
+                                                <li>✅ Edge 120+</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Monitoring Post-Fix</div>
+                                        <div class="step-description">
+                                            Setup monitoring per prevenire future regressioni:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Uptime Robot:</strong> Ping dashboard.html ogni 5 minuti</li>
+                                                <li><strong>Google Analytics:</strong> Alert se bounce rate > 80%</li>
+                                                <li><strong>Manual Check:</strong> Verifica settimanale contatori</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <footer>
             <p><strong>Il CamaLEOnte Project</strong> - Interactive Technical Documentation</p>
             <p style="margin-top: 10px; font-size: 0.9rem;">Clicca su ogni card per espandere i dettagli tecnici completi</p>
