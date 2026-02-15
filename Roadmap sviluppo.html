@@ -7041,6 +7041,349 @@ function replayVideo(btn) {
                 </div>
             </div>
 
+            <!-- FEATURE 10.2 - DASHBOARD SHARING HUB -->
+            <div class="card gold" onclick="toggleCard(this)" style="border-color: var(--accent-gold); border-width: 2px;">
+                <div class="card-header">
+                    <div class="accordion-toggle">
+                        <span class="accordion-icon">▶</span>
+                        <h3>Feature 10.2: Dashboard Evolution - Active Sharing Hub</h3>
+                    </div>
+                    <span class="badge gold">Distribution 2.0</span>
+                </div>
+                
+                <div class="card-content">
+                    <div class="level1-accordion">
+                        
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Da Monitor Passivo a Stazione di Comando</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step problem-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Problema: Docenti Senza Strumenti</div>
+                                        <div class="step-description">
+                                            Scenario reale identificato durante il rollout:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Link Perso:</strong> Docente vuole mostrare rivista ma ha dimenticato URL</li>
+                                                <li><strong>QR Cartaceo Assente:</strong> Locandina A4 rimasta in sala docenti, studente in corridoio</li>
+                                                <li><strong>Dispositivi Ritirati:</strong> A scuola i telefoni sono vietati, impossibile inviare link via WhatsApp direttamente</li>
+                                                <li><strong>Frizione Alta:</strong> Ogni condivisione richiede troppi step (cercare URL, copiare, aprire WhatsApp...)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Soluzione: Dashboard come Hub Multicanale</div>
+                                        <div class="step-description">
+                                            Trasformare il dashboard da strumento di monitoraggio a **centro di distribuzione attivo**:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Dashboard v1.0 (FASE 8):
+❌ Solo lettura metriche (passive)
+❌ Nessun tool di condivisione
+❌ Docente = spettatore
+
+Dashboard v2.0 (FASE 10.2):
+✅ QR Code sempre visibile (180x180px)
+✅ Bottone "Leggi Rivista" (direct link)
+✅ Bottone "Invia Link a..." (share API)
+✅ Docente = ambassador attivo</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Design Principle: Zero-Friction Sharing</div>
+                                        <div class="step-description">
+                                            Obiettivo: Ridurre il time-to-share da 45 secondi a 3 secondi:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Prima:</strong> Ricorda URL → Copia → Apri WhatsApp → Incolla → Invia (45s)</li>
+                                                <li><strong>Dopo:</strong> Dashboard → Bottone "Invia" → Seleziona contatto (3s)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Feature 1: QR Code Auto-Generated & Embedded</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Auto-Discovery del Link Rivista</div>
+                                        <div class="step-description">
+                                            Sistema intelligente che calcola automaticamente l'URL della rivista:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Calcolo dinamico: rimuove "dashboard.html" dall'URL corrente
+const BASE_URL = window.location.href
+  .replace('dashboard.html', '')
+  .replace('#', '');
+
+// Esempio:
+// Dashboard URL: https://user.github.io/camaleonte/dashboard.html
+// BASE_URL:      https://user.github.io/camaleonte/
+
+// Vantaggio: Funziona su qualsiasi dominio (localhost, GitHub Pages, custom domain)</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">QR Code Generation via API</div>
+                                        <div class="step-description">
+                                            Utilizzo di QRServer API pubblica per generazione on-the-fly:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// API: QRServer (gratuita, no API key, CORS-enabled)
+const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(BASE_URL)}`;
+
+document.getElementById('qr-image').src = qrUrl;
+
+// Parametri:
+// - size=300x300: Risoluzione PNG (scalabile)
+// - data: URL encoded (gestisce caratteri speciali)
+// - Output: Immagine PNG dinamica</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Styling: QR Promo Section</div>
+                                        <div class="step-description">
+                                            Design glassmorphism con layout responsive:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>.promo-section {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: white;
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.qr-container { 
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+@media (min-width: 768px) {
+  .promo-section { 
+    flex-direction: row; /* Desktop: orizzontale */
+  }
+}
+
+@media (max-width: 767px) {
+  .promo-section { 
+    flex-direction: column; /* Mobile: verticale */
+  }
+}</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Feature 2: Quick Access Button (Leggi Rivista)</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Direct Link Implementation</div>
+                                        <div class="step-description">
+                                            Bottone che apre la rivista in nuova tab:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>function openMagazine() {
+  window.open(BASE_URL, '_blank');
+}
+
+// HTML
+&lt;button class="btn btn-open" onclick="openMagazine()"&gt;
+  📖 Leggi Rivista
+&lt;/button&gt;
+
+// Use Case:
+// - Docente vuole rivedere contenuto prima di mostrarlo
+// - Check veloce se rivista è online
+// - Preview prima di condividere</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Target="_blank" Security</div>
+                                        <div class="step-description">
+                                            Nota: Non usiamo <code>rel="noopener noreferrer"</code> perché:
+                                            <ul style="margin-top: 10px;">
+                                                <li>Il link apre pagine dello stesso dominio (safe)</li>
+                                                <li>Non c'è rischio di phishing/tabnabbing</li>
+                                                <li>Vogliamo mantenere semplicità del codice</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Feature 3: Native Share Integration (Invia Link a...)</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Web Share API con Fallback</div>
+                                        <div class="step-description">
+                                            Sistema dual-mode per massima compatibilità:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>async function shareMagazine() {
+  const shareData = {
+    title: 'Il CamaLEOnte Magazine',
+    text: 'Ecco il link per leggere il giornalino scolastico:',
+    url: BASE_URL
+  };
+  
+  if (navigator.share) {
+    // MOBILE: Apre sheet nativo (WhatsApp, Telegram, Email, SMS...)
+    try {
+      await navigator.share(shareData);
+    } catch (err) {
+      console.log(err); // User cancelled
+    }
+  } else {
+    // DESKTOP: Copia negli appunti
+    navigator.clipboard.writeText(BASE_URL);
+    alert("Link copiato! Incollalo su WhatsApp o Email.");
+  }
+}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Use Case Reale: Scuola Senza Telefoni</div>
+                                        <div class="step-description">
+                                            Scenario tipico:
+                                            <ol style="margin-top: 10px; color: var(--text-muted);">
+                                                <li>Docente in classe, studenti interessati</li>
+                                                <li>Telefoni ritirati all'ingresso (policy scuola)</li>
+                                                <li>Docente: "Vi mando il link su Classroom!"</li>
+                                                <li>Dashboard → Bottone "Invia" → WhatsApp Web su PC docente</li>
+                                                <li>Gruppo classe riceve link istantaneamente</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Statistiche Post-Share (Future)</div>
+                                        <div class="step-description">
+                                            Possibile evoluzione per tracciare condivisioni da dashboard:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Idea: Aggiungere UTM parameter al link condiviso
+const sharedUrl = BASE_URL + '?utm_source=dashboard&utm_medium=share_button';
+
+// Così in GA4 possiamo vedere:
+// - Quante persone hanno usato il bottone
+// - Quale docente condivide di più (se dashboard personalizzate)</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Impact Analysis & Viral Coefficient</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Riduzione Friction → Aumento Shares</div>
+                                        <div class="step-description">
+                                            Previsione basata su principi di growth hacking:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>BEFORE (FASE 7 - QR Cartaceo):
+- Share friction: ALTA (cercare URL, copiare, incollare)
+- Share rate: ~5% docenti condividono
+- K-factor: 0.2 (ogni docente porta 0.2 nuovi lettori)
+
+AFTER (FASE 10.2 - Dashboard Hub):
+- Share friction: BASSA (1 click)
+- Share rate stimata: ~40% docenti condividono
+- K-factor stimato: 1.5 (ogni docente porta 1.5 nuovi lettori)
+
+→ Potenziale crescita esponenziale</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Empowerment Docenti</div>
+                                        <div class="step-description">
+                                            Il dashboard trasforma i docenti da "spettatori" a "ambassador":
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Ownership:</strong> Si sentono parte attiva del progetto</li>
+                                                <li><strong>Pride:</strong> Possono mostrare facilmente il lavoro studenti</li>
+                                                <li><strong>Viral Loop:</strong> Ogni share porta nuovi lettori che possono diventare sharer</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Metriche di Successo (KPI)</div>
+                                        <div class="step-description">
+                                            Come misurare l'impatto della feature:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Share Button Click Rate:</strong> Quanti docenti cliccano il bottone</li>
+                                                <li><strong>QR Scan Frequency:</strong> Quante scansioni da dashboard vs cartaceo</li>
+                                                <li><strong>Time to First Share:</strong> Da quando ricevono dashboard a prima condivisione</li>
+                                                <li><strong>Viral Coefficient:</strong> Nuovi lettori / docenti attivi</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <footer>
