@@ -16,7 +16,6 @@
         h1 { color: #10b981; font-weight: 800; text-transform: uppercase; margin: 0; }
         p.subtitle { color: #6b7280; margin-top: 5px; }
 
-        /* PROMO SECTION */
         .promo-section {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: white; padding: 30px; border-radius: 20px;
@@ -26,35 +25,27 @@
         }
         .promo-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 10px; color: #10b981; text-transform: uppercase; letter-spacing: 1px; }
         
-        .qr-container { 
-            background: white; padding: 15px; border-radius: 15px; 
-            display: inline-block; box-shadow: 0 0 15px rgba(255,255,255,0.1);
-        }
+        .qr-container { background: white; padding: 15px; border-radius: 15px; display: inline-block; box-shadow: 0 0 15px rgba(255,255,255,0.1); }
         #qr-image { width: 180px; height: 180px; display: block; }
-
         .action-buttons { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-top: 10px; }
         
         .btn { padding: 12px 25px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; font-size: 1rem; transition: transform 0.2s; display: flex; align-items: center; gap: 8px; text-decoration: none; }
         .btn:hover { transform: scale(1.05); }
-        
         .btn-open { background: white; color: #0f172a; }
         .btn-share { background: #10b981; color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
 
-        /* KPI CARDS */
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
         .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s; border-top: 5px solid #e5e7eb; }
         .card:hover { transform: translateY(-5px); }
         .card.likes { border-color: #ef4444; }
         .card.shares { border-color: #3b82f6; }
-        .card.instagram { border-color: #d62976; } /* Colore Instagram */
+        .card.instagram { border-color: #d62976; }
         
         .card h3 { margin: 0; font-size: 0.8rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; }
         .card .number { font-size: 3rem; font-weight: 800; color: #111; margin: 10px 0; }
         .card .trend { font-size: 0.8rem; color: #10b981; font-weight: bold; }
 
-        /* GRAFICI */
         .chart-container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        
         footer { text-align: center; margin-top: 50px; font-size: 0.8rem; color: #9ca3af; }
         .refresh-btn { background: #e5e7eb; color: #374151; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; margin-bottom: 20px; }
         .refresh-btn:hover { background: #d1d5db; }
@@ -81,15 +72,10 @@
                     Monitora l'impatto dei QR Code fisici e delle campagne Social. Usa il tasto 🚀 per generare il link tracciato per le storie di Instagram.
                 </p>
                 <div class="action-buttons">
-                    <button class="btn btn-open" onclick="openMagazine()">
-                        📖 Leggi
-                    </button>
-                    <button class="btn btn-share" onclick="shareMagazine()">
-                        🚀 Invia Link
-                    </button>
+                    <button class="btn btn-open" onclick="openMagazine()">📖 Leggi</button>
+                    <button class="btn btn-share" onclick="shareMagazine()">🚀 Invia Link</button>
                 </div>
             </div>
-            
             <div class="qr-container">
                 <img id="qr-image" src="" alt="QR Code">
             </div>
@@ -127,48 +113,37 @@
         </div>
 
         <footer>
-            Il CamaLEOnte Dashboard v2.1 • Sistema di tracciamento UTM attivo • <span id="last-update">...</span>
+            Il CamaLEOnte Dashboard v2.2 • Sistema di tracciamento UTM attivo • <span id="last-update">...</span>
         </footer>
     </div>
 
     <script>
-        // --- CONFIGURAZIONE ---
         const BASE_URL = window.location.href.replace('dashboard.html', '').replace('#', '');
         const NAMESPACE = 'camaleonte-v1'; 
         const API_URL = 'https://api.counterapi.dev/v1';
         
-        // Chiavi API
         const KEY_LIKES = 'likes-v1';
         const KEY_SHARES = 'shares-v1';
-        const KEY_IG = 'ig-visits-v1'; // Nuova chiave per Instagram
+        const KEY_IG = 'ig-visits-v1';
 
-        document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(BASE_URL + "?utm_source=qr_code&utm_medium=print")}`;
+        document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(BASE_URL + "?utm_source=qr_code")}`;
 
         function openMagazine() { window.open(BASE_URL, '_blank'); }
 
         async function shareMagazine() {
             const igLink = BASE_URL + "?utm_source=instagram&utm_medium=stories";
-            const shareData = {
-                title: 'Il CamaLEOnte',
-                text: 'Leggi la nuova edizione interattiva:',
-                url: igLink
-            };
-            if (navigator.share) {
-                try { await navigator.share(shareData); } catch (err) { }
-            } else {
-                navigator.clipboard.writeText(igLink);
-                alert("Link tracciato per Instagram copiato!");
-            }
+            const shareData = { title: 'Il CamaLEOnte', text: 'Link per le Storie:', url: igLink };
+            if (navigator.share) { try { await navigator.share(shareData); } catch (err) { } }
+            else { navigator.clipboard.writeText(igLink); alert("Link Instagram copiato!"); }
         }
 
         let myChart = null;
 
         async function loadData() {
             try {
-                // Caricamento simultaneo di tutti i contatori
                 const [likeRes, shareRes, igRes] = await Promise.all([
-                    $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_LIKES}/`),
-                    $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_SHARES}/`),
+                    $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_LIKES}/`).catch(() => ({count: 0})),
+                    $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_SHARES}/`).catch(() => ({count: 0})),
                     $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_IG}/`).catch(() => ({count: 0})) 
                 ]);
                 
@@ -181,11 +156,8 @@
                 $('#total-ig').text(igVisits);
                 
                 updateChart(likes, shares, igVisits);
-                $('#last-update').text("Ultimo update: " + new Date().toLocaleTimeString());
-
-            } catch (e) {
-                console.error("Errore recupero dati", e);
-            }
+                $('#last-update').text(new Date().toLocaleTimeString());
+            } catch (e) { console.error("Errore", e); }
         }
 
         function updateChart(likes, shares, ig) {
@@ -199,35 +171,20 @@
                     datasets: [{
                         label: 'Interazioni Totali',
                         data: [likes, shares, ig],
-                        backgroundColor: [
-                            'rgba(239, 68, 68, 0.6)', 
-                            'rgba(59, 130, 246, 0.6)', 
-                            'rgba(214, 41, 118, 0.6)'
-                        ],
-                        borderColor: [
-                            'rgba(239, 68, 68, 1)', 
-                            'rgba(59, 130, 246, 1)', 
-                            'rgba(214, 41, 118, 1)'
-                        ],
+                        backgroundColor: ['rgba(239, 68, 68, 0.6)', 'rgba(59, 130, 246, 0.6)', 'rgba(214, 41, 118, 0.6)'],
+                        borderColor: ['rgba(239, 68, 68, 1)', 'rgba(59, 130, 246, 1)', 'rgba(214, 41, 118, 1)'],
                         borderWidth: 2
                     }]
                 },
                 options: {
                     responsive: true,
-                    plugins: { 
-                        legend: { display: false },
-                        title: { display: true, text: 'Analisi Canali e Engagement' }
-                    },
+                    plugins: { legend: { display: false }, title: { display: true, text: 'Analisi Canali' } },
                     scales: { y: { beginAtZero: true } }
                 }
             });
         }
 
-        $(document).ready(function() {
-            loadData();
-            // Auto-refresh ogni 30 secondi
-            setInterval(loadData, 30000);
-        });
+        $(document).ready(function() { loadData(); setInterval(loadData, 30000); });
     </script>
 </body>
 </html>
