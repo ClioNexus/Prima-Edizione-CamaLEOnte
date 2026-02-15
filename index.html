@@ -34,6 +34,29 @@
         .pdf-canvas { width: 100%; height: 100%; display: block; }
         .magazine-video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 5; background: #fff; }
 
+        /* --- CREDITS OVERLAY (PAGINA 2) --- */
+        .credits-container {
+            position: absolute;
+            bottom: 40px; /* Regola questa altezza se necessario */
+            width: 100%;
+            text-align: center;
+            z-index: 20; /* Deve essere sopra il video (z-index 5) */
+            color: #0f0f0f; /* Colore scuro */
+            font-family: 'Montserrat', sans-serif;
+            opacity: 0; /* Inizialmente INVISIBILE */
+            transition: opacity 1.5s ease-in-out; /* Apparizione morbida */
+            pointer-events: none; /* Lascia passare i click */
+        }
+        .credits-names {
+            font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .credits-pg-num {
+            margin-top: 15px; font-weight: 800; font-size: 1.1rem;
+        }
+        /* Classe che verrà aggiunta via JS dopo 8 secondi */
+        .credits-visible { opacity: 1 !important; }
+
+
         /* --- FINALE PAGE (PAGINA 25) --- */
         .end-page-content {
             width: 100%; height: 100%; background: #0f172a; 
@@ -230,6 +253,7 @@
 
                     // LOGICA CONTENUTO PAGINE
                     if (i === 25) {
+                        // ... Pagina finale (invariata) ...
                         pdfLayer.append(`
                             <div class="end-page-content">
                                 <div class="end-title">Grazie per la lettura!</div>
@@ -248,8 +272,19 @@
                                 </div>
                             </div>
                         `);
-                    } else if (i === 2 || i === 22 || i === 23 || i === 24) { 
-                        // --- MODIFICA APPLICATA: Aggiunto i === 2 per il video intro ---
+                    } else if (i === 2) { 
+                        // --- PAGINA 2: VIDEO CON OVERLAY TESTO A COMPARSA ---
+                        const videoSrc = i + ".mp4"; 
+                        pdfLayer.append(`<video class="magazine-video" playsinline webkit-playsinline muted><source src="${videoSrc}" type="video/mp4"></video>`);
+                        // Aggiungiamo il testo nascosto sopra il video
+                        pdfLayer.append(`
+                            <div class="credits-container">
+                                <div class="credits-names">Graphic designers: Aurora Baratta, Bertine Maniriho, Xhuliano Hysenji</div>
+                                <div class="credits-pg-num">2</div>
+                            </div>
+                        `);
+                    } else if (i === 22 || i === 23 || i === 24) { 
+                        // --- ALTRI VIDEO (senza overlay) ---
                         const videoSrc = i + ".mp4"; 
                         pdfLayer.append(`<video class="magazine-video" playsinline webkit-playsinline muted><source src="${videoSrc}" type="video/mp4"></video>`);
                     } else {
@@ -329,7 +364,26 @@
                     });
                 }
 
-                fb.bind("turned", function(event, page, view) { checkAndPlayVideos(view); });
+                // Variabile per tenere traccia del timer dei crediti
+                let creditsTimer;
+
+                fb.bind("turned", function(event, page, view) { 
+                    checkAndPlayVideos(view); 
+                    
+                    // --- LOGICA TIMER CREDITS PAGINA 2 ---
+                    // 1. Reset: Cancella timer precedenti e nascondi il testo (importante se si sfoglia velocemente)
+                    clearTimeout(creditsTimer);
+                    $('.credits-container').removeClass('credits-visible');
+
+                    // 2. Check: Se la vista corrente include la pagina 2
+                    if (view.includes(2)) {
+                        // 3. Start Timer: Aspetta 8000ms (8 secondi)
+                        creditsTimer = setTimeout(() => {
+                             // 4. Azione: Aggiungi la classe che fa apparire il testo
+                            $('#p2 .credits-container').addClass('credits-visible');
+                        }, 8000);
+                    }
+                });
 
                 function updateLayout() {
                     modeBtn.text(isSingleMode ? '📄' : '📖');
