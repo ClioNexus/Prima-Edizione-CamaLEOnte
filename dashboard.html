@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Docenti - Il CamaLEOnte</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -12,11 +12,35 @@
         body { font-family: 'Montserrat', sans-serif; background: #f3f4f6; padding: 20px; color: #1f2937; }
         .container { max-width: 1000px; margin: 0 auto; }
         
-        header { text-align: center; margin-bottom: 40px; }
+        header { text-align: center; margin-bottom: 30px; }
         h1 { color: #10b981; font-weight: 800; text-transform: uppercase; margin: 0; }
         p.subtitle { color: #6b7280; margin-top: 5px; }
 
-        /* KPI CARDS (I numeroni) */
+        /* PROMO SECTION (NUOVA) */
+        .promo-section {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white; padding: 30px; border-radius: 20px;
+            margin-bottom: 40px; text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            display: flex; flex-direction: column; align-items: center; gap: 20px;
+        }
+        .promo-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 10px; color: #10b981; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .qr-container { 
+            background: white; padding: 15px; border-radius: 15px; 
+            display: inline-block; box-shadow: 0 0 15px rgba(255,255,255,0.1);
+        }
+        #qr-image { width: 180px; height: 180px; display: block; }
+
+        .action-buttons { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-top: 10px; }
+        
+        .btn { padding: 12px 25px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; font-size: 1rem; transition: transform 0.2s; display: flex; align-items: center; gap: 8px; text-decoration: none; }
+        .btn:hover { transform: scale(1.05); }
+        
+        .btn-open { background: white; color: #0f172a; }
+        .btn-share { background: #10b981; color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
+
+        /* KPI CARDS */
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
         .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s; border-top: 5px solid #e5e7eb; }
         .card:hover { transform: translateY(-5px); }
@@ -31,8 +55,15 @@
         .chart-container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
         
         footer { text-align: center; margin-top: 50px; font-size: 0.8rem; color: #9ca3af; }
-        .refresh-btn { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; margin-bottom: 20px; }
-        .refresh-btn:hover { background: #059669; }
+        .refresh-btn { background: #e5e7eb; color: #374151; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; margin-bottom: 20px; }
+        .refresh-btn:hover { background: #d1d5db; }
+
+        /* MEDIA QUERY PER MOBILE */
+        @media (min-width: 768px) {
+            .promo-section { flex-direction: row; text-align: left; justify-content: space-between; padding: 40px; }
+            .promo-text-area { max-width: 50%; }
+            .action-buttons { justify-content: flex-start; }
+        }
     </style>
 </head>
 <body>
@@ -40,33 +71,50 @@
     <div class="container">
         <header>
             <h1>Il CamaLEOnte Analytics</h1>
-            <p class="subtitle">Pannello di Controllo in Tempo Reale</p>
+            <p class="subtitle">Pannello di Controllo & Condivisione</p>
         </header>
 
+        <div class="promo-section">
+            <div class="promo-text-area">
+                <div class="promo-title">Area Condivisione Rapida</div>
+                <p style="opacity: 0.9; margin-bottom: 25px; line-height: 1.6;">
+                    Usa questo QR Code per far scansionare la rivista direttamente dal tuo schermo, oppure usa i tasti qui sotto per inviare il link via WhatsApp o Email.
+                </p>
+                <div class="action-buttons">
+                    <button class="btn btn-open" onclick="openMagazine()">
+                        📖 Leggi Rivista
+                    </button>
+                    <button class="btn btn-share" onclick="shareMagazine()">
+                        🚀 Invia Link a...
+                    </button>
+                </div>
+            </div>
+            
+            <div class="qr-container">
+                <img id="qr-image" src="" alt="Caricamento QR...">
+            </div>
+        </div>
+
         <div style="text-align: right;">
-            <button class="refresh-btn" onclick="loadData()">🔄 Aggiorna Dati</button>
+            <button class="refresh-btn" onclick="loadData()">🔄 Aggiorna Statistiche</button>
         </div>
 
         <div class="kpi-grid">
-            
             <div class="card likes">
-                <h3>Apprezzamento Utenti</h3>
+                <h3>Apprezzamento</h3>
                 <div class="number" id="total-likes">-</div>
                 <div class="trend">❤️ Likes Totali</div>
             </div>
-
             <div class="card shares">
                 <h3>Viralità</h3>
                 <div class="number" id="total-shares">-</div>
                 <div class="trend">🚀 Condivisioni Tentate</div>
             </div>
-
-            <div class="card" style="border-color: #f59e0b; cursor: pointer;" onclick="window.open('https://analytics.google.com/', '_blank')" title="Clicca per aprire Google Analytics">
-                <h3>Analisi Traffico</h3>
-                <div class="number" style="font-size: 2rem; margin: 23px 0;">📊 Vedi Report</div>
-                <div class="trend" style="color: #f59e0b;">Vai a Google Analytics ↗</div>
+            <div class="card" style="border-color: #f59e0b; cursor: pointer;" onclick="window.open('https://analytics.google.com/', '_blank')" title="Apri Google Analytics">
+                <h3>Intelligence</h3>
+                <div class="number" style="font-size: 2rem; margin: 23px 0;">📊 Report</div>
+                <div class="trend" style="color: #f59e0b;">Google Analytics ↗</div>
             </div>
-
         </div>
 
         <div class="chart-container">
@@ -74,16 +122,39 @@
         </div>
 
         <footer>
-            Dati forniti da CounterAPI & Google Analytics • Aggiornato al: <span id="last-update">...</span>
+            Il CamaLEOnte Dashboard v2.0 • Aggiornato al: <span id="last-update">...</span>
         </footer>
     </div>
 
     <script>
-        // --- CONFIGURAZIONE DASHBOARD ---
+        // --- 1. CONFIGURAZIONE AUTOMATICA LINK ---
+        // Calcola l'URL della rivista togliendo "dashboard.html" dall'indirizzo corrente
+        const BASE_URL = window.location.href.replace('dashboard.html', '').replace('#', '');
+        
+        // Genera il QR Code usando un'API pubblica sicura (QRServer)
+        document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(BASE_URL)}`;
+
+        function openMagazine() {
+            window.open(BASE_URL, '_blank');
+        }
+
+        async function shareMagazine() {
+            const shareData = {
+                title: 'Il CamaLEOnte Magazine',
+                text: 'Ecco il link per leggere il giornalino scolastico:',
+                url: BASE_URL
+            };
+            if (navigator.share) {
+                try { await navigator.share(shareData); } catch (err) { console.log(err); }
+            } else {
+                navigator.clipboard.writeText(BASE_URL);
+                alert("Link copiato! Incollalo su WhatsApp o Email.");
+            }
+        }
+
+        // --- 2. CONFIGURAZIONE DATI (CounterAPI) ---
         const NAMESPACE = 'camaleonte-v1'; 
         const API_URL = 'https://api.counterapi.dev/v1';
-        
-        // Chiavi (Slug)
         const KEY_LIKES = 'likes-v1';
         const KEY_SHARES = 'shares-v1';
 
@@ -91,67 +162,50 @@
 
         async function loadData() {
             try {
-                // 1. Recupera Like e Share usando le chiavi corrette
                 const likeRes = await $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_LIKES}/`);
                 const shareRes = await $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_SHARES}/`);
                 
                 const likes = likeRes.count || 0;
                 const shares = shareRes.count || 0;
 
-                // 2. Aggiorna Numeri
                 $('#total-likes').text(likes);
                 $('#total-shares').text(shares);
                 
-                // 3. Aggiorna Grafico
                 updateChart(likes, shares);
 
-                // 4. Timestamp
                 const now = new Date();
                 $('#last-update').text(now.toLocaleTimeString());
 
             } catch (e) {
-                console.error("Errore caricamento dati", e);
+                console.error("Errore dati", e);
                 $('#total-likes').text("Error");
             }
         }
 
         function updateChart(likes, shares) {
             const ctx = document.getElementById('myChart').getContext('2d');
-            
-            if (myChart) myChart.destroy(); // Pulisce vecchio grafico
+            if (myChart) myChart.destroy();
 
             myChart = new Chart(ctx, {
-                type: 'bar', // Puoi cambiare in 'doughnut' per grafico a ciambella
+                type: 'bar', 
                 data: {
                     labels: ['Likes ❤️', 'Shares 🚀'],
                     datasets: [{
-                        label: 'Interazioni Utente',
+                        label: 'Interazioni',
                         data: [likes, shares],
-                        backgroundColor: [
-                            'rgba(239, 68, 68, 0.6)', // Rosso
-                            'rgba(16, 185, 129, 0.6)'  // Verde
-                        ],
-                        borderColor: [
-                            'rgba(239, 68, 68, 1)',
-                            'rgba(16, 185, 129, 1)'
-                        ],
+                        backgroundColor: ['rgba(239, 68, 68, 0.6)', 'rgba(16, 185, 129, 0.6)'],
+                        borderColor: ['rgba(239, 68, 68, 1)', 'rgba(16, 185, 129, 1)'],
                         borderWidth: 2
                     }]
                 },
                 options: {
                     responsive: true,
-                    plugins: {
-                        legend: { display: false },
-                        title: { display: true, text: 'Confronto Metriche di Ingaggio' }
-                    },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
                 }
             });
         }
 
-        // Avvio automatico
         $(document).ready(function() {
             loadData();
         });
