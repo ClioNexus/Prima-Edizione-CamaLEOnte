@@ -7753,6 +7753,414 @@ if (i === 25) {
                 </div>
             </div>
 
+            <!-- FEATURE 10.4 - AI VIDEO TEXT RESTORATION -->
+            <div class="card critical" onclick="toggleCard(this)" style="border-color: var(--accent-orange); border-width: 2px;">
+                <div class="card-header">
+                    <div class="accordion-toggle">
+                        <span class="accordion-icon">▶</span>
+                        <h3>Feature 10.4: AI Video Text Restoration via DOM Overlay</h3>
+                    </div>
+                    <span class="badge critical" style="background: var(--accent-orange);">Hybrid Fix</span>
+                </div>
+                
+                <div class="card-content">
+                    <div class="level1-accordion">
+                        
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Il Problema dell'AI Video Generation</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step problem-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Text Hallucination in Google Veo AI</div>
+                                        <div class="step-description">
+                                            Durante la generazione del video credits (2.mp4) con Google Veo AI, l'algoritmo ha "dimenticato" il testo:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Frame 0 (Inizio video):
+✅ Testo visibile: "Graphic Designers: [nomi studenti]"
+✅ Font: Montserrat bold
+✅ Posizione: Bottom center
+
+Frame 240 (8 secondi @ 30fps):
+❌ Testo svanito progressivamente
+❌ Sostituito da texture/pattern indistinto
+❌ Impossibile leggere i nomi
+
+Causa: AI video generation "allucinazione"
+→ L'IA non distingue testo da background decorativo
+→ Durante motion, il testo viene "smeared" via</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step problem-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Impatto sul Progetto</div>
+                                        <div class="step-description">
+                                            Conseguenze della perdita del testo:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Credits Mancanti:</strong> I designer non vengono riconosciuti</li>
+                                                <li><strong>Unprofessional Look:</strong> Credits incompleti fanno sembrare il video amatoriale</li>
+                                                <li><strong>Retention Problem:</strong> Utente può non capire chi ha fatto il lavoro</li>
+                                                <li><strong>Re-Generation Cost:</strong> Rigenerare video con Veo AI = tempo/crediti sprecati</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Perché Non Rigenerare il Video?</div>
+                                        <div class="step-description">
+                                            Rigenerare non era un'opzione per questi motivi:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Non Deterministico:</strong> AI potrebbe rifare lo stesso errore</li>
+                                                <li><strong>Time Consuming:</strong> 10-30 minuti per render + quality check</li>
+                                                <li><strong>Credit Limit:</strong> Google Veo AI ha quote limitate</li>
+                                                <li><strong>Animation Quality:</strong> Il camaleonte animato era perfetto, solo testo problematico</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Soluzione: Hybrid Video + DOM Layering</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Approccio Ibrido</div>
+                                        <div class="step-description">
+                                            Invece di toccare il file video, sovrapponiamo HTML/CSS:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Layer Stack (Z-index):
+
+Z-index 1: Video Canvas (2.mp4)
+           ↓ Camaleonte si anima
+           ↓ Testo svanisce (AI problem)
+
+Z-index 10: DOM Overlay (.credits-container)
+            ↓ HTML text con font originale
+            ↓ Appare dopo 8 secondi (sincronizzato)
+
+Risultato: Testo nativo HTML sopra video
+→ Perfetta leggibilità
+→ Nessun video re-encoding</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">CSS Overlay Implementation</div>
+                                        <div class="step-description">
+                                            Creazione del container overlay:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>.credits-container {
+  position: absolute;
+  bottom: 30px;          /* Posizione originale testo */
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 10;           /* Sopra il video */
+  opacity: 0;            /* Invisibile all'inizio */
+  transition: opacity 1s ease-in-out; /* Fade smooth */
+  pointer-events: none;  /* Non blocca click sul video */
+}
+
+.credits-text {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;     /* Match font originale */
+  font-size: 1rem;
+  color: #1f2937;        /* Grigio scuro */
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Leggibilità */
+}
+
+.credits-container.show {
+  opacity: 1;            /* Appare con fade */
+}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">HTML Overlay Injection</div>
+                                        <div class="step-description">
+                                            Quando generiamo la pagina 2, iniettiamo anche l'overlay:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// In index.html, quando i === 2
+if (i === 2) {
+  // Video rendering (come sempre)
+  pdfLayer.append(`
+    &lt;video class="magazine-video" ...&gt;
+      &lt;source src="2.mp4" type="video/mp4"&gt;
+    &lt;/video&gt;
+  `);
+  
+  // NUOVO: Overlay con testo
+  pdfLayer.append(`
+    &lt;div class="credits-container" id="credits-overlay-p2"&gt;
+      &lt;div class="credits-text"&gt;
+        &lt;strong&gt;Graphic Designers:&lt;/strong&gt; 
+        Nome Studente A, Nome Studente B, Nome Studente C
+      &lt;/div&gt;
+    &lt;/div&gt;
+  `);
+}</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Timing Synchronization: 8-Second Delay</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Event Listener: Page Turn Detection</div>
+                                        <div class="step-description">
+                                            Ascoltiamo l'evento "turned" del flipbook per sapere quando siamo su pagina 2:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>fb.bind("turned", function(event, page, view) {
+  // view = [1, 2] quando flipbook mostra pagine 1 e 2
+  
+  if (view.includes(2)) {
+    // Utente è arrivato su pagina 2
+    // Avvia timer di 8 secondi
+    setTimeout(function() {
+      $('#credits-overlay-p2').addClass('show');
+    }, 8000); // 8000 milliseconds = 8 secondi
+  }
+});</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Perché 8 Secondi?</div>
+                                        <div class="step-description">
+                                            Il timing è calibrato sull'animazione del video:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Timeline Video 2.mp4:
+
+T = 0-3s:  Logo fade in + setup
+T = 3-8s:  Camaleonte animation (movimento principale)
+T = 8s:    Animazione completata, frame statico
+
+T = 8s+:   Overlay appare con fade 1s
+T = 9s:    Testo completamente visibile
+
+Rationale: Aspettiamo che movimento finisca
+→ Testo appare quando utente può leggerlo
+→ Non compete visivamente con animazione</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Edge Case: Fast Page Turning</div>
+                                        <div class="step-description">
+                                            Gestione scenario: utente sfoglia prima degli 8 secondi:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Problema: Timer continua anche se utente è andato via
+setTimeout(() => {
+  $('#credits-overlay-p2').addClass('show'); 
+  // Questo esegue anche se non siamo più su pag 2!
+}, 8000);
+
+// Soluzione: Clear timer quando si esce dalla pagina
+let creditsTimer;
+
+fb.bind("turned", function(event, page, view) {
+  // Clear vecchio timer
+  clearTimeout(creditsTimer);
+  
+  if (view.includes(2)) {
+    creditsTimer = setTimeout(() => {
+      if ($('#credits-overlay-p2').is(':visible')) {
+        $('#credits-overlay-p2').addClass('show');
+      }
+    }, 8000);
+  }
+});</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Typography & Visual Consistency</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Font Matching</div>
+                                        <div class="step-description">
+                                            Il font overlay deve matchare esattamente l'originale:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Original Design (Pagina 2 PDF):
+- Font: Montserrat Bold
+- Size: ~16px (1rem)
+- Color: #1f2937 (Grigio scuro)
+- Position: Bottom center, 30px da bordo
+
+DOM Overlay:
+.credits-text {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;      /* Stesso peso */
+  font-size: 1rem;        /* Stessa size */
+  color: #1f2937;         /* Stesso colore */
+}
+
+→ Utente non nota differenza tra originale e overlay</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Text Shadow per Leggibilità</div>
+                                        <div class="step-description">
+                                            Aggiunta shadow sottile per garantire leggibilità su qualsiasi background:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+Effetto:
+- Crea leggero "halo" intorno al testo
+- Funziona sia su sfondi chiari che scuri
+- Non è invasivo (opacità 10%)
+- Migliora contrasto senza essere evidente</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Responsive Scaling</div>
+                                        <div class="step-description">
+                                            Il testo scala proporzionalmente su mobile:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>@media (max-width: 768px) {
+  .credits-text {
+    font-size: 0.85rem; /* Leggermente più piccolo */
+  }
+  
+  .credits-container {
+    bottom: 20px;       /* Più vicino al bordo */
+  }
+}
+
+// Su tablet/smartphone, spazio ridotto
+// Font si adatta senza perdere leggibilità</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Lessons Learned: AI Video + Web Hybrid</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Best of Both Worlds</div>
+                                        <div class="step-description">
+                                            Questa soluzione dimostra la potenza dell'approccio ibrido:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>AI Video:</strong> Motion graphics di alta qualità (camaleonte)</li>
+                                                <li><strong>DOM Overlay:</strong> Testo perfettamente leggibile e modificabile</li>
+                                                <li><strong>No Re-Render:</strong> Fix istantaneo senza rigenerare video</li>
+                                                <li><strong>Future-Proof:</strong> Cambiare testo = edit HTML, no video editing</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Generalizzazione del Pattern</div>
+                                        <div class="step-description">
+                                            Questo pattern è riutilizzabile per altre pagine video:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Se pagina 22-24 avessero stesso problema:
+if (i === 22) {
+  // Video
+  pdfLayer.append(`&lt;video src="22.mp4"&gt;&lt;/video&gt;`);
+  
+  // Overlay con titolo articolo (se AI ha cancellato)
+  pdfLayer.append(`
+    &lt;div class="article-title-overlay"&gt;
+      &lt;h2&gt;Titolo Articolo Harry Potter&lt;/h2&gt;
+    &lt;/div&gt;
+  `);
+}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Alternative Future: Burn-In Subtitles</div>
+                                        <div class="step-description">
+                                            Per prossimi video, prevenire problema alla fonte:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Workflow video generation futuro:
+1. Genera video con Google Veo (senza testo)
+2. Post-processing con FFmpeg per "burn-in" testo
+   → Testo embedded permanentemente nel video
+3. No bisogno di overlay DOM
+
+FFmpeg Command:
+ffmpeg -i input.mp4 -vf "drawtext=text='Credits':x=10:y=H-50:fontsize=24" output.mp4
+
+Pro: Testo sempre presente, nessun JS required
+Contro: Modifiche testo = re-encode video</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <footer>
