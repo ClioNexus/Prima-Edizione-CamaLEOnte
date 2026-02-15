@@ -47,7 +47,6 @@
             letter-spacing: -1px;
             background: linear-gradient(to right, #fff, #94a3b8);
             -webkit-background-clip: text;
-            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -7375,6 +7374,375 @@ AFTER (FASE 10.2 - Dashboard Hub):
                                                 <li><strong>Time to First Share:</strong> Da quando ricevono dashboard a prima condivisione</li>
                                                 <li><strong>Viral Coefficient:</strong> Nuovi lettori / docenti attivi</li>
                                             </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEATURE 10.3 - VIDEO LIBRARY EXPANSION -->
+            <div class="card active" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="accordion-toggle">
+                        <span class="accordion-icon">▶</span>
+                        <h3>Feature 10.3: Video Library Expansion & Credits Introduction</h3>
+                    </div>
+                    <span class="badge solution">Content Scale</span>
+                </div>
+                
+                <div class="card-content">
+                    <div class="level1-accordion">
+                        
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Scaling della Strategia Multimediale</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Evoluzione della Video Strategy</div>
+                                        <div class="step-description">
+                                            Timeline dell'integrazione video nel progetto:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>FASE 2.5 (Multimedia Living Paper):
+→ Pagine 22-23: 2 video "Harry Potter Effect"
+→ Obiettivo: Proof of concept animazioni artistiche
+
+FASE 10.3 (Video Library Expansion):
+→ Pagina 2: Video "Credits" introduttivo
+→ Pagine 22-24: 3 video artistici (aggiunto 24.mp4)
+→ Obiettivo: Strategia video completa con intro + content</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Rationale: Pagina 2 come Hook Visuale</div>
+                                        <div class="step-description">
+                                            La scelta della pagina 2 per il video introduttivo è strategica:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Posizione Early:</strong> Seconda pagina cattura attenzione immediatamente</li>
+                                                <li><strong>Credits Loop:</strong> Mostra team/contributi in modo dinamico</li>
+                                                <li><strong>First Impression:</strong> Comunica professionalità fin dall'inizio</li>
+                                                <li><strong>Retention Hook:</strong> Utente capisce subito che non è un PDF statico</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Pagina 24: Completamento Trittico</div>
+                                        <div class="step-description">
+                                            Aggiunta di 24.mp4 per creare sequenza narrativa:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Pagina 22:</strong> Intro effetto Harry Potter</li>
+                                                <li><strong>Pagina 23:</strong> Sviluppo animazione</li>
+                                                <li><strong>Pagina 24:</strong> Conclusione/climax visuale (NUOVO)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Implementation: Conditional Rendering Update</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Aggiornamento Logica if-else in index.html</div>
+                                        <div class="step-description">
+                                            Modifica del router decisionale per includere pagina 2:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// BEFORE (FASE 2.5)
+if (i === 25) {
+  // Pagina CTA HTML
+} else if (i === 22 || i === 23) {
+  // Video Harry Potter
+} else {
+  // PDF rendering
+}
+
+// AFTER (FASE 10.3)
+if (i === 25) {
+  // Pagina CTA HTML
+} else if (i === 2 || i === 22 || i === 23 || i === 24) {
+  // Video (Credits + Harry Potter trilogy)
+  const videoSrc = i + ".mp4";
+  pdfLayer.append(`
+    &lt;video class="magazine-video" playsinline webkit-playsinline muted&gt;
+      &lt;source src="${videoSrc}" type="video/mp4"&gt;
+    &lt;/video&gt;
+  `);
+} else {
+  // PDF rendering
+}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">File Naming Convention</div>
+                                        <div class="step-description">
+                                            Consistenza naming per scalabilità:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Repository Structure:
+├── 1.pdf
+├── 2.mp4  ← NUOVO (Credits)
+├── 3.pdf
+├── ...
+├── 21.pdf
+├── 22.mp4 (Harry Potter 1)
+├── 23.mp4 (Harry Potter 2)
+├── 24.mp4 (Harry Potter 3) ← NUOVO
+├── 25 (Ghost page - HTML generated)
+
+Pattern: [page_number].[extension]
+→ Permette conditional rendering semplice via i + ".mp4"</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Backward Compatibility</div>
+                                        <div class="step-description">
+                                            La modifica è backward compatible:
+                                            <ul style="margin-top: 10px;">
+                                                <li>Vecchi PDF (1, 3-21) continuano a funzionare</li>
+                                                <li>Nessun breaking change nel router</li>
+                                                <li>Aggiunte sono additive, non sostitutive</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Video Asset Optimization</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Autoplay Requirements</div>
+                                        <div class="step-description">
+                                            Tutti i video devono rispettare policy browser per autoplay:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Attributi video ottimizzati:
+- playsinline: Evita fullscreen su iOS
+- webkit-playsinline: Supporto Safari legacy
+- muted: OBBLIGATORIO per autoplay
+- NO loop: Rimosso in FASE 10.1 (single-play)
+
+Browser Policy:
+✅ Chrome: Autoplay OK se muted
+✅ Safari: Autoplay OK se muted + playsinline
+✅ Firefox: Autoplay OK se muted
+❌ TUTTI: Autoplay blocked se audio enabled</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Encoding Optimization</div>
+                                        <div class="step-description">
+                                            Best practices per file video:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Target Specs:
+- Container: MP4 (H.264 codec)
+- Resolution: 1080p o 720p (max)
+- Bitrate: 2-4 Mbps (balance qualità/size)
+- Frame Rate: 30fps (smooth su mobile)
+- Audio: Nessuna traccia audio (saving ~30% file size)
+
+Tools consigliati:
+- Handbrake: Compression GUI-friendly
+- FFmpeg: CLI per batch processing
+- Google Veo AI: Generazione video originali</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">File Size Impact</div>
+                                        <div class="step-description">
+                                            Analisi impatto bandwidth:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>BEFORE (FASE 2.5):
+- 2 video (22.mp4, 23.mp4)
+- Size: ~4.2 MB caduno
+- Total: 8.4 MB
+
+AFTER (FASE 10.3):
+- 4 video (2.mp4, 22.mp4, 23.mp4, 24.mp4)
+- Size stimata: ~4 MB caduno
+- Total: 16 MB
+
+→ Download progressivo (lazy loading)
+→ Solo video visibili vengono scaricati
+→ Impact reale: +8 MB solo se utente sfoglia tutte pagine video</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Content Strategy: Credits Video</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Obiettivo Video Credits</div>
+                                        <div class="step-description">
+                                            Finalità del video introduttivo pagina 2:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Riconoscimento Team:</strong> Mostra chi ha lavorato al progetto</li>
+                                                <li><strong>Professionalità:</strong> Credits animati = standard produzione cinema/TV</li>
+                                                <li><strong>Engagement Hook:</strong> Cattura attenzione nei primi 10 secondi</li>
+                                                <li><strong>Brand Identity:</strong> Stabilisce tono visuale della rivista</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Design Pattern Credits Tipici</div>
+                                        <div class="step-description">
+                                            Elementi comuni nei credits video:
+                                            <ul style="margin-top: 10px;">
+                                                <li>Logo rivista animato (fade in/out)</li>
+                                                <li>Nomi team scorrevoli (rolling credits)</li>
+                                                <li>Background video (footage b-roll scuola)</li>
+                                                <li>Musica strumentale (opzionale, muted per autoplay)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Future: Interactive Credits</div>
+                                        <div class="step-description">
+                                            Possibile evoluzione per prossime edizioni:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Idea: Pause video e mostra overlay al click
+&lt;div class="credits-overlay"&gt;
+  &lt;div class="credit-card"&gt;
+    &lt;h3&gt;Redazione&lt;/h3&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Studente A - Editor in Chief&lt;/li&gt;
+      &lt;li&gt;Studente B - Grafica&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+// Click video → Pausa + mostra nomi leggibili
+// Permette di leggere nomi senza motion blur</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Scalability: Pattern per Future Video Pages</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Easy Addition Workflow</div>
+                                        <div class="step-description">
+                                            Per aggiungere un nuovo video in futuro:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Step 1: Upload video file
+// Esempio: Voglio pagina 10 come video
+upload 10.mp4 → Repository root
+
+// Step 2: Update conditional in index.html
+if (i === 2 || i === 10 || i === 22 || i === 23 || i === 24) {
+  // Video rendering
+}
+
+// Step 3: Commit & Push
+git add 10.mp4 index.html
+git commit -m "feat: add video page 10"
+git push
+
+// DONE! No other changes needed</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Performance Consideration</div>
+                                        <div class="step-description">
+                                            Limiti consigliati per scalabilità:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Max 6-8 video:</strong> Oltre diventa pesante per mobile</li>
+                                                <li><strong>Total budget:</strong> ~30 MB totale video accettabile</li>
+                                                <li><strong>Distribution:</strong> Sparpagliare video, evitare consecutivi</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Alternative: Array-Based Router</div>
+                                        <div class="step-description">
+                                            Per gestire molti video, pattern più scalabile:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Define video pages in array
+const VIDEO_PAGES = [2, 22, 23, 24];
+
+// Conditional diventa più pulito
+if (i === 25) {
+  // CTA page
+} else if (VIDEO_PAGES.includes(i)) {
+  // Video rendering
+} else {
+  // PDF rendering
+}
+
+// Aggiungere video → solo modificare array
+// Nessuna catena di OR infinita</code>
                                         </div>
                                     </div>
                                 </div>
