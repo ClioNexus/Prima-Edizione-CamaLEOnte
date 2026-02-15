@@ -8341,6 +8341,165 @@ $(document).ready(function() {
                             <div class="level1-header">
                                 <div class="level1-title">
                                     <span class="level1-icon">▶</span>
+                                    <strong>Behind the Scenes: Come Funziona in Pratica</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Il Concetto: La "Targa" Digitale</div>
+                                        <div class="step-description">
+                                            Il link UTM funziona come un biglietto d'ingresso colorato:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Link Normale (senza "targa"):
+https://username.github.io/camaleonte
+→ L'utente arriva, ma non sappiamo DA DOVE
+
+Link Tracciato (con "targa" UTM):
+https://username.github.io/camaleonte?utm_source=instagram
+                                          ↑
+                                 Questa è la "targa" 
+
+Agli occhi dell'utente:
+→ Il sito si apre normalmente, nessuna differenza visibile
+
+Agli occhi del codice:
+→ "Aha! Questo utente viene da Instagram!"</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Il Flusso di Lavoro (Step-by-Step)</div>
+                                        <div class="step-description">
+                                            Ecco cosa succede esattamente quando uno studente clicca il link Instagram:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Timeline Evento:
+
+T = 0ms: Il Click
+→ Studente vede storia Instagram
+→ Clicca link con utm_source=instagram
+
+T = 100ms: L'Ispezione
+→ Pagina inizia a caricare
+→ JavaScript si attiva
+→ Script: "C'è scritto utm_source=instagram nell'URL?"
+→ Risposta: "Sì!"
+
+T = 200ms: Il Conteggio Silenzioso
+→ Script invia segnale a CounterAPI
+→ Messaggio: "Aggiungi +1 al contatore instagram-v1"
+→ Utente NON vede nulla (operazione invisibile)
+
+T = 300ms: Rivista Caricata
+→ Utente vede la rivista normalmente
+→ Può sfogliare, leggere, interagire
+
+T = Futuro: La Dashboard
+→ Docente apre dashboard.html
+→ Dashboard interroga CounterAPI
+→ Grafico mostra barra Instagram incrementata</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Test Immediato (Senza Aspettare Instagram)</div>
+                                        <div class="step-description">
+                                            Non serve aspettare post reali per testare il sistema:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Procedura Test Manuale:
+
+1. Apri Dashboard (dashboard.html)
+   → Guarda card "Instagram Reach"
+   → Nota il numero attuale (es: 0)
+
+2. Apri Nuova Tab browser
+   → Incolla URL rivista + parametro manuale:
+   https://[tuo-username].github.io/camaleonte?utm_source=instagram
+   → Premi Invio
+   → Rivista si carica normalmente
+
+3. Torna su Dashboard
+   → Clicca bottone "🔄 Aggiorna Dati"
+   → Numero Instagram incrementato di +1
+
+✅ Test Passato: Sistema funziona!
+
+Nota: Questo simula perfettamente un click reale da Instagram</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 4</div>
+                                        <div class="step-title">Perché è Geniale: Separazione delle Acque</div>
+                                        <div class="step-description">
+                                            Il sistema crea distinzione netta tra sorgenti:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Scenario A: QR Code in Classe
+Link: https://[...]/camaleonte (pulito, no UTM)
+Conta come: "Visitatori Generali"
+Dashboard: Nessun incremento card Instagram
+
+Scenario B: Click da Storia Instagram
+Link: https://[...]/camaleonte?utm_source=instagram
+Conta come: "Social Traffic"
+Dashboard: +1 nella card Instagram
+
+Risultato Finale (End of Month):
+"Prof, il 40% dei lettori è arrivato grazie 
+alle vostre storie su Instagram"
+
+→ Decisione Data-Driven: Continuare strategia social</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 5</div>
+                                        <div class="step-title">Workflow Docente: Come Usarlo</div>
+                                        <div class="step-description">
+                                            Istruzioni pratiche per docenti che gestiscono social:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Guida Docente Instagram:
+
+1. Prepara il Link Tracciato
+   Base: https://username.github.io/camaleonte
+   Aggiungi: ?utm_source=instagram
+   Finale: https://username.github.io/camaleonte?utm_source=instagram
+
+2. Crea Storia/Post Instagram
+   - Carica immagine teaser rivista
+   - Testo: "Nuovo numero disponibile! Link in bio 👆"
+   - Metti link tracciato nel campo "Link"
+
+3. Pubblica e Aspetta 24h
+
+4. Controlla Dashboard
+   - Apri dashboard.html
+   - Guarda card "Instagram Reach"
+   - Numero mostra quanti hanno cliccato
+
+5. Strategia
+   - Se numero alto: Continua con Instagram
+   - Se numero basso: Prova TikTok o altro canale
+
+💡 Pro Tip: Salva il link tracciato in Note per riutilizzarlo</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
                                     <strong>Dashboard Integration: Instagram KPI Card</strong>
                                 </div>
                             </div>
