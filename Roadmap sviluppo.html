@@ -8163,6 +8163,465 @@ Contro: Modifiche testo = re-encode video</code>
 
         </div>
 
+        <h2>📱 FASE 11: Social Media Attribution & Instagram Tracking (v2.6 - Febbraio 2025)</h2>
+
+        <div class="timeline">
+
+            <!-- FEATURE 11.1 - INSTAGRAM UTM TRACKING -->
+            <div class="card infrastructure" onclick="toggleCard(this)">
+                <div class="card-header">
+                    <div class="accordion-toggle">
+                        <span class="accordion-icon">▶</span>
+                        <h3>Feature 11.1: Instagram UTM Source Tracking & CounterAPI Integration</h3>
+                    </div>
+                    <span class="badge infrastructure">Social Analytics</span>
+                </div>
+                
+                <div class="card-content">
+                    <div class="level1-accordion">
+                        
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Rationale: Tracking Social Media Reach</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Obiettivo: Misurare ROI Instagram</div>
+                                        <div class="step-description">
+                                            Instagram è uno dei canali principali per promozione della rivista scolastica:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>Scenario:</strong> Post Instagram con link in bio alla rivista</li>
+                                                <li><strong>Problema:</strong> Impossibile sapere quanti lettori arrivano da IG</li>
+                                                <li><strong>Soluzione:</strong> UTM parameter `?utm_source=instagram`</li>
+                                                <li><strong>Beneficio:</strong> Dati quantitativi per valutare efficacia social strategy</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Differenza vs Altri Tracker</div>
+                                        <div class="step-description">
+                                            Confronto con trackers già implementati:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>FASE 7: QR Code Cartaceo
+?utm_source=cartaceo&utm_medium=qrcode
+→ Traccia scan da poster fisici
+
+FASE 11: Instagram Bio Link
+?utm_source=instagram
+→ Traccia click da social media
+
+Google Analytics:
+→ Traccia TUTTO (page views, bounce rate, geo)
+
+CounterAPI Instagram Slug:
+→ Traccia SOLO arrivi da Instagram
+→ Contatore dedicato separato da likes/shares</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Use Case Pratico</div>
+                                        <div class="step-description">
+                                            Workflow tipico promozione Instagram:
+                                            <ol style="margin-top: 10px; color: var(--text-muted);">
+                                                <li>Scuola crea post Instagram con teaser rivista</li>
+                                                <li>Link in bio: <code>github.io/camaleonte?utm_source=instagram</code></li>
+                                                <li>Follower cliccano link → Contatore IG incrementa</li>
+                                                <li>Dashboard docenti mostra: "154 arrivi da Instagram"</li>
+                                                <li>Scuola decide: "Instagram funziona, investiamo più contenuti"</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Implementation: URL Parameter Detection</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">JavaScript URL Parsing</div>
+                                        <div class="step-description">
+                                            Detect parametro `utm_source` nell'URL quando rivista si carica:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Funzione helper per leggere URL params
+function getUrlParameter(name) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(name);
+}
+
+// Check se utente arriva da Instagram
+const utmSource = getUrlParameter('utm_source');
+
+if (utmSource === 'instagram') {
+  // Incrementa contatore Instagram
+  trackInstagramVisit();
+}
+
+// Esempio URL:
+// https://username.github.io/camaleonte?utm_source=instagram
+// → getUrlParameter('utm_source') = "instagram"</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">CounterAPI Slug Configuration</div>
+                                        <div class="step-description">
+                                            Creazione del terzo counter nel namespace `camaleonte-v1`:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>CounterAPI Dashboard → camaleonte-v1 → Add Counter
+
+Slug 3:
+- Name: instagram-v1
+- Initial Value: 0
+- Enable Public Read: ✅ YES
+- Enable Public Write: ❌ NO (solo via API)
+
+Endpoint:
+GET  https://api.counterapi.dev/v1/camaleonte-v1/instagram-v1/
+POST https://api.counterapi.dev/v1/camaleonte-v1/instagram-v1/up</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Tracking Function Implementation</div>
+                                        <div class="step-description">
+                                            Funzione che incrementa contatore quando detect Instagram:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>const NAMESPACE = 'camaleonte-v1';
+const API_URL = 'https://api.counterapi.dev/v1';
+const KEY_INSTAGRAM = 'instagram-v1';
+
+function trackInstagramVisit() {
+  // Incrementa contatore Instagram
+  $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_INSTAGRAM}/up`)
+    .done(response => {
+      console.log(`Instagram visits: ${response.count}`);
+    })
+    .fail(error => {
+      console.error('Instagram tracking failed:', error);
+    });
+}
+
+// Trigger on page load
+$(document).ready(function() {
+  const utmSource = getUrlParameter('utm_source');
+  if (utmSource === 'instagram') {
+    trackInstagramVisit();
+  }
+});</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Dashboard Integration: Instagram KPI Card</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Nuova Card KPI nel Dashboard</div>
+                                        <div class="step-description">
+                                            Aggiunta quarta card nel KPI grid di dashboard.html:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>&lt;div class="kpi-grid"&gt;
+  &lt;!-- Card esistenti: Likes, Shares, GA4 --&gt;
+  
+  &lt;!-- NUOVA Card Instagram --&gt;
+  &lt;div class="card" style="border-color: #e4405f;"&gt;
+    &lt;h3&gt;Instagram Reach&lt;/h3&gt;
+    &lt;div class="number" id="total-instagram"&gt;-&lt;/div&gt;
+    &lt;div class="trend" style="color: #e4405f;"&gt;📸 Arrivi da IG&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+Styling:
+- border-color: #e4405f (Instagram brand pink)
+- trend color: Match con border
+- Emoji: 📸 (camera) per identificare visivamente</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Data Fetching Logic Update</div>
+                                        <div class="step-description">
+                                            Modifica funzione `loadData()` per includere Instagram:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>async function loadData() {
+  try {
+    // Fetch parallelo di 3 counter
+    const [likeRes, shareRes, igRes] = await Promise.all([
+      $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_LIKES}/`),
+      $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_SHARES}/`),
+      $.getJSON(`${API_URL}/${NAMESPACE}/${KEY_INSTAGRAM}/`) // NUOVO
+    ]);
+    
+    const likes = likeRes.count || 0;
+    const shares = shareRes.count || 0;
+    const instagram = igRes.count || 0; // NUOVO
+
+    // Update DOM
+    $('#total-likes').text(likes);
+    $('#total-shares').text(shares);
+    $('#total-instagram').text(instagram); // NUOVO
+    
+    updateChart(likes, shares, instagram); // AGGIORNATO
+    
+  } catch (e) {
+    console.error("Errore caricamento dati", e);
+  }
+}</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Chart.js Update: 3-Bar Comparison</div>
+                                        <div class="step-description">
+                                            Aggiornamento grafico per includere barra Instagram:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>function updateChart(likes, shares, instagram) {
+  // BEFORE: 2 barre (likes, shares)
+  // AFTER:  3 barre (likes, shares, instagram)
+  
+  myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Likes ❤️', 'Shares 🚀', 'Instagram 📸'], // AGGIUNTO
+      datasets: [{
+        label: 'Interazioni',
+        data: [likes, shares, instagram], // AGGIUNTO
+        backgroundColor: [
+          'rgba(239, 68, 68, 0.6)',    // Red (likes)
+          'rgba(16, 185, 129, 0.6)',   // Green (shares)
+          'rgba(228, 64, 95, 0.6)'     // Pink (instagram) NUOVO
+        ],
+        borderColor: [
+          'rgba(239, 68, 68, 1)',
+          'rgba(16, 185, 129, 1)',
+          'rgba(228, 64, 95, 1)'        // NUOVO
+        ]
+      }]
+    }
+  });
+}</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Multi-Source Attribution Analysis</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Traffic Source Breakdown</div>
+                                        <div class="step-description">
+                                            Con Instagram tracking, ora abbiamo visibilità completa sorgenti traffico:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Sorgenti Tracciabili (Febbraio 2025):
+
+1. QR Code Cartaceo
+   ?utm_source=cartaceo&utm_medium=qrcode
+   → Google Analytics source report
+
+2. Instagram Bio Link
+   ?utm_source=instagram
+   → CounterAPI instagram-v1 slug
+
+3. Dashboard Share Button
+   ?utm_source=dashboard&utm_medium=share_button
+   → Futuro (FASE 10.2 enhancement idea)
+
+4. Direct / Organic
+   (Nessun UTM)
+   → Google Analytics direct traffic
+
+5. Google Search
+   (Organic SEO)
+   → Google Analytics organic search</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Conversion Funnel per Source</div>
+                                        <div class="step-description">
+                                            Analisi qualità traffico per sorgente:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Esempio Analisi (Dati ipotetici):
+
+Instagram:
+- 154 visite
+- 89 likes (57.8% conversion)
+- 45 shares (29.2% conversion)
+→ Alta qualità, audience engaged
+
+QR Cartaceo:
+- 240 visite
+- 53 likes (22.1% conversion)
+- 12 shares (5% conversion)
+→ Traffico più casual, meno engaged
+
+Insight: Instagram porta meno traffico ma più qualificato
+→ Focus strategico su contenuti Instagram</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">ROI Social Media Calculation</div>
+                                        <div class="step-description">
+                                            Calcolare ritorno investimento tempo social:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>Input:
+- Tempo creazione post Instagram: 30 minuti
+- Visite da Instagram: 154
+- Engagement rate: 57.8%
+
+Output:
+- Cost per Visit: 30min / 154 = 0.19 minuti/visita
+- Cost per Engaged User: 30min / 89 = 0.34 minuti/like
+
+Confronto:
+- Stampa QR cartaceo: 2 ore setup / 240 visite = 0.5 min/visita
+→ Instagram più efficiente in termini di tempo</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level1-item" onclick="event.stopPropagation(); toggleLevel1(this)">
+                            <div class="level1-header">
+                                <div class="level1-title">
+                                    <span class="level1-icon">▶</span>
+                                    <strong>Future: Multi-Platform Expansion</strong>
+                                </div>
+                            </div>
+                            <div class="level1-content">
+                                <div class="level2-steps">
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 1</div>
+                                        <div class="step-title">Pattern Replicabile</div>
+                                        <div class="step-description">
+                                            Il pattern Instagram è facilmente estendibile ad altre piattaforme:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// TikTok Bio Link
+?utm_source=tiktok
+→ Slug: tiktok-v1
+
+// WhatsApp Status
+?utm_source=whatsapp_status
+→ Slug: whatsapp-v1
+
+// Telegram Channel
+?utm_source=telegram
+→ Slug: telegram-v1
+
+// Facebook Post
+?utm_source=facebook
+→ Slug: facebook-v1
+
+Implementation: 3 step per piattaforma
+1. Create CounterAPI slug
+2. Add URL param detection in index.html
+3. Add KPI card in dashboard.html</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step solution-step">
+                                        <div class="step-number">Step 2</div>
+                                        <div class="step-title">Dynamic Dashboard Scaling</div>
+                                        <div class="step-description">
+                                            Per gestire molte piattaforme, dashboard deve diventare più scalabile:
+                                        </div>
+                                        <div class="code-block">
+                                            <code>// Idea: Array-based KPI rendering
+const SOCIAL_PLATFORMS = [
+  { slug: 'instagram-v1', label: 'Instagram', icon: '📸', color: '#e4405f' },
+  { slug: 'tiktok-v1', label: 'TikTok', icon: '🎵', color: '#000000' },
+  { slug: 'whatsapp-v1', label: 'WhatsApp', icon: '💬', color: '#25D366' }
+];
+
+// Generate cards dinamicamente
+SOCIAL_PLATFORMS.forEach(platform => {
+  $('.kpi-grid').append(`
+    &lt;div class="card" style="border-color: ${platform.color}"&gt;
+      &lt;h3&gt;${platform.label} Reach&lt;/h3&gt;
+      &lt;div class="number" id="total-${platform.slug}"&gt;-&lt;/div&gt;
+      &lt;div class="trend"&gt;${platform.icon} Arrivi&lt;/div&gt;
+    &lt;/div&gt;
+  `);
+});</code>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="micro-step info-step">
+                                        <div class="step-number">Step 3</div>
+                                        <div class="step-title">Integration con Google Analytics</div>
+                                        <div class="step-description">
+                                            I dati CounterAPI e GA4 sono complementari:
+                                            <ul style="margin-top: 10px;">
+                                                <li><strong>CounterAPI:</strong> Conteggio semplice, visibile ai docenti</li>
+                                                <li><strong>GA4:</strong> Dati dettagliati (bounce rate, session duration, geo per source)</li>
+                                                <li><strong>Best Practice:</strong> Dashboard mostra CounterAPI, GA4 per deep dive</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <footer>
             <p><strong>Il CamaLEOnte Project</strong> - Interactive Technical Documentation</p>
             <p style="margin-top: 10px; font-size: 0.9rem;">Clicca su ogni card per espandere i dettagli tecnici completi</p>
